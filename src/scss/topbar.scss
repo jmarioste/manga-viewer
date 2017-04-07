@@ -1,0 +1,19 @@
+.topbar {
+  text-align: center;
+  background-color: $primary;
+  padding: 10px 10px;
+  color: #fff;
+  font-size: 24px;
+  display: flex;
+  align-items:center;
+  
+}
+.topbar {
+	.title-text{
+		flex-grow:1;
+	}
+	.control{
+		line-height:0px;
+		cursor: pointer;
+	}	
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html id="html-top">
+  <head>
+    <meta charset="UTF-8">
+    <title data-bind="text:appTitle"></title>
+      <script>
+        // You can also require other files to run in this process
+        require('./renderer.js');
+        require("./dist/app-bundle.js");
+      </script>
+  </head>
+  <body>
+    <div class="topbar">
+      <i class="fa fa-bars fa-lg toggle-nav control" data-bind="toggleNav:'.wrapper'"></i>
+      
+      <span class="title-text" data-bind="text:appTitle"></span>
+      
+    </div>
+    <div class="wrapper show-nav">
+      
+      <div class="canvas ">
+        <div class="sidebar">
+          <ul class="sidebar-favorites">
+            <li class="favorites">
+              <h4>
+                <i class="mr5 fa fa-star fa-lg"></i> Favorites
+              </h4>          
+            </li>            
+            <!-- <li class="divider"><hr></li> -->
+            <li class="item">
+              <a href="javascript:void(0);">Stuff</a>
+            </li>
+            <li class="item">
+              <a href="javascript:void(0);">Otomedori.zip</a>
+            </li>            
+          </ul>
+          <ul class="sidebar-directory">
+            <li class="divider"><hr></li>
+            <li class="directory">
+              <h4 >
+                <i class="mr5 fa fa-sitemap fa-lg"></i> Directory - Documents
+              </h4>
+            </li>
+            
+            <li class="item">
+              <a href="javascript:void(0);">
+              <i class="fa fa-folder-open"></i>
+                Documents
+              </a>
+            </li>
+            <li class="item">
+              <a style="padding-left:20px" href="javascript:void(0);">
+              <i class="fa fa-folder"></i>
+                Pictures
+              </a>
+            </li>
+          </ul>
+          <ul class="sidebar-settings">
+            <li class="divider"><hr></li>
+            <li >
+              <a href="javascript:void(0);"> 
+                <i class="fa fa-gear fa-lg control"></i> Settings
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content">
+
+          <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+
+        </div>
+        
+      </div>
+    </div>
+    
+  </body>
+
+</html>
