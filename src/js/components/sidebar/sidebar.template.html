@@ -13,7 +13,7 @@
       <a href="javascript:void(0);">One piece - chapter 4.zip</a>
     </li>            
   </ul>
-  <ul class="sidebar-directory">
+  <ul class="sidebar-directory header">
     <li class="divider"><hr></li>
     <li class="directory">
       <h4 >
@@ -21,7 +21,8 @@
           <span data-bind="text:currentFolder"></span>
       </h4>
     </li>
-    <!-- ko foreach: directories -->
+  </ul>
+  <ul class="sidebar-directory list" data-bind="scroll,foreach: directories">
     <li class="item" data-bind="
       style:{ paddingLeft: paddingLeft()}, click:$parent.selectDirectory, 
       selected: $data == $parent.selectedDirectory()">
@@ -31,7 +32,6 @@
         </i>
         <span data-bind="text:folderName"></span>
     </li>
-    <!-- /ko -->
   </ul>
   <ul class="sidebar-settings">
     <li class="divider"><hr></li>

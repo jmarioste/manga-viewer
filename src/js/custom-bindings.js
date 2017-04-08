@@ -35,3 +35,13 @@ ko.bindingHandlers.selected = {
         }
     }
 }
+
+ko.bindingHandlers.scroll = {
+    init: function(element, valueAccessor) {
+        $(element).css({
+            height: `${$(element).outerHeight()}px`,
+            'overflow-y': "auto",
+            'overflow-x': "hidden"
+        });
+    }
+}

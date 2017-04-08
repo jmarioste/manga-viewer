@@ -1,31 +1,31 @@
 import * as $ from "jquery";
+import * as fs from "fs";
+import * as path from "path";
 export let api = {
-    getSidebarFolderListOf: function(folderPath) {
+    getSubFolders: function(folderPath, isOpen) {
+        console.log(fs);
         let deferred = $.Deferred();
-        deferred.resolve({
-            folders: [{
-                folderName: "Documents",
-                lastModified: Date.now(),
-                isOpen: true,
-                children: [{
-                    folderName: "Pictures",
-                    lastModified: Date.now(),
-                    isOpen: false,
 
-                    children: []
-                }, {
-                    folderName: "Stuff",
-                    lastModified: Date.now(),
-                    isOpen: false,
+        var dirs = []
+        fs.readdir(folderPath, {}, function(err, files) {
 
-                    children: [{
-                        folderName: "One Piece",
-                        lastModified: Date.now(),
+            files.forEach(function(file) {
+                let filePath = path.resolve(folderPath, file);
+                let stat = fs.lstatSync(filePath);
+                if (stat.isDirectory()) {
+                    dirs.push({
+                        folderName: file,
+                        folderPath: filePath,
                         isOpen: false,
                         children: []
-                    }]
-                }]
-            }]
+                    })
+                }
+            })
+            console.log(files);
+
+            deferred.resolve({
+                folders: dirs
+            })
         });
 
         return deferred.promise();

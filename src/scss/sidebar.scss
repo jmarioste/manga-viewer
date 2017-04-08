@@ -29,14 +29,15 @@ $sidebar-background: #fff;
   font-weight: bolder;
   background-color: #f5f5f5;
 }
-.sidebar-directory {
+.sidebar-directory.list{
   flex-grow:1;
 }
 
 @mixin item-hover{
   &:hover {
     background-color: lighten($primary,20%);
-    a, .fa {
+    color: #fff;
+    .fa {
       color: #fff;
     }
   }
