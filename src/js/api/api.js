@@ -19,7 +19,7 @@ export let api = {
                     isOpen: false,
 
                     children: [{
-                        folderName: "Yoshiura Kazuya",
+                        folderName: "One Piece",
                         lastModified: Date.now(),
                         isOpen: false,
                         children: []
