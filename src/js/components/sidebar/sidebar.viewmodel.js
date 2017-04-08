@@ -18,44 +18,35 @@ export class SidebarViewmodel {
         this.initialize();
         this.selectedDirectory = ko.observable();
         this.selectDirectory = this.selectDirectory.bind(this);
-        this.currentFolder = ko.computed(this.currentFolder, this);
+        this.currentFolder = ko.computed(this.currentFolder, this).extend({
+            rateLimit: 0
+        });
+        this.subs = [];
     }
 
     initialize() {
         let self = this;
-        api.getSidebarFolderListOf("").then(function(response) {
-            self.folders(response.folders);
-        })
+        var last = "G:/Users/Shizkun/";
+        var root = new Folder(last,
+            null,
+            false, [],
+            0,
+            last);
+        self.folders([root]);
+        root.isOpen(true);
     };
-
-    getFolderTree() {
-        let self = this;
-        let array = self.folders();
-        let tree = [];
-
-        function recursive(item, level) {
-            level = level || 0;
-            if (!self.map[item.folderName]) {
-                let folder = new Folder(item.folderName,
-                    item.lastModified,
-                    item.isOpen,
-                    item.children, level);
-
-                self.map[item.folderName] = folder;
-
-            }
-
-            let folder = self.map[item.folderName];
-            tree.push(folder);
-            if (item.children.length && folder.isOpen()) {
-                item.children.forEach(function(item) {
-                    recursive(item, level + 1);
-                });
-            }
+    recursive(folder, array) {
+        array.push(folder);
+        if (folder.isOpen()) {
+            folder.children().forEach((child) => this.recursive(child, array));
         }
-
-        array.forEach(recursive);
-        return tree;
+        return array;
+    }
+    getFolderTree() {
+        console.log("SidebarViewmodel::getFolderTree");
+        let array = [];
+        this.folders().forEach((child) => this.recursive(child, array));
+        return array;
     }
 
     selectDirectory(folder) {
@@ -75,5 +66,5 @@ SidebarViewmodel.registerComponent = function() {
     ko.components.register("sidebar", {
         viewModel: SidebarViewmodel,
         template: htmlTemplate
-    })
+    });
 };

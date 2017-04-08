@@ -44,5 +44,6 @@ module.exports = {
                 }
             }],
         }]
-    }
+    },
+    target: 'node'
 };
