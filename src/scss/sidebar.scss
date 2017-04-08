@@ -17,7 +17,7 @@ $sidebar-background: #fff;
   height: 100%;
   width: 0px;
   background-color: #fff;
-  border-right: $primary 1px solid;
+  border-right: 1px solid $border-color;
   transition: .3s ease all;
   backface-visibility: hidden;
   z-index: 10;
@@ -35,7 +35,7 @@ $sidebar-background: #fff;
 
 @mixin item-hover{
   &:hover {
-    background-color: lighten($primary,10%);
+    background-color: lighten($primary,20%);
     a, .fa {
       color: #fff;
     }
@@ -64,8 +64,18 @@ $sidebar-background: #fff;
     }
     &.item {
       padding: 5px 10px;
+      cursor: pointer;
+      &.selected, &.selected:hover {
+        background-color: $primary;
+        color: #fff;
+        .fa {
+          color: #fff;
+        }
+      }
       @include item-hover;
+
     }
+
   }
   ul {
     list-style:none;

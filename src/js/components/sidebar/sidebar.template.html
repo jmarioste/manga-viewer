@@ -1,0 +1,44 @@
+<div class="sidebar">
+  <ul class="sidebar-favorites">
+    <li class="favorites">
+      <h4>
+        <i class="mr5 fa fa-star fa-lg"></i> Favorites
+      </h4>          
+    </li>            
+    <!-- <li class="divider"><hr></li> -->
+    <li class="item">
+      <a href="javascript:void(0);">Stuff</a>
+    </li>
+    <li class="item">
+      <a href="javascript:void(0);">Otomedori.zip</a>
+    </li>            
+  </ul>
+  <ul class="sidebar-directory">
+    <li class="divider"><hr></li>
+    <li class="directory">
+      <h4 >
+        <i class="mr5 fa fa-sitemap fa-lg"></i> Directory - 
+          <span data-bind="text:currentFolder"></span>
+      </h4>
+    </li>
+    <!-- ko foreach: directories -->
+    <li class="item" data-bind="
+      style:{ paddingLeft: paddingLeft()}, click:$parent.selectDirectory, 
+      selected: $data == $parent.selectedDirectory()">
+        <i class="fa" data-bind="
+        isOpenFolder:isOpen, 
+        click: toggleFolderOpen">          
+        </i>
+        <span data-bind="text:folderName"></span>
+    </li>
+    <!-- /ko -->
+  </ul>
+  <ul class="sidebar-settings">
+    <li class="divider"><hr></li>
+    <li >
+      <a href="javascript:void(0);"> 
+        <i class="fa fa-gear fa-lg control"></i> Settings
+      </a>
+    </li>
+  </ul>
+</div>

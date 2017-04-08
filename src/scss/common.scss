@@ -1,6 +1,7 @@
 $primary: #3f51b5;
 $accent: #FF4081;
 $text-color: lighten(black, 30%);
+$border-color: #e5e5e5;
 $font-size: 14px;
 * {
   margin: 0px;
@@ -25,7 +26,7 @@ p,a {
 hr {
     display: block;
     border: 0;
-    border-top: 1px solid $primary;
+    border-top: 1px solid $border-color;
     margin: 0px;
     padding: 0; 
 }
