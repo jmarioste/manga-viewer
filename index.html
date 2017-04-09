@@ -2,6 +2,7 @@
 <html id="html-top">
   <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title data-bind="text:appTitle"></title>
       <script>
         // You can also require other files to run in this process
@@ -11,7 +12,7 @@
   </head>
   <body>
     <div class="topbar">
-      <i class="fa fa-bars fa-lg toggle-nav control" data-bind="toggleNav:'.wrapper'"></i>
+      <i class="material-icons control" data-bind="toggleNav:'.wrapper'">menu</i>
       
       <span class="title-text" data-bind="text:appTitle"></span>
       
@@ -20,12 +21,16 @@
       
       <div class="canvas ">
         <sidebar params="currentFolder: currentFolder,
-          selectedDirectory: selectedDirectory"></sidebar>
+          selectedDirectory: selectedDirectory,
+          bookmarks:bookmarks">
+                      
+        </sidebar>
 
         <div class="content">
           <manga-list params="
             currentFolder: currentFolder, 
-            selectedDirectory: selectedDirectory">
+            selectedDirectory: selectedDirectory,
+            bookmarks:bookmarks">
             
           </manga-list>
         </div>

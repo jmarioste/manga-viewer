@@ -15,24 +15,22 @@ ko.bindingHandlers.isOpenFolder = {
         var isOpen = ko.unwrap(valueAccessor());
 
         if (isOpen) {
-            $(element).addClass("fa-folder-open")
-                .removeClass("fa-folder");
+            $(element).text("folder_open");
         } else {
-            $(element).addClass("fa-folder")
-                .removeClass("fa-folder-open");
+            $(element).text("folder");
         }
     }
 }
 
 
-ko.bindingHandlers.selected = {
+ko.bindingHandlers.active = {
     update: function(element, valueAccessor) {
-        var selected = ko.unwrap(valueAccessor());
+        var active = ko.unwrap(valueAccessor());
 
-        if (selected) {
-            $(element).addClass("selected");
+        if (active) {
+            $(element).addClass("active");
         } else {
-            $(element).removeClass("selected");
+            $(element).removeClass("active");
         }
     }
 }
@@ -56,5 +54,18 @@ ko.bindingHandlers.tooltip = {
                 padding: 0
             }
         });
+    }
+}
+
+
+ko.bindingHandlers.toggleBookmark = {
+    update: function(element, valueAccessor) {
+        var isBookmarked = ko.unwrap(valueAccessor());
+
+        if (isBookmarked) {
+            $(element).text("bookmark");
+        } else {
+            $(element).text("bookmark_border");
+        }
     }
 }

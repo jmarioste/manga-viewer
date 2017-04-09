@@ -1,6 +1,6 @@
 .topbar {
   text-align: center;
-  background-color: $brand-primary;
+  background-color: $primary-color;
   padding: 7px 10px;
   color: #fff;
   font-size: 24px;
@@ -15,5 +15,6 @@
 	.control{
 		line-height:0px;
 		cursor: pointer;
+		font-size: 42px;
 	}	
 }

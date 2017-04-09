@@ -1,10 +1,13 @@
 $brand-primary:   darken(#3f51b5, 6.5%) !default;
-$roboto-font-path: "~roboto-fontface/fonts";
-$fa-font-path: "~font-awesome/fonts";
+$roboto-font-path: "~materialize-css/fonts/roboto/";
+$primary-color: #3f51b5;
+//$secondary-color: #FF4081;
+$text-color: lighten(black, 30%);
+$border-color: #e5e5e5;
+$font-size: 14px;
 
-@import "~roboto-fontface/css/roboto/sass/roboto-fontface-light.scss";
-@import "~font-awesome/scss/font-awesome";
-@import "./bootstrap-custom.scss";
+@import "~materialize-css/sass/materialize.scss";
 @import "./common.scss";
 @import "./sidebar.scss";
+@import "./manga-list.scss";
 @import "./topbar.scss";

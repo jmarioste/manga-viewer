@@ -33,6 +33,7 @@
     "jquery": "3.2.1",
     "knockout": "3.4.2",
     "less": "2.7.2",
+    "materialize-css": "0.98.1",
     "node-sass": "4.5.2",
     "resolve-url-loader": "2.0.2",
     "sass-loader": "6.0.3",

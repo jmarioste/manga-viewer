@@ -6,14 +6,14 @@ import _ from "lodash";
 import api from "../../api/api.js";
 import Folder from "../folder.viewmodel.js";
 import template from "./sidebar.template.html";
-
+import path from "path";
 
 export class SidebarViewmodel {
 
     constructor(params) {
         console.log("SidebarViewmodel::constructor");
         var self = this;
-        this.favorites = ko.observableArray();
+        this.bookmarks = params.bookmarks;
         this.folders = ko.observableArray();
         this.directories = ko.computed(this.getFolderTree, this).extend({
             rateLimit: 50
@@ -25,9 +25,9 @@ export class SidebarViewmodel {
         this.currentFolder = params.currentFolder;
         this.subs = [];
 
-        ipc.on('selected-directory', function(event, path) {
-            console.log(`You selected ${path}`);
-            self.currentFolder(path[0]);
+        ipc.on('selected-directory', function(event, data) {
+            console.log(`You selected ${data}`);
+            self.currentFolder(_.first(data));
             self.initialize()
         });
 
@@ -37,13 +37,18 @@ export class SidebarViewmodel {
     initialize() {
         let self = this;
         var last = this.currentFolder();
-        var root = new Folder(last,
-            null,
-            false, [],
-            0,
-            last);
-        self.folders([root]);
-        root.isOpen(true); //initialize to call API.
+        if (last) {
+            let baseName = path.basename(last);
+            var root = new Folder(baseName,
+                null,
+                false, [],
+                0,
+                last,
+                false);
+            self.folders([root]);
+            root.isOpen(true); //initialize to call API.
+            self.selectedDirectory(root);
+        }
     };
     recursive(folder, array) {
         array.push(folder);

@@ -1,0 +1,13 @@
+.container.manga-list {
+	width:95%;
+	max-width:100%;
+
+	.card-content {
+		height:100px;
+		font-size: 12px;
+		overflow: hidden;
+		font-weight:bold;
+		text-overflow:ellipsis;
+		white-space:break-word;
+	}
+}

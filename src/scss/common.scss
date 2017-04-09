@@ -1,19 +1,5 @@
-$primary: #3f51b5;
-$accent: #FF4081;
-$text-color: lighten(black, 30%);
-$border-color: #e5e5e5;
-$font-size: 14px;
-body {
-  font-family: 'Roboto', sans-serif;
-}
-/* {
-  margin: 0px;
-  padding: 0px;
-  
-}
-p {
-  padding: 20px;
-}*/
+
+
 html {
   min-height: 100%;
   height: 100%;
@@ -23,9 +9,6 @@ body {
   height: 100%;
 }
 
-p,a {
-    font-size: $font-size;
-}
 hr {
     display: block;
     border: 0;

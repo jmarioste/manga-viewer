@@ -3,7 +3,7 @@ import "./scss/master.scss";
 import $ from "jquery";
 import ko from "knockout";
 
-import "bootstrap";
+import "materialize-css";
 import "./js/custom-bindings";
 
 import ViewModel from "./js/models/main-viewmodel.js";

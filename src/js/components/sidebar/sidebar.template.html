@@ -1,46 +1,39 @@
 <div class="sidebar">
-  <ul class="sidebar-favorites">
-    <li class="favorites">
-      <div>
-        <i class="fa fa-star fa-lg"></i> Favorites
-      </div>          
-    </li>            
+  <div class="sidebar-favorites collection with-header">
+      <a href="#" class="collection-item">
+        <i class="material-icons left">bookmark</i>  Bookmarked Folders 
+      </a>
+  </div>
+  <ul class="sidebar-favorites collection" data-bind="foreach:bookmarks">
     <!-- <li class="divider"><hr></li> -->
-    <li class="item">
-      Stuff
-    </li>
-    <li class="item">
-      One piece - chapter 4.zip
-    </li>            
+    <li class="item collection-item truncate" data-bind="
+      click:$component.selectDirectory" >
+        <span data-bind="text:folderName"></span>        
+    </li>         
   </ul>
-  <ul class="sidebar-directory header">
-    <li class="divider"><hr></li>
-    <li class="directory ">
-      <div>
-        <i class="fa fa-sitemap fa-lg"></i> Directory
-            
-      </div>
-      <i class="fa fa-plus fa-2x open-directory" data-bind="click:openDirectory, tooltip"
-        data-placement="left" title="Click to select a root folder"></i>
-    </li>
-  </ul>
-  <ul class="sidebar-directory list" data-bind="scroll,foreach: directories">
-    <li class="item ellipsis" data-bind="
+
+  <div class="sidebar-directory-header collection with-header">          
+      <a href="#" class="collection-item" data-bind="click:openDirectory">
+        <i class="material-icons left">create_new_folder</i> Select directory
+      </a>
+  </div>
+
+  <ul class="sidebar-directory list collection" data-bind="scroll,foreach: directories">
+    <li class="item collection-item truncate" data-bind="
       style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory, 
-      selected: $data == $parent.selectedDirectory()">
-        <i class="fa" data-bind="
+      active: $data == $parent.selectedDirectory()">
+        <i class="material-icons left" data-bind="
         isOpenFolder:isOpen, 
-        click: toggleFolderOpen">          
+        click: toggleFolderOpen, clickBubble:false">          
         </i>
-        <span data-bind="text:folderName"></span>
+        <span data-bind="text:folderName"></span>        
     </li>
   </ul>
-  <ul class="sidebar-settings">
-    <li class="divider"><hr></li>
-    <li >
-      <div>
-        <i class="fa fa-gear fa-lg control"></i> Settings
-      </div> 
-    </li>
-  </ul>
+  <div class="collection sidebar-settings">
+    <!-- <li class="divider"><hr></li> -->
+    <a href="#" class="collection-item">
+        <i class="left material-icons">settings</i>
+        Settings
+    </a>
+  </div>
 </div>

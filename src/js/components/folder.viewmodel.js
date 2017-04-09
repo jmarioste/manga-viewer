@@ -7,7 +7,8 @@ export default class Folder {
         isOpen = false,
         children = [],
         level = 0,
-        folderPath) {
+        folderPath,
+        isBookmarked) {
 
         this.folderName = folderName;
         this.lastModified = lastModified;
@@ -15,6 +16,7 @@ export default class Folder {
         this.level = level;
         this.children = ko.observableArray(children || []);
         this.folderPath = folderPath;
+        this.isBookmarked = ko.observable(!!isBookmarked);
         var subscription = this.isOpen.subscribe(function(isOpen) {
             var self = this;
             if (isOpen) {
@@ -25,7 +27,7 @@ export default class Folder {
                             item.isOpen,
                             item.children,
                             self.level + 1,
-                            item.folderPath);
+                            item.folderPath, false);
                     });
 
                     self.children(children);

@@ -1,20 +1,27 @@
-<div class="container-fluid">
+<div class="container manga-list">
 	<section class="row">
-		<h1 class="col-lg-12">Manga list</h1>		
+		<h4 class="col s12">Manga list
+		<span data-bind="text:selectedDirectoryText"></span>
+		<!-- ko if: selectedDirectory -->
+		<a class="btn btn-flat right halfway-fab waves-effect waves-light"
+		data-bind="click:toggleBookmark">
+			<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
+		</a>
+		<!-- /ko -->
+		</h4>
+		
 	</section>
-	
-
 	<div id="manga-list"  class="row"  data-bind="foreach:mangas">
-	  <div  class="col-sm-6 col-md-4 col-lg-2">
-	    <div class="thumbnail">
-	      <img src="http://placehold.it/200x250" alt="..." class="">
-	      <div class="caption">
-	        <h3 >Something</h3>
-	        <p data-bind="text:mangaTitle"></p>
-	        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Pin</a></p>
-	      </div>
-	    </div>
-	  </div>
+		<div class="col s12 m2">
+			<div class="card">
+				<div class="card-image">
+					<img src="http://placehold.it/200x250">
+					<!-- <span class="card-title">Title</span> -->
+					<a class="btn-floating halfway-fab waves-effect waves-light "><i class="material-icons">bookmark_border</i></a>
+				</div>
+				<div class="card-content" data-bind="text:mangaTitle" >
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-
