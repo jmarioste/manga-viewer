@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title data-bind="text:appTitle"></title>
-      <script>
-        // You can also require other files to run in this process
-        require('./renderer.js');
-        require("./dist/app-bundle.js");
-      </script>
+    <script>
+    // You can also require other files to run in this process
+    require('./renderer.js');
+    require("./dist/app-bundle.js");
+    </script>
   </head>
   <body>
     <div class="topbar">
@@ -21,25 +21,22 @@
       
       <div class="canvas ">
         <sidebar params="currentFolder: currentFolder,
-          selectedDirectory: selectedDirectory,
-          bookmarks:bookmarks">
-                      
+        selectedDirectory: selectedDirectory,
+        bookmarks:bookmarks">
+        
         </sidebar>
-
         <div class="content">
           <manga-list params="
-            currentFolder: currentFolder, 
-            selectedDirectory: selectedDirectory,
-            bookmarks:bookmarks">
-            
+          currentFolder: currentFolder,
+          selectedDirectory: selectedDirectory,
+          bookmarks:bookmarks">
+          
           </manga-list>
         </div>
         
-
         
       </div>
     </div>
     
   </body>
-
 </html>

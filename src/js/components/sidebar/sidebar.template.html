@@ -1,39 +1,37 @@
 <div class="sidebar">
-  <div class="sidebar-favorites collection with-header">
-      <a href="#" class="collection-item">
-        <i class="material-icons left">bookmark</i>  Bookmarked Folders 
-      </a>
-  </div>
-  <ul class="sidebar-favorites collection" data-bind="foreach:bookmarks">
-    <!-- <li class="divider"><hr></li> -->
-    <li class="item collection-item truncate" data-bind="
-      click:$component.selectDirectory" >
-        <span data-bind="text:folderName"></span>        
-    </li>         
-  </ul>
-
-  <div class="sidebar-directory-header collection with-header">          
-      <a href="#" class="collection-item" data-bind="click:openDirectory">
-        <i class="material-icons left">create_new_folder</i> Select directory
-      </a>
-  </div>
-
-  <ul class="sidebar-directory list collection" data-bind="scroll,foreach: directories">
-    <li class="item collection-item truncate" data-bind="
-      style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory, 
-      active: $data == $parent.selectedDirectory()">
-        <i class="material-icons left" data-bind="
-        isOpenFolder:isOpen, 
-        click: toggleFolderOpen, clickBubble:false">          
-        </i>
-        <span data-bind="text:folderName"></span>        
-    </li>
-  </ul>
-  <div class="collection sidebar-settings">
-    <!-- <li class="divider"><hr></li> -->
-    <a href="#" class="collection-item">
-        <i class="left material-icons">settings</i>
-        Settings
-    </a>
-  </div>
+    <div class="sidebar-favorites collection with-header">
+        <a href="#" class="collection-item">
+            <i class="material-icons left">bookmark</i>  Bookmarked Folders
+        </a>
+    </div>
+    <ul class="sidebar-favorites collection" data-bind="foreach:bookmarks">
+        <!-- <li class="divider"><hr></li> -->
+        <li class="item collection-item truncate" data-bind="
+            click:$component.selectDirectory" >
+            <span data-bind="text:folderName"></span>
+        </li>
+    </ul>
+    <div class="sidebar-directory-header collection with-header">
+        <a href="#" class="collection-item" data-bind="click:openDirectory">
+            <i class="material-icons left">create_new_folder</i> Select directory
+        </a>
+    </div>
+    <ul class="sidebar-directory list collection" data-bind="scroll,foreach: directories">
+        <li class="item collection-item truncate" data-bind="
+            style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory,
+            active: $data == $parent.selectedDirectory()">
+            <i class="material-icons left" data-bind="
+            isOpenFolder:isOpen,
+            click: toggleFolderOpen, clickBubble:false">
+            </i>
+            <span data-bind="text:folderName"></span>
+        </li>
+    </ul>
+    <div class="collection sidebar-settings">
+        <!-- <li class="divider"><hr></li> -->
+        <a href="#" class="collection-item">
+            <i class="left material-icons">settings</i>
+            Settings
+        </a>
+    </div>
 </div>
