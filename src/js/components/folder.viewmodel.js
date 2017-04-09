@@ -16,7 +16,6 @@ export class Folder {
         this.level = level;
         this.children = ko.observableArray(children || []);
         this.folderPath = folderPath;
-
         var subscription = this.isOpen.subscribe(function(isOpen) {
             var self = this;
             if (isOpen) {
@@ -43,6 +42,6 @@ export class Folder {
     }
 
     paddingLeft() {
-        return 5 + 20 * this.level + 'px';
+        return `${5 + 20 * this.level}px`;
     }
 }

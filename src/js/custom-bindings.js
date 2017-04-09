@@ -45,3 +45,15 @@ ko.bindingHandlers.scroll = {
         });
     }
 }
+
+ko.bindingHandlers.tooltip = {
+    init: function(element, valueAccessor) {
+        let text = ko.unwrap(valueAccessor());
+        $(element).tooltip({
+            viewport: {
+                selector: 'body',
+                padding: 0
+            }
+        });
+    }
+}

@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 export let api = {
     getSubFolders: function(folderPath, isOpen) {
-        console.log(fs);
+        console.log("api::getSubFolders");
         let deferred = $.Deferred();
 
         var dirs = []
@@ -20,8 +20,7 @@ export let api = {
                         children: []
                     })
                 }
-            })
-            console.log(files);
+            });
 
             deferred.resolve({
                 folders: dirs
@@ -31,6 +30,10 @@ export let api = {
         return deferred.promise();
     },
     getMangaList: function(folderPath) {
+        let deferred = $.Deferred();
+        return deferred.promise();
+    },
+    getFavoritesList: function() {
         let deferred = $.Deferred();
         return deferred.promise();
     }

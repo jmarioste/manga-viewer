@@ -3,6 +3,7 @@ $roboto-font-path: "~roboto-fontface/fonts";
 $fa-font-path: "~font-awesome/fonts";
 @import "~roboto-fontface/css/roboto/sass/roboto-fontface-light.scss";
 @import "~font-awesome/scss/font-awesome";
+@import "./bootstrap-custom.scss";
 @import "./common.scss";
 @import "./sidebar.scss";
 @import "./topbar.scss";

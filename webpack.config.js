@@ -1,5 +1,5 @@
 var path = require('path');
-
+var webpack = require('webpack')
 module.exports = {
     entry: './src/app.js',
     output: {
@@ -45,5 +45,11 @@ module.exports = {
             }],
         }]
     },
+    plugins: [
+        new webpack.ProvidePlugin({
+            jQuery: 'jquery',
+            $: 'jquery'
+        })
+    ],
     target: 'node'
 };

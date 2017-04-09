@@ -44,3 +44,8 @@ hr {
 .mr5 {
   margin-right:5px;
 }
+.ellipsis {
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  overflow: hidden;
+}

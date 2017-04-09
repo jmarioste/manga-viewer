@@ -1,30 +1,32 @@
 <div class="sidebar">
   <ul class="sidebar-favorites">
     <li class="favorites">
-      <h4>
+      <div>
         <i class="mr5 fa fa-star fa-lg"></i> Favorites
-      </h4>          
+      </div>          
     </li>            
     <!-- <li class="divider"><hr></li> -->
     <li class="item">
-      <a href="javascript:void(0);">Stuff</a>
+      Stuff
     </li>
     <li class="item">
-      <a href="javascript:void(0);">One piece - chapter 4.zip</a>
+      One piece - chapter 4.zip
     </li>            
   </ul>
   <ul class="sidebar-directory header">
     <li class="divider"><hr></li>
-    <li class="directory">
-      <h4 >
-        <i class="mr5 fa fa-sitemap fa-lg"></i> Directory - 
-          <span data-bind="text:currentFolder"></span>
-      </h4>
+    <li class="directory ">
+      <div>
+        <i class="mr5 fa fa-sitemap fa-lg"></i> Directory
+        <i class="fa fa-plus fa-pull-right fa-2x open-directory" data-bind="click:openDirectory, tooltip"
+        data-placement="left" title="Click to select a root folder"></i>    
+      </div>
+
     </li>
   </ul>
   <ul class="sidebar-directory list" data-bind="scroll,foreach: directories">
-    <li class="item" data-bind="
-      style:{ paddingLeft: paddingLeft()}, click:$parent.selectDirectory, 
+    <li class="item ellipsis" data-bind="
+      style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory, 
       selected: $data == $parent.selectedDirectory()">
         <i class="fa" data-bind="
         isOpenFolder:isOpen, 
@@ -36,9 +38,9 @@
   <ul class="sidebar-settings">
     <li class="divider"><hr></li>
     <li >
-      <a href="javascript:void(0);"> 
+      <div>
         <i class="fa fa-gear fa-lg control"></i> Settings
-      </a>
+      </div> 
     </li>
   </ul>
 </div>

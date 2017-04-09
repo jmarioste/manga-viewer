@@ -7,33 +7,44 @@ import {
     Folder
 } from "../folder.viewmodel.js";
 import * as htmlTemplate from "./sidebar.template.html";
+const ipc = window.require('electron').ipcRenderer;
+
 export class SidebarViewmodel {
 
     constructor() {
         console.log("SidebarViewmodel::constructor");
+        var self = this;
         this.favorites = ko.observableArray();
         this.folders = ko.observableArray();
-        this.directories = ko.computed(this.getFolderTree, this);
+        this.directories = ko.computed(this.getFolderTree, this).extend({
+            rateLimit: 50
+        });
         this.map = {};
-        this.initialize();
+
         this.selectedDirectory = ko.observable();
         this.selectDirectory = this.selectDirectory.bind(this);
-        this.currentFolder = ko.computed(this.currentFolder, this).extend({
-            rateLimit: 0
-        });
+        this.currentFolder = ko.observable("G:/Users/Shizkun/");
         this.subs = [];
+
+        ipc.on('selected-directory', function(event, path) {
+            console.log(`You selected ${path}`);
+            self.currentFolder(path[0]);
+            self.initialize()
+        });
+
+        this.initialize();
     }
 
     initialize() {
         let self = this;
-        var last = "G:/Users/Shizkun/";
+        var last = this.currentFolder();
         var root = new Folder(last,
             null,
             false, [],
             0,
             last);
         self.folders([root]);
-        root.isOpen(true);
+        root.isOpen(true); //initialize to call API.
     };
     recursive(folder, array) {
         array.push(folder);
@@ -53,9 +64,8 @@ export class SidebarViewmodel {
         this.selectedDirectory(folder);
     }
 
-    currentFolder() {
-        var first = _.first(this.directories()) || {};
-        return first.folderName || "";
+    openDirectory() {
+        ipc.send('open-file-dialog');
     }
     dispose() {
         console.log("SidebarViewmodel:executing dispose");
