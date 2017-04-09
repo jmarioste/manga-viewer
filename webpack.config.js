@@ -31,7 +31,7 @@ module.exports = {
                 }
             }]
         }, {
-            test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+            test: /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.jpg$/ / ,
             use: [{
                 loader: "file-loader"
             }]
@@ -43,6 +43,9 @@ module.exports = {
                     // minimize: true
                 }
             }],
+        }, {
+            test: /\.png$|http/,
+            use: ["url-loader?mimetype=image/png"]
         }]
     },
     plugins: [

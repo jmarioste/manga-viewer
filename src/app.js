@@ -1,21 +1,22 @@
 import "./scss/master.scss";
 
-import * as $ from "jquery";
+import $ from "jquery";
+import ko from "knockout";
+
 import "bootstrap";
-import * as ko from "knockout";
+import "./js/custom-bindings";
 
-import * as customBinding from "./js/custom-bindings.js"
+import ViewModel from "./js/models/main-viewmodel.js";
 import {
-    ViewModel
-} from "./js/models/main-viewmodel.js";
-import {
-    SidebarViewmodel
-} from "./js/components/sidebar/sidebar.viewmodel.js";
+    SidebarViewmodel,
+    MangaListViewmodel
+} from "./js/components/components.js";
 
-const vm = new ViewModel();
+
 $(document).ready(function() {
-
+    const vm = new ViewModel();
     SidebarViewmodel.registerComponent();
+    MangaListViewmodel.registerComponent();
     ko.applyBindings(vm);
     console.log("Initialized");
 });

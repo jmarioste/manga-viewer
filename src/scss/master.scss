@@ -1,6 +1,7 @@
-$brand-primary:   darken(#3F51B5, 6.5%) !default;
+$brand-primary:   darken(#3f51b5, 6.5%) !default;
 $roboto-font-path: "~roboto-fontface/fonts";
 $fa-font-path: "~font-awesome/fonts";
+
 @import "~roboto-fontface/css/roboto/sass/roboto-fontface-light.scss";
 @import "~font-awesome/scss/font-awesome";
 @import "./bootstrap-custom.scss";

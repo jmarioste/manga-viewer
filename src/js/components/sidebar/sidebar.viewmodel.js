@@ -1,17 +1,16 @@
-import * as ko from "knockout";
-import * as _ from "lodash";
-import {
-    api
-} from "../../api/api.js";
-import {
-    Folder
-} from "../folder.viewmodel.js";
-import * as htmlTemplate from "./sidebar.template.html";
 const ipc = window.require('electron').ipcRenderer;
+
+import ko from "knockout";
+import _ from "lodash";
+
+import api from "../../api/api.js";
+import Folder from "../folder.viewmodel.js";
+import template from "./sidebar.template.html";
+
 
 export class SidebarViewmodel {
 
-    constructor() {
+    constructor(params) {
         console.log("SidebarViewmodel::constructor");
         var self = this;
         this.favorites = ko.observableArray();
@@ -21,9 +20,9 @@ export class SidebarViewmodel {
         });
         this.map = {};
 
-        this.selectedDirectory = ko.observable();
+        this.selectedDirectory = params.selectedDirectory;
         this.selectDirectory = this.selectDirectory.bind(this);
-        this.currentFolder = ko.observable("G:/Users/Shizkun/");
+        this.currentFolder = params.currentFolder;
         this.subs = [];
 
         ipc.on('selected-directory', function(event, path) {
@@ -70,11 +69,11 @@ export class SidebarViewmodel {
     dispose() {
         console.log("SidebarViewmodel:executing dispose");
     };
-}
 
-SidebarViewmodel.registerComponent = function() {
-    ko.components.register("sidebar", {
-        viewModel: SidebarViewmodel,
-        template: htmlTemplate
-    });
-};
+    static registerComponent() {
+        ko.components.register("sidebar", {
+            viewModel: SidebarViewmodel,
+            template: template
+        });
+    };
+}

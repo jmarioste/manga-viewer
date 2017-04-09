@@ -1,8 +1,7 @@
-import * as ko from "knockout";
-import {
-    api
-} from "../api/api.js";
-export class Folder {
+import ko from "knockout";
+import api from "../api/api.js";
+
+export default class Folder {
     constructor(folderName = "",
         lastModified = "",
         isOpen = false,

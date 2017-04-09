@@ -18,10 +18,19 @@
     </div>
     <div class="wrapper show-nav">
       
-      <div class="canvas">
-        <sidebar></sidebar>
+      <div class="canvas ">
+        <sidebar params="currentFolder: currentFolder,
+          selectedDirectory: selectedDirectory"></sidebar>
 
-        <div class="content"></div>
+        <div class="content">
+          <manga-list params="
+            currentFolder: currentFolder, 
+            selectedDirectory: selectedDirectory">
+            
+          </manga-list>
+        </div>
+        
+
         
       </div>
     </div>

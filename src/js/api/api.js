@@ -1,8 +1,13 @@
-import * as $ from "jquery";
-import * as fs from "fs";
-import * as path from "path";
-export let api = {
-    getSubFolders: function(folderPath, isOpen) {
+import $ from "jquery";
+import fs from "fs";
+import path from "path";
+
+export default class api {
+    constructor() {
+
+    }
+
+    static getSubFolders(folderPath, isOpen) {
         console.log("api::getSubFolders");
         let deferred = $.Deferred();
 
@@ -28,13 +33,43 @@ export let api = {
         });
 
         return deferred.promise();
-    },
-    getMangaList: function(folderPath) {
+    }
+
+    static getMangaList(folderPath) {
+        console.log("api::getMangaList", folderPath);
         let deferred = $.Deferred();
+        var mangas = [];
+        var id = 0;
+        fs.readdir(folderPath, {}, function(err, files) {
+
+            files.forEach(function(file) {
+                let filePath = path.resolve(folderPath, file);
+                let stat = fs.lstatSync(filePath);
+                if (stat.isFile()) {
+                    mangas.push({
+                        id: id++,
+                        mangaTitle: file,
+                        // folderPath: filePath,
+                        // isOpen: false,
+                        // children: []
+                        author: "",
+                        circle: "",
+                        tags: [],
+                        isFavorites: false,
+                        thumbnailImage: null
+                    })
+                }
+            });
+
+            deferred.resolve({
+                mangas: mangas
+            })
+        });
         return deferred.promise();
-    },
-    getFavoritesList: function() {
+    }
+
+    static getFavoritesList() {
         let deferred = $.Deferred();
         return deferred.promise();
     }
-};
+}

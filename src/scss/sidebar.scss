@@ -23,6 +23,10 @@ $sidebar-background: #fff;
   z-index: 10;
   display: flex;
   flex-direction: column;
+  ul{
+    padding:0px;
+    margin:0px;
+  }
 }
 
 .favorites, .directory, .sidebar-settings {
@@ -46,7 +50,7 @@ $sidebar-background: #fff;
 }
 .sidebar-favorites, .sidebar-settings, .sidebar-directory {
   list-style: none;
-  width: 300px;
+  width: 299px;
 
    li {
     padding: 10px 5px;
@@ -76,7 +80,7 @@ $sidebar-background: #fff;
         }
       }
       @include item-hover;
-
+      @include text-overflow();
     }
 
   }
@@ -102,7 +106,7 @@ $sidebar-background: #fff;
 .open-directory {
   cursor: pointer;
   position:absolute;
-  top:3px;
+  top:6px;
   right:5px;
   &:hover {
     &:before{

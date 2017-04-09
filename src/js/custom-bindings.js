@@ -1,5 +1,6 @@
-import * as ko from "knockout";
-import * as $ from "jquery";
+import ko from "knockout";
+import $ from "jquery";
+
 ko.bindingHandlers.toggleNav = {
     init: function(element, valueAccessor) {
         var wrapper = ko.unwrap(valueAccessor());
