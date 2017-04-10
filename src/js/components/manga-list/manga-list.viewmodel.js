@@ -8,14 +8,24 @@ const ipc = window.require('electron').ipcRenderer;
 
 export class MangaListViewmodel {
     constructor(params) {
-
-        this.mangas = ko.observable();
+        this.subscriptions = [];
+        this.mangas = ko.observableArray();
         this.selectedDirectory = params.selectedDirectory;
         this.bookmarks = params.bookmarks;
-        this.selectedDirectoryText = ko.computed(this.selectedDirectoryText, this);
+        this.searchValue = ko.observable("").extend({
+            rateLimit: {
+                timeout: 500,
+                method: "notifyWhenChangesStop"
+            }
+        });
+
+        //computeds
         this.toggleBookmark = this.toggleBookmark.bind(this);
+        this.selectedDirectoryText = ko.computed(this.selectedDirectoryText, this);
         this.isBookmarked = ko.computed(this.isBookmarked, this);
-        this.subscriptions = [];
+        this.filteredManga = ko.computed(this.filteredManga, this);
+
+
         this.initialize();
     }
 
@@ -73,5 +83,17 @@ export class MangaListViewmodel {
             viewModel: MangaListViewmodel,
             template: template
         });
+    }
+
+    filteredManga() {
+        let value = this.searchValue().toLowerCase();
+        if (!value) {
+            return this.mangas();
+        } else {
+            return _.filter(this.mangas(), function(manga) {
+                let title = manga.mangaTitle;
+                return _.includes(title.toLowerCase(), value);
+            });
+        }
     }
 }
