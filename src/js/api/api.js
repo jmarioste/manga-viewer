@@ -80,14 +80,16 @@ export default class api {
         let deferred = $.Deferred();
 
         if (!api.appSettings) {
+            var defaults = {
+                currentFolder: "",
+                bookmarks: []
+            }
             ipc.send("get-saved-settings");
-            ipc.once("get-saved-settings-response", function(event, data) {
-                api.appSettings = data || {
-                    currentFolder: "",
-                    bookmarks: []
-                };
-                console.log("app-settings", data);
-                deferred.resolve(data);
+            ipc.on("get-saved-settings-response", function(event, data) {
+
+                api.appSettings = data ? data : defaults;
+                console.log("app-settings", api.appSettings, data);
+                deferred.resolve(api.appSettings);
             });
 
         } else {
@@ -99,25 +101,11 @@ export default class api {
     }
 
     static writeSettings(settings) {
-        console.log("api:writeSettings");
         _.extend(api.appSettings, settings);
-        let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
-        let data = JSON.stringify(settings);
-        console.log("api:writeSettings", api.appSettings);
-        fs.writeFile(saveFileLocation, data, "utf-8", function(err) {
-            if (err) {
-                throw err;
-            }
-            console.log("success write file")
-                // event.sender.send('put-saved-settings-response', "done");
-        });
-        // fs.writeFile(saveFileLocation, data, "utf-8", function (err) {
-        //     if(err){
-        //         throw err;
-        //     }
-        //     event.sender.send('put-saved-settings-response', "done");
-        // });
 
-        // ipc.send("post-save-settings", settings);
+        ipc.send("save-settings", api.appSettings);
+        ipc.on("post-saved-settings-response", function(event, data) {
+            console.log("app-settings", data);
+        });
     }
 }

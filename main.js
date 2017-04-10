@@ -32,15 +32,12 @@ function createWindow() {
         })
     })
     ipc.on('get-saved-settings', function(event) {
-        let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
+        let saveFileLocation = path.resolve(process.cwd(), "save-file.json");
 
         fs.readFile(saveFileLocation, "utf-8", function(err, data) {
             if (err) {
                 console.log(err);
-                event.sender.send('get-saved-settings-response', {
-                    currentFolder: "",
-                    bookmarks: []
-                });
+                event.sender.send('get-saved-settings-response', null);
                 return;
             }
             var data = JSON.parse(data);
@@ -50,12 +47,13 @@ function createWindow() {
         });
     });
 
-    ipc.on('post-saved-settings', function(event, settings) {
-        let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
-        let data = JSON.stringify(settings);
+    ipc.on('save-settings', function(event, settings) {
+        let saveFileLocation = path.resolve(process.cwd(), "save-file.json");
+        let data = JSON.stringify(settings, null, 4);
         fs.writeFile(saveFileLocation, data, "utf-8", function(err) {
             if (err) {
-                throw err;
+                console.log("error writing save file", err)
+                return;
             }
             event.sender.send('put-saved-settings-response', "done");
         });
