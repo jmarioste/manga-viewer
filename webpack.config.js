@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack')
 module.exports = {
-    entry: './src/app.js',
+    entry: './src/js/app.js',
     output: {
         filename: 'app-bundle.js',
         path: path.resolve(__dirname, 'dist'),
@@ -47,6 +47,12 @@ module.exports = {
             test: /\.png$|http/,
             use: ["url-loader?mimetype=image/png"]
         }]
+    },
+    resolve: {
+        modules: [
+            path.resolve("./src"),
+            path.resolve("./node_modules")
+        ]
     },
     plugins: [
         new webpack.ProvidePlugin({

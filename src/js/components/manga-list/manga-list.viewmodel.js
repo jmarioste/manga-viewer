@@ -1,7 +1,7 @@
 import ko from "knockout";
 import _ from "lodash";
 
-import api from "../../api/api.js";
+import api from "js/common/api.js";
 import template from "./manga-list.template.html";
 
 const ipc = window.require('electron').ipcRenderer;
@@ -32,7 +32,7 @@ export class MangaListViewmodel {
     // methods
     initialize() {
         this.subscriptions.push(this.selectedDirectory.subscribe(function(folder) {
-            console.log("MangaListViewmodel::initialize.subscribe")
+            console.log("MangaListViewmodel::initialize.subscribe");
             let self = this;
             if (folder) {
                 let directory = folder.folderPath;
@@ -53,12 +53,13 @@ export class MangaListViewmodel {
     }
 
     selectedDirectoryText() {
-        return this.selectedDirectory() ? `- ${this.selectedDirectory().folderName}` : "";
+        return this.selectedDirectory() ? `${this.selectedDirectory().folderName}` : "";
     }
 
     isBookmarked() {
         return this.selectedDirectory() ? this.selectedDirectory().isBookmarked() : false;
     }
+
     toggleBookmark() {
         if (this.selectedDirectory()) {
             let current = this.selectedDirectory();

@@ -42,6 +42,7 @@ $sidebar-background: #fff;
 }
 .sidebar-directory.list {
     flex-grow: 1;
+    flex-shrink:1;
 }
 .sidebar-favorites, .sidebar-settings, .sidebar-directory {
     width: 299px;
@@ -62,6 +63,9 @@ $sidebar-background: #fff;
             background-color: #ddd;
         }
         @extends .grey-text, .text-lighten-3;
+        &.active {
+            
+        }
     }
 }
 .show-nav .sidebar {

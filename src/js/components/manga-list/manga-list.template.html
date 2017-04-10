@@ -1,21 +1,22 @@
 <div class="container manga-list">
 	<section class="row">
-
-		<h4 class="col s12 m6 l8 truncate">Manga list
-			<span data-bind="text:selectedDirectoryText"></span>		
-		</h4>
-		<div class="input-field col s12  m5 l3">
-          <input id="search_manga_input" type="text" data-bind="textInput:searchValue">
-          <label for="search_manga_input">Search Manga...</label>
-        </div>
-		<!-- ko if: selectedDirectory -->
-		<p class="col s12 m1 l1">
-			<a class="btn btn-floating right waves-effect waves-light"
+	<!-- ko if: selectedDirectory -->	
+		<h4 class="col s12 m8 l9">
+			<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
 			data-bind="click:toggleBookmark">
 				<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
-			</a>	
-		</p>
-		<!-- /ko -->
+			</a>
+			<span data-bind="text:selectedDirectoryText"></span>		
+		</h4>
+	<!-- /ko -->
+	<!-- ko ifnot: selectedDirectory -->
+		<h4 class="col s12 m8 l9">Manga list</h4>
+	<!-- /ko -->
+	<div class="input-field col s12  m4 l3">
+      <input id="search_manga_input" type="text" data-bind="textInput:searchValue">
+      <label for="search_manga_input">Search Manga...</label>
+    </div>
+		
 	</section>
 	<div id="manga-list"  class="row"  data-bind="foreach:filteredManga">
 		<div class="col s12 m4 l2">
@@ -23,7 +24,7 @@
 				<div class="card-image">
 					<img src="http://placehold.it/200x250">
 					<!-- <span class="card-title">Title</span> -->
-					<a class="btn-floating halfway-fab waves-effect waves-light "><i class="material-icons">bookmark_border</i></a>
+					<a class="btn-floating halfway-fab waves-effect waves-light indigo"><i class="material-icons">bookmark_border</i></a>
 				</div>
 				<div class="card-content" data-bind="text:mangaTitle" >
 				</div>
