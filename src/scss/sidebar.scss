@@ -62,10 +62,12 @@ $sidebar-background: #fff;
         &:not(.active):hover {
             background-color: #ddd;
         }
-        @extends .grey-text, .text-lighten-3;
-        &.active {
-            
+        &.active {            
+            color: #fff !important;
+            background-color: $primary-color;
         }
+        @extend .grey-text, .text-darken-3;
+        
     }
 }
 .show-nav .sidebar {
