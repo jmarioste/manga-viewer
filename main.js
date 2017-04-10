@@ -10,9 +10,11 @@ const url = require('url')
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
 
+const fs = require('fs');
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow, appSettings;
 
 function createWindow() {
     // Create the browser window.
@@ -29,7 +31,31 @@ function createWindow() {
             if (files) event.sender.send('selected-directory', files)
         })
     })
+    ipc.on('get-saved-settings', function (event) {
+        let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
+        
+        fs.readFile(saveFileLocation, "utf-8", function (err, data) {
+            if(err){
+                console.log(err);
+                return;
+            }
+            var data = JSON.parse(data);
+            if(data){
+                event.sender.send('get-saved-settings-response', data);
+            }
+        });
+    });
 
+    ipc.on('post-saved-settings', function (event, settings) {
+        let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
+        let data = JSON.stringify(settings);
+        fs.writeFile(saveFileLocation, data, "utf-8", function (err) {
+            if(err){
+                throw err;
+            }
+            event.sender.send('put-saved-settings-response', "done");
+        });
+    });
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),

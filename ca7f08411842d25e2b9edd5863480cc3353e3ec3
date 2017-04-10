@@ -36,7 +36,6 @@ $sidebar-background: #fff;
         }
     }
 }
-
 .sidebar-favortites {
     border-top: 0px !important;
 }
@@ -50,9 +49,6 @@ $sidebar-background: #fff;
     .collection-item {
         padding: 10px 5px !important;
     }
-}
-.sidebar-directory {
-    flex-shrink: .5;
 }
 .sidebar-directory, .sidebar-favorites {
     .collection-item {

@@ -37,6 +37,7 @@ export class SidebarViewmodel {
     initialize() {
         let self = this;
         var last = this.currentFolder();
+        console.log("currentFolder", last);
         if (last) {
             let baseName = path.basename(last);
             var root = new Folder(baseName,

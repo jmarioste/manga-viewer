@@ -5,7 +5,7 @@ import ko from "knockout";
 
 import "materialize-css";
 import "./js/custom-bindings";
-
+import api from  "./js/api/api.js";
 import ViewModel from "./js/models/main-viewmodel.js";
 import {
     SidebarViewmodel,
@@ -14,9 +14,14 @@ import {
 
 
 $(document).ready(function() {
-    const vm = new ViewModel();
-    SidebarViewmodel.registerComponent();
-    MangaListViewmodel.registerComponent();
-    ko.applyBindings(vm);
-    console.log("Initialized");
+	// api.getSavedSettings();
+	let vm;
+	api.getSavedSettings().then(function (settings) {
+		console.log(settings);
+		vm = new ViewModel(settings);
+		SidebarViewmodel.registerComponent();
+		MangaListViewmodel.registerComponent();
+		ko.applyBindings(vm);
+		console.log("Initialized");
+	});    
 });

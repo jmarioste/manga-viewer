@@ -1,21 +1,19 @@
 {
-  "name": "electron-quick-start",
+  "name": "baiji-manga-viewer",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A modern manga viewer inspired by Quivi.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "webpack --config webpack.config.js --watch"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/shizkun/manga-viewer",
   "keywords": [
-    "Electron",
+    "Manga Viewer",
     "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Baiji"    
   ],
-  "author": "GitHub",
+  "author": "shizkun",
   "license": "CC0-1.0",
   "devDependencies": {
     "babel-core": "6.24.0",
