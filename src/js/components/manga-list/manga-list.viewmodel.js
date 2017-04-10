@@ -52,12 +52,18 @@ export class MangaListViewmodel {
     toggleBookmark() {
         if (this.selectedDirectory()) {
             let current = this.selectedDirectory();
-            var isBookmarked = current.isBookmarked();
+            let isBookmarked = current.isBookmarked();
+            let bookmarkPaths = _.map(this.bookmarks(), 'folderPath');
             current.isBookmarked(!isBookmarked);
-            if (current.isBookmarked()) {
+            if (current.isBookmarked() && !_.includes(bookmarkPaths, current.folderPath)) {
+                console.log("bookmarking");
                 this.bookmarks.push(current);
             } else {
-                this.bookmarks.remove(current);
+                console.log("unbookmarking", this.bookmarks());
+                this.bookmarks.remove(function(folder) {
+                    return folder.folderPath === current.folderPath;
+                });
+                console.log("unbookmarked", this.bookmarks());
             }
 
         }

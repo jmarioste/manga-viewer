@@ -36,7 +36,8 @@ export class SidebarViewmodel {
 
     initialize() {
         let self = this;
-        var last = this.currentFolder();
+        let last = this.currentFolder();
+        let isBookmarked = _(this.bookmarks()).map('folderPath').includes(this.currentFolder());
         console.log("currentFolder", last);
         if (last) {
             let baseName = path.basename(last);
@@ -45,7 +46,7 @@ export class SidebarViewmodel {
                 false, [],
                 0,
                 last,
-                false);
+                isBookmarked);
             self.folders([root]);
             root.isOpen(true); //initialize to call API.
             self.selectedDirectory(root);

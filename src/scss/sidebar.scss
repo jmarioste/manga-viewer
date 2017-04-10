@@ -48,7 +48,7 @@ $sidebar-background: #fff;
 }
 .sidebar-settings, .sidebar-directory-header, .sidebar-favorites.with-header {
     .collection-item {
-        padding: 10px 5px !important;
+        padding: 10px 5px !important;   
     }
 }
 .sidebar-directory {
@@ -58,11 +58,10 @@ $sidebar-background: #fff;
     .collection-item {
         transition: .25s;
         cursor: pointer;
-
         &:not(.active):hover {
             background-color: #ddd;
         }
-        color: lighten(black, 20%);
+        @extends .grey-text, .text-lighten-3;
     }
 }
 .show-nav .sidebar {

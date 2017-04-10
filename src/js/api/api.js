@@ -75,38 +75,41 @@ export default class api {
         let deferred = $.Deferred();
         return deferred.promise();
     }
-    
-    static getSavedSettings() {                
+
+    static getSavedSettings() {
         let deferred = $.Deferred();
 
-        if(!api.appSettings){
+        if (!api.appSettings) {
             ipc.send("get-saved-settings");
-            ipc.once("get-saved-settings-response", function (event, data) {
-                api.appSettings = data;
+            ipc.once("get-saved-settings-response", function(event, data) {
+                api.appSettings = data || {
+                    currentFolder: "",
+                    bookmarks: []
+                };
                 console.log("app-settings", data);
                 deferred.resolve(data);
             });
-                        
+
         } else {
             deferrd.resolve(api.appSettings);
         }
 
         return deferred.promise();
-                
+
     }
 
-    static writeSettings(settings){
+    static writeSettings(settings) {
         console.log("api:writeSettings");
         _.extend(api.appSettings, settings);
         let saveFileLocation = path.resolve(process.cwd(), "lastSave.json");
         let data = JSON.stringify(settings);
         console.log("api:writeSettings", api.appSettings);
-        fs.writeFile(saveFileLocation, data, "utf-8", function (err) {
-            if(err){
+        fs.writeFile(saveFileLocation, data, "utf-8", function(err) {
+            if (err) {
                 throw err;
             }
             console.log("success write file")
-            // event.sender.send('put-saved-settings-response', "done");
+                // event.sender.send('put-saved-settings-response', "done");
         });
         // fs.writeFile(saveFileLocation, data, "utf-8", function (err) {
         //     if(err){
@@ -114,8 +117,7 @@ export default class api {
         //     }
         //     event.sender.send('put-saved-settings-response', "done");
         // });
-        
+
         // ipc.send("post-save-settings", settings);
     }
 }
-
