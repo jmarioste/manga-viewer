@@ -1,6 +1,6 @@
 import ko from "knockout";
 import _ from "lodash";
-
+import $ from "jquery";
 import api from "js/common/api.js";
 import template from "./manga-list.template.html";
 
@@ -18,31 +18,46 @@ export class MangaListViewmodel {
                 method: "notifyWhenChangesStop"
             }
         });
-
+        this.searching = ko.observable(false).extend({rateLimit: 0});
         //computeds
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.selectedDirectoryText = ko.computed(this.selectedDirectoryText, this);
         this.isBookmarked = ko.computed(this.isBookmarked, this);
-        this.filteredManga = ko.computed(this.filteredManga, this);
+        this.includeSubfolders = ko.observable(false);
+        this.searchOptions = ko.observableArray([
+            {
+                value : "current",
+                text: "Current folder"
+            },
+            {
+                value : "recursive",
+                text: "Include Sub folders"
+            }
+        ]);
+        this.searchOption = ko.observable(0);
 
-
+        this.searchOption.subscribe(function (value) {
+            console.log("searchOption changed", value);
+        })
         this.initialize();
     }
 
     // methods
     initialize() {
-        this.subscriptions.push(this.selectedDirectory.subscribe(function(folder) {
-            console.log("MangaListViewmodel::initialize.subscribe");
+
+
+
+        let comp = ko.computed(function function_name(argument) {
             let self = this;
-            if (folder) {
-                let directory = folder.folderPath;
-                api.getMangaList(directory).then(function(data) {
-                    self.mangas(data.mangas);
-                });
-            }
-
-        }, this));
-
+            let value = this.searchValue().toLowerCase();
+            let isRecursive = self.searchOption() === "recursive";
+            self.searching(true);
+            api.getMangaList(self.selectedDirectory().folderPath, isRecursive, value).then(function(data) {
+                self.mangas(data.mangas);
+                self.searching(false);
+            });
+        }, this).extend({rateLimit: 50});
+        this.subscriptions.push(comp);
         this.selectedDirectory.valueHasMutated();
     }
 

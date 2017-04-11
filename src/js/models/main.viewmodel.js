@@ -12,11 +12,11 @@ export default class ViewModel {
         this.currentFolder = ko.observable(params.currentFolder);
         this.selectedDirectory = ko.observable();
         this.bookmarks = ko.observableArray(_.map(_.without(params.bookmarks, null), function(folderPath) {
-            console.log("aaa", folderPath)
             let folderName = path.basename(folderPath);
             return new Folder({
                 folderName: folderName,
-                folderPath: folderPath
+                folderPath: folderPath,
+                isBookmarked: true
             });
         }));
 

@@ -10,60 +10,34 @@ export default class api {
 
     }
 
-    static getSubFolders(folderDirectory, isOpen) {
-        console.log("api::getSubFolders");
+    static getSubFolders(folderPath) {
+        console.log("api::getSubFolders,", folderPath);
         let deferred = $.Deferred();
-        console.log(folderDirectory);
-        var folders = []
-        fs.readdir(folderDirectory, {}, function(err, files) {
-
-            files.forEach(function(folderName) {
-                let folderPath = path.resolve(folderDirectory, folderName);
-                let stat = fs.lstatSync(folderPath);
-                if (stat.isDirectory()) {
-                    folders.push({
-                        folderName,
-                        folderPath
-                    })
-                }
-            });
-
-            deferred.resolve({
-                folders
-            })
+        ipc.send('get-subfolders', folderPath);
+        ipc.on('get-subfolders-done', function (event, folders) {
+            console.log(folders);
+            deferred.resolve({folders: folders});
         });
 
         return deferred.promise();
     }
 
-    static getMangaList(folderPath) {
-        console.log("api::getMangaList", folderPath);
+    static getMangaList(rootFolder, isRecursive, searchValue) {
+        console.log("api::getMangaList", rootFolder);
         let deferred = $.Deferred();
-        var mangas = [];
-        fs.readdir(folderPath, {}, function(err, files) {
 
-            files.forEach(function(file) {
-                let filePath = path.resolve(folderPath, file);
-                let stat = fs.lstatSync(filePath);
-                if (stat.isFile()) {
-                    mangas.push({
-                        mangaTitle: file,
-                        folderPath: filePath
-                    })
-                }
-            });
-
-            deferred.resolve({
-                mangas: mangas
-            })
+        ipc.send('get-manga-list', {
+            rootFolder,
+            isRecursive,
+            searchValue
+        });
+        ipc.once('get-manga-list-done', function (event, mangas) {
+            console.log('get-manga-list-done', mangas);
+            deferred.resolve({mangas: mangas});
         });
         return deferred.promise();
     }
 
-    static getFavoritesList() {
-        let deferred = $.Deferred();
-        return deferred.promise();
-    }
 
     static getSavedSettings() {
         let deferred = $.Deferred();
@@ -73,11 +47,11 @@ export default class api {
                 currentFolder: "",
                 bookmarks: []
             }
-            ipc.send("get-saved-settings");
-            ipc.on("get-saved-settings-response", function(event, data) {
+            ipc.send("read-settings");
+            ipc.once("read-settings-done", function(event, data) {
 
                 api.appSettings = data ? data : defaults;
-                console.log("app-settings", api.appSettings, data);
+                console.log("read-settings done", api.appSettings);
                 deferred.resolve(api.appSettings);
             });
 
@@ -92,9 +66,20 @@ export default class api {
     static writeSettings(settings) {
         _.extend(api.appSettings, settings);
 
-        ipc.send("save-settings", api.appSettings);
-        ipc.on("post-saved-settings-response", function(event, data) {
-            console.log("app-settings", data);
+        ipc.send("set-settings", api.appSettings);
+        ipc.once("set-settings-done", function(event, data) {
+            console.log("set-settings done", data);
         });
+    }
+
+    static selectDirectory(){
+        let deferred = $.Deferred();
+        ipc.send('select-directory');
+        ipc.once('select-directory-done', function (event, data) {
+            console.log("select-directory done", data);
+            deferred.resolve(data);
+        });
+
+        return deferred.promise();
     }
 }

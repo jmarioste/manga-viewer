@@ -1,5 +1,3 @@
-const ipc = window.require('electron').ipcRenderer;
-
 import ko from "knockout";
 import _ from "lodash";
 
@@ -24,12 +22,6 @@ export class SidebarViewmodel {
         this.selectDirectory = this.selectDirectory.bind(this);
         this.currentFolder = params.currentFolder;
         this.subs = [];
-
-        ipc.on('selected-directory', function(event, data) {
-            console.log(`You selected ${data}`);
-            self.currentFolder(_.first(data));
-            self.initialize()
-        });
 
         this.initialize();
     }
@@ -70,7 +62,12 @@ export class SidebarViewmodel {
     }
 
     openDirectory() {
-        ipc.send('open-file-dialog');
+        var self = this;
+        api.selectDirectory().then(function (folder) {
+            console.log(`You selected ${folder}`);
+            self.currentFolder(folder);
+            self.initialize();
+        });
     }
     dispose() {
         console.log("SidebarViewmodel:executing dispose");

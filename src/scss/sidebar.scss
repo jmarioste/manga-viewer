@@ -2,7 +2,6 @@ $sidebar-background: #fff;
 
 .wrapper {
     position: relative;
-    background-color: #7986CB;
     overflow: hidden;
     height: calc(100% - 50px);
     width: 100%;
@@ -49,25 +48,25 @@ $sidebar-background: #fff;
 }
 .sidebar-settings, .sidebar-directory-header, .sidebar-favorites.with-header {
     .collection-item {
-        padding: 10px 5px !important;   
+        padding: 10px 5px !important;
     }
 }
 .sidebar-directory {
     flex-shrink: .5;
 }
-.sidebar-directory, .sidebar-favorites {
+.sidebar-directory{
     .collection-item {
         transition: .25s;
         cursor: pointer;
         &:not(.active):hover {
             background-color: #ddd;
         }
-        &.active {            
+        &.active {
             color: #fff !important;
             background-color: $primary-color;
         }
         @extend .grey-text, .text-darken-3;
-        
+
     }
 }
 .show-nav .sidebar {

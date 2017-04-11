@@ -11,7 +11,7 @@
   "keywords": [
     "Manga Viewer",
     "quick",
-    "Baiji"    
+    "Baiji"
   ],
   "author": "shizkun",
   "license": "CC0-1.0",
@@ -40,6 +40,8 @@
     "webpack": "2.3.2"
   },
   "dependencies": {
+    "lodash": "^4.17.4",
+    "recursive-readdir": "^2.1.1",
     "roboto-fontface": "0.7.0"
   }
 }

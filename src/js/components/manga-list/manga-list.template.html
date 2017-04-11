@@ -1,24 +1,37 @@
 <div class="container manga-list">
 	<section class="row">
-	<!-- ko if: selectedDirectory -->	
-		<h4 class="col s12 m8 l9">
-			<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
+		<!-- ko if: selectedDirectory -->
+		<h4 class="col s12 m8 l6">
+		<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
 			data-bind="click:toggleBookmark">
-				<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
-			</a>
-			<span data-bind="text:selectedDirectoryText"></span>		
+			<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
+		</a>
+		<span data-bind="text:selectedDirectoryText"></span>
 		</h4>
-	<!-- /ko -->
-	<!-- ko ifnot: selectedDirectory -->
+		<!-- /ko -->
+		<!-- ko ifnot: selectedDirectory -->
 		<h4 class="col s12 m8 l9">Manga list</h4>
-	<!-- /ko -->
-	<div class="input-field col s12  m4 l3">
-      <input id="search_manga_input" type="text" data-bind="textInput:searchValue">
-      <label for="search_manga_input">Search Manga...</label>
-    </div>
-		
+		<!-- /ko -->
+		<div class="input-field col s12 m3" >
+			<select data-bind="
+				options:searchOptions,
+				optionsText: 'text',
+				optionsValue: 'value',
+				value: searchOption,
+				materialSelect:searchOption">
+			</select>
+		</div>
+		<div class="input-field col s12  m2 l3">
+			<input id="search_manga_input" type="text" data-bind="textInput:searchValue">
+			<label for="search_manga_input">Search Manga...</label>
+		</div>
+		<!-- ko if:searching -->
+		<div class="progress col s12 m12 l12">
+			<div class="indeterminate"></div>
+		</div>
+		<!-- /ko -->
 	</section>
-	<div id="manga-list"  class="row"  data-bind="foreach:filteredManga">
+	<div id="manga-list"  class="row"  data-bind="foreach:mangas">
 		<div class="col s12 m4 l2">
 			<div class="card">
 				<div class="card-image">
