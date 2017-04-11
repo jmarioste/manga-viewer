@@ -7,13 +7,15 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: './dist/'
     },
+    devtool: '#inline-source-map',
     module: {
         loaders: [{
             test: /\.js$/,
             exclude: /(bower_components)/,
             loader: 'babel-loader',
             query: {
-                presets: ['env']
+                presets: ['es2015'],
+                sourceMaps: ['inline']
             }
         }],
         rules: [{
@@ -46,6 +48,10 @@ module.exports = {
         }, {
             test: /\.png$|http/,
             use: ["url-loader?mimetype=image/png"]
+        }, {
+            test: /\.js$/,
+            use: ["source-map-loader"],
+            enforce: "pre"
         }]
     },
     resolve: {
