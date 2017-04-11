@@ -5,13 +5,12 @@
             <strong class="grey-text text-darken-3"> Bookmarked Folders</strong>
         </a>
     </div>
-    <ul class="sidebar-favorites collection" data-bind="foreach:bookmarks">
-        <!-- <li class="divider"><hr></li> -->
-        <li class="item collection-item truncate" data-bind="
-            click:$component.selectDirectory" >
-            <span data-bind="text:folderName"></span>
-        </li>
-    </ul>
+    <div class="sidebar-favorites collection" data-bind="foreach:bookmarks">
+        <a href="#" class="item collection-item truncate" data-bind="
+            click:$component.selectDirectory">
+            <span class="grey-text text-darken-3" data-bind="text:folderName"></span>
+        </a>
+    </div>
     <div class="sidebar-directory-header collection with-header">
         <a href="#" class="collection-item grey lighten-4" data-bind="click:openDirectory">
             <i class="material-icons left">create_new_folder</i>
@@ -31,7 +30,6 @@
         </li>
     </ul>
     <div class="collection sidebar-settings">
-        <!-- <li class="divider"><hr></li> -->
         <a href="#" class="collection-item grey lighten-4">
             <i class="left material-icons">settings</i>
             <strong class="grey-text text-darken-3">Settings</strong>

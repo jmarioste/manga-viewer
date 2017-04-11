@@ -30,7 +30,7 @@ export class SidebarViewmodel {
         let self = this;
         let last = this.currentFolder();
         let isBookmarked = _(this.bookmarks()).map('folderPath').includes(this.currentFolder());
-        console.log("currentFolder", last);
+        console.log("SidebarViewmodel::initialize- currentFolder:", last);
         if (last) {
             let baseName = path.basename(last);
             var root = new Folder({
@@ -63,7 +63,7 @@ export class SidebarViewmodel {
 
     openDirectory() {
         var self = this;
-        api.selectDirectory().then(function (folder) {
+        api.selectDirectory().then(function(folder) {
             console.log(`You selected ${folder}`);
             self.currentFolder(folder);
             self.initialize();

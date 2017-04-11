@@ -71,17 +71,17 @@ ko.bindingHandlers.toggleBookmark = {
 }
 
 ko.bindingHandlers.materialSelect = {
-    init: function (element, valueAccessor) {
+    init: function(element, valueAccessor) {
         let searchOption = valueAccessor();
         $(element).material_select();
-        $(element).on('change', function () {
+        $(element).on('change', function() {
             // console.log("changed", $(element).val());
             searchOption($(element).val());
         })
     },
-    update: function (element, valueAccessor, allBindings) {
+    update: function(element, valueAccessor, allBindings) {
         let value = ko.unwrap(valueAccessor());
-        console.log("options",value);
+        console.log("ko.bindingHandlers.materialSelect::update - value", value);
         $(element).material_select();
     }
 }

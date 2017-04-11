@@ -11,19 +11,24 @@ export default class api {
     }
 
     static getSubFolders(folderPath) {
-        console.log("api::getSubFolders,", folderPath);
+        console.log("api::getSubFolders - folderPath", folderPath);
         let deferred = $.Deferred();
         ipc.send('get-subfolders', folderPath);
-        ipc.on('get-subfolders-done', function (event, folders) {
-            console.log(folders);
-            deferred.resolve({folders: folders});
+        ipc.on('get-subfolders-done', function(event, folders) {
+            console.log("api::getSubFolders", folders.length);
+            deferred.resolve({
+                folders: folders
+            });
         });
 
         return deferred.promise();
     }
 
     static getMangaList(rootFolder, isRecursive, searchValue) {
-        console.log("api::getMangaList", rootFolder);
+        console.log("api::getMangaList - rootFolder", rootFolder,
+            "isRecursive", isRecursive,
+            "searchValue:", searchValue);
+
         let deferred = $.Deferred();
 
         ipc.send('get-manga-list', {
@@ -31,9 +36,11 @@ export default class api {
             isRecursive,
             searchValue
         });
-        ipc.once('get-manga-list-done', function (event, mangas) {
-            console.log('get-manga-list-done', mangas);
-            deferred.resolve({mangas: mangas});
+        ipc.once('get-manga-list-done', function(event, mangas) {
+            console.log('api::getManga-list - mangas', mangas.length);
+            deferred.resolve({
+                mangas
+            });
         });
         return deferred.promise();
     }
@@ -72,10 +79,10 @@ export default class api {
         });
     }
 
-    static selectDirectory(){
+    static selectDirectory() {
         let deferred = $.Deferred();
         ipc.send('select-directory');
-        ipc.once('select-directory-done', function (event, data) {
+        ipc.once('select-directory-done', function(event, data) {
             console.log("select-directory done", data);
             deferred.resolve(data);
         });

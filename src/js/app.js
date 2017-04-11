@@ -17,11 +17,10 @@ $(document).ready(function() {
     // api.getSavedSettings();
     let vm;
     api.getSavedSettings().then(function(settings) {
-        console.log(settings);
         vm = new ViewModel(settings);
         SidebarViewmodel.registerComponent();
         MangaListViewmodel.registerComponent();
         ko.applyBindings(vm);
-        console.log("Initialized");
+        console.log("app::Initializing..");
     });
 });

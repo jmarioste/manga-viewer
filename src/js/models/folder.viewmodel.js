@@ -11,7 +11,7 @@ export default class Folder {
         folderPath,
         isBookmarked
     }) {
-        console.log("level", level);
+
         this.folderName = folderName || "";
         // this.lastModified = lastModified;
         this.isOpen = ko.observable(!!isOpen);
