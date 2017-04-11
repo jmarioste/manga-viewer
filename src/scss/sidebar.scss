@@ -29,7 +29,8 @@ $sidebar-background: #fff;
         border-left: 0px !important;
         border-right: 0px !important;
         flex-shrink: 0;
-
+        width: 299px;
+        
         .material-icons {
             line-height: inherit;
         }
@@ -43,10 +44,8 @@ $sidebar-background: #fff;
     flex-grow: 1;
     flex-shrink:1;
 }
-.sidebar-favorites, .sidebar-settings, .sidebar-directory {
-    width: 299px;
-}
-.sidebar-settings, .sidebar-directory-header, .sidebar-favorites.with-header {
+
+.sidebar-settings, .sidebar-directory-header, .sidebar-favorites.with-header, .sidebar-favorites-manga {
     .collection-item {
         padding: 10px 5px !important;
     }

@@ -9,8 +9,10 @@ export default class ViewModel {
     constructor(params) {
         this.appTitle = "Baiji Manga Viewer";
         // "G:/Users/Shizkun/"
+        this.currentPage = ko.observable("manga-list");
         this.currentFolder = ko.observable(params.currentFolder);
         this.selectedDirectory = ko.observable();
+        this.favorites = ko.observableArray(params.favorites);
         this.bookmarks = ko.observableArray(_.map(_.without(params.bookmarks, null), function(folderPath) {
             let folderName = path.basename(folderPath);
             return new Folder({
@@ -22,13 +24,13 @@ export default class ViewModel {
 
         this.sub = ko.computed(function() {
             let currentFolder = this.currentFolder();
-            // let selectedDirectory = this.selectedDirectory().folderPath;
-            let bookmarks = _.map(this.bookmarks(), x => x.folderPath);
+            let bookmarks = _.map(this.bookmarks(), 'folderPath');
+            let favorites = this.favorites();
             api.writeSettings({
-                currentFolder: currentFolder,
-                // selectedDirectory:selectedDirectory,
-                bookmarks: bookmarks
-            })
+                currentFolder,
+                bookmarks,
+                favorites
+            });
         }, this).extend({
             rateLimit: 500
         });

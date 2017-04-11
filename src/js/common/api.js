@@ -5,6 +5,8 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash";
 
+import MangaFactory from "./manga.factory";
+
 export default class api {
     constructor() {
 
@@ -37,7 +39,6 @@ export default class api {
             searchValue
         });
         ipc.once('get-manga-list-done', function(event, mangas) {
-            console.log('api::getManga-list - mangas', mangas.length);
             deferred.resolve({
                 mangas
             });
@@ -49,11 +50,8 @@ export default class api {
     static getSavedSettings() {
         let deferred = $.Deferred();
 
-        if (!api.appSettings) {
-            var defaults = {
-                currentFolder: "",
-                bookmarks: []
-            }
+        if (!api.getSavedSettings.called) {
+            api.getSavedSettings.called = true;
             ipc.send("read-settings");
             ipc.once("read-settings-done", function(event, data) {
 
@@ -89,4 +87,10 @@ export default class api {
 
         return deferred.promise();
     }
+}
+
+api.appSettings = {
+    currentFolder: "",
+    bookmarks: [],
+    favorites: []
 }

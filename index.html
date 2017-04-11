@@ -22,19 +22,25 @@
             <div class="canvas ">
                 <sidebar params="currentFolder: currentFolder,
                 selectedDirectory: selectedDirectory,
-                bookmarks:bookmarks">
+                bookmarks:bookmarks,
+                currentPage: currentPage">
                 
                 </sidebar>
-                <div class="content">
+                <div class="content" data-bind="visible: currentPage() == 'manga-list'">
                     <manga-list params="
                     currentFolder: currentFolder,
                     selectedDirectory: selectedDirectory,
-                    bookmarks:bookmarks">
+                    bookmarks:bookmarks,
+                    favorites: favorites">
                     
                     </manga-list>
                 </div>
                 
-                
+                <div class="content" data-bind="visible: currentPage() == 'favorites-list'">
+                    <favorites-list params="
+                    favorites:favorites">                    
+                    </favorites-list>
+                </div>
             </div>
         </div>
         
