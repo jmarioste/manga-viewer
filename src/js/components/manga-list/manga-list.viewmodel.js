@@ -27,6 +27,7 @@ export class MangaListViewmodel {
         this.mangaFactory = new MangaFactory();
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
+        this.toggleFavorites = this.toggleFavorites.bind(this);
         this.selectedDirectoryText = ko.computed(this.selectedDirectoryText, this);
         this.isBookmarked = ko.computed(this.isBookmarked, this);
         this.searchOptions = ko.observableArray([{
@@ -97,6 +98,16 @@ export class MangaListViewmodel {
         }
     }
 
+    toggleFavorites(manga) {
+        manga.isFavorite(!manga.isFavorite());
+        if (manga.isFavorite()) {
+            if (!_.includes(manga.folderPath)) {
+                this.favorites.push(manga.folderPath);
+            }
+        } else {
+            this.favorites.remove(manga.folderPath);
+        }
+    }
     static registerComponent() {
         ko.components.register("manga-list", {
             viewModel: MangaListViewmodel,

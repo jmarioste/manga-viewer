@@ -70,6 +70,17 @@ ko.bindingHandlers.toggleBookmark = {
     }
 }
 
+ko.bindingHandlers.isFavorite = {
+    update: function(element, valueAccessor) {
+        let isFavorite = ko.unwrap(valueAccessor());
+
+        if (isFavorite) {
+            $(element).text("star");
+        } else {
+            $(element).text("star_border");
+        }
+    }
+}
 ko.bindingHandlers.materialSelect = {
     init: function(element, valueAccessor) {
         let searchOption = valueAccessor();

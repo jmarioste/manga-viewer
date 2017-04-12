@@ -2,3 +2,4 @@ node_modules
 dist
 npm-debug.log.*
 save-file.json
+src/js/common/folder.factory.js

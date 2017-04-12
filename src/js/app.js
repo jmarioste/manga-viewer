@@ -9,7 +9,8 @@ import api from "js/common/api.js";
 import ViewModel from "js/models/main.viewmodel.js";
 import {
     SidebarViewmodel,
-    MangaListViewmodel
+    MangaListViewmodel,
+    FavoritesListViewmodel
 } from "js/components/components.js";
 
 
@@ -20,6 +21,7 @@ $(document).ready(function() {
         vm = new ViewModel(settings);
         SidebarViewmodel.registerComponent();
         MangaListViewmodel.registerComponent();
+        FavoritesListViewmodel.registerComponent();
         ko.applyBindings(vm);
         console.log("app::Initializing..");
     });

@@ -26,14 +26,14 @@ export default class MangaFactory {
         let cached = cache[folderPath];
 
         if (_(cached).isNil()) {
-            console.log("MangaFactory::getManga - caching", mangaTitle);
+            // console.log("MangaFactory::getManga - caching", mangaTitle);
             cache[folderPath] = new Manga({
                 mangaTitle,
                 folderPath,
                 isFavorite
             });
         } else {
-            console.info("MangaFactory::geManga - returning a cached instance for ", mangaTitle);
+            // console.info("MangaFactory::geManga - returning a cached instance for ", mangaTitle);
         }
 
         return cache[folderPath];

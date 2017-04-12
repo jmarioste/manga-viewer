@@ -7,13 +7,15 @@ import Folder from "js/models/folder.viewmodel.js";
 
 export default class ViewModel {
     constructor(params) {
+        params.bookmarks = _.without(params.bookmarks, null);
+        let self = this;
         this.appTitle = "Baiji Manga Viewer";
         // "G:/Users/Shizkun/"
         this.currentPage = ko.observable("manga-list");
         this.currentFolder = ko.observable(params.currentFolder);
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
-        this.bookmarks = ko.observableArray(_.map(_.without(params.bookmarks, null), function(folderPath) {
+        this.bookmarks = ko.observableArray(_.map(params.bookmarks, function(folderPath) {
             let folderName = path.basename(folderPath);
             return new Folder({
                 folderName: folderName,

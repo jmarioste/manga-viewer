@@ -12,7 +12,9 @@ export class SidebarViewmodel {
         console.log("SidebarViewmodel::constructor");
         var self = this;
         this.bookmarks = params.bookmarks;
+        this.currentPage = params.currentPage;
         this.folders = ko.observableArray();
+
         this.directories = ko.computed(this.getFolderTree, this).extend({
             rateLimit: 50
         });
@@ -21,6 +23,7 @@ export class SidebarViewmodel {
         this.selectedDirectory = params.selectedDirectory;
         this.selectDirectory = this.selectDirectory.bind(this);
         this.currentFolder = params.currentFolder;
+        this.isFavoritesActive = ko.computed(this.isFavoritesActive, this);
         this.subs = [];
 
         this.initialize();
@@ -59,6 +62,7 @@ export class SidebarViewmodel {
 
     selectDirectory(folder) {
         this.selectedDirectory(folder);
+        this.currentPage("manga-list");
     }
 
     openDirectory() {
@@ -68,6 +72,12 @@ export class SidebarViewmodel {
             self.currentFolder(folder);
             self.initialize();
         });
+    }
+    showFavorites() {
+        this.currentPage("favorites-list");
+    }
+    isFavoritesActive() {
+        return this.currentPage() == "favorites-list";
     }
     dispose() {
         console.log("SidebarViewmodel:executing dispose");
