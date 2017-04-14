@@ -39,13 +39,19 @@ $sidebar-background: #fff;
 
 .sidebar-favortites {
     border-top: 0px !important;
+
 }
+
+
 .sidebar-directory.list {
     flex-grow: 1;
     flex-shrink:1;
 }
 
-.sidebar-settings, .sidebar-directory-header, .sidebar-favorites.with-header, .sidebar-favorites-manga {
+.sidebar-settings, 
+.sidebar-directory-header, 
+.sidebar-favorites.with-header, 
+.sidebar-favorites-manga {
     .collection-item {
         padding: 10px 5px !important;
     }
@@ -53,7 +59,7 @@ $sidebar-background: #fff;
 .sidebar-directory {
     flex-shrink: .5;
 }
-.sidebar-directory{
+.sidebar-directory, .sidebar-favorites-items{
     .collection-item {
         transition: .25s;
         cursor: pointer;
@@ -68,6 +74,7 @@ $sidebar-background: #fff;
 
     }
 }
+
 .show-nav .sidebar {
     width: 300px;
     z-index: 51

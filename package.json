@@ -44,6 +44,7 @@
   "dependencies": {
     "bluebird": "3.5.0",
     "lodash": "^4.17.4",
+    "material-design-icons-iconfont": "3.0.3",
     "output-file": "1.1.1",
     "recursive-readdir": "^2.1.1",
     "roboto-fontface": "0.7.0",

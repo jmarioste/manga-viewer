@@ -9,88 +9,103 @@ const threads = require('threads');
 const spawn = threads.spawn;
 
 
-threads.config.set({
-    basepath: {
-        node: __dirname
-    }
-});
 
-let imageCache = {};
+module.exports = (function() {
+    let self = {};
+    let imageCache = {};
 
-exports.initializeEvents = function() {
-    let thread = spawn("./set-thumbnail.worker.js");
-
-    ipc.on('get-subfolders', function(event, rootFolder) {
-        fs.readdir(rootFolder, {}, function(err, files) {
-            if (err) {
-                console.log("get-mangalist::get-subfolders", err);
-                return;
-            }
-
-            let folders = files.map(function(folderName) {
-                let folderPath = path.resolve(rootFolder, folderName);
-                let stat = fs.lstatSync(folderPath);
-                if (stat.isDirectory()) {
-                    return {
-                        folderName,
-                        folderPath
-                    }
-                }
-            })
-
-            folders = _.filter(folders, function(folder) {
-                return !!folder;
-            });
-            event.sender.send('get-subfolders-done', folders);
-        });
+    threads.config.set({
+        basepath: {
+            node: __dirname
+        }
     });
 
-    ipc.on('get-manga-list', function(event, data) {
+    let thread = spawn("./set-thumbnail.worker.js");
 
-        let rootFolder = data.rootFolder;
-        let searchValue = data.searchValue;
-        let isRecursive = data.isRecursive;
-        let start = Date.now();
+    self.initializeEvents = function() {
+        self.initializeGetSubFolder();
+        self.initializeGetMangaList();
+        self.initializeGetFavoritesList();
+    }
 
-        getImageCache().then(function(cache) {
-            imageCache = cache;
-            return getFiles(rootFolder, searchValue, isRecursive);
-        }).then(function(files) {
-            let mangas = getMangas(files);
+    self.initializeGetSubFolder = function() {
+        ipc.on('get-subfolders', function(event, rootFolder) {
+
+            fs.readdir(rootFolder, {}, function(err, files) {
+                if (err) {
+                    console.log("get-mangalist::get-subfolders", err);
+                    return;
+                }
+
+                let folders = files.map(function(folderName) {
+                    let folderPath = path.resolve(rootFolder, folderName);
+                    let stat = fs.lstatSync(folderPath);
+                    if (stat.isDirectory()) {
+                        return {
+                            folderName,
+                            folderPath
+                        }
+                    }
+                })
+
+                folders = _.filter(folders, function(folder) {
+                    return !!folder;
+                });
+                event.sender.send('get-subfolders-done', folders);
+            });
+        });
+    }
+
+    self.initializeGetMangaList = function() {
+        ipc.on('get-manga-list', function(event, data) {
+
+            let rootFolder = data.rootFolder;
+            let searchValue = data.searchValue;
+            let isRecursive = data.isRecursive;
+            let start = Date.now();
+
+            self.getImageCache().then(function(cache) {
+                imageCache = cache;
+                return self.getFiles(rootFolder, searchValue, isRecursive);
+            }).then(function(files) {
+                let mangas = self.getMangas(files);
+                thread.send({
+                    mangas: mangas,
+                    cache: imageCache,
+                    cwd: process.cwd()
+                })
+            });
+
+
+            thread.once('message', function(response) {
+                imageCache = response.imageCache;
+                console.log("tread::on - message - manga-list");
+                event.sender.send('get-manga-list-done', response.mangas);
+            });
+
+        });
+    }
+
+    self.initializeGetFavoritesList = function() {
+        ipc.on('get-favorites-list', function(event, folderPaths) {
+            console.log('get-favorites-list::starting..');
+            let mangas = self.getMangas(folderPaths);
             thread.send({
                 mangas: mangas,
                 cache: imageCache,
                 cwd: process.cwd()
             })
+
+            thread.once('message', function(response) {
+                imageCache = response.imageCache;
+                console.log("tread::on - message - favorites-list");
+                event.sender.send('get-favorites-list-done', response.mangas);
+            });
+
         });
+    }
 
-
-        thread.once('message', function(response) {
-            imageCache = response.imageCache;
-            console.log("tread::on - message - manga-list");
-            event.sender.send('get-manga-list-done', response.mangas);
-        });
-
-    });
-
-    ipc.on('get-favorites-list', function(event, folderPaths) {
-        console.log('get-favorites-list::starting..');
-        let mangas = getMangas(folderPaths);
-        thread.send({
-            mangas: mangas,
-            cache: imageCache,
-            cwd: process.cwd()
-        })
-
-        thread.once('message', function(response) {
-            imageCache = response.imageCache;
-            console.log("tread::on - message - favorites-list");
-            event.sender.send('get-favorites-list-done', response.mangas);
-        });
-
-    });
-
-    function getFiles(rootFolder, searchValue, isRecursive) {
+    self.getFiles = function getFiles(rootFolder, searchValue, isRecursive) {
         let ignored = [];
         console.log("getMangas", rootFolder, searchValue, isRecursive);
 
@@ -119,11 +134,10 @@ exports.initializeEvents = function() {
                 resolve(files);
             });
         })
-    }
+    };
 
-    function getMangas(files) {
+    self.getMangas = function getMangas(files) {
         files = _.slice(files, 0, 50);
-
         return files.map(function(filePath) {
             let mangaTitle = path.basename(filePath, ".zip");
             return {
@@ -133,7 +147,7 @@ exports.initializeEvents = function() {
         });
     }
 
-    function getImageCache() {
+    self.getImageCache = function getImageCache() {
         return new Promise(function(resolve, reject) {
             if (_.isEmpty(imageCache)) {
                 let thumbnailDb = path.join(process.cwd(), "thumbnails.json");
@@ -151,20 +165,20 @@ exports.initializeEvents = function() {
             }
         });
     }
-};
 
-
-exports.saveImageCache = function() {
-    let savePath = path.resolve(process.cwd(), "thumbnails.json");
-    let data = JSON.stringify(imageCache, null, 4);
-    return new Promise(function(resovle, reject) {
-        console.log("get-mangalist::saveImageCache - saving to ", savePath);
-        fs.writeFile(savePath, data, "utf-8", function(err, data) {
-            if (err) {
-                console.log("error writing save file", err);
-                reject(err);
-            }
-            resolve();
+    self.saveImageCache = function saveImageCache() {
+        let savePath = path.resolve(process.cwd(), "thumbnails.json");
+        let data = JSON.stringify(imageCache, null, 4);
+        return new Promise(function(resovle, reject) {
+            console.log("get-mangalist::saveImageCache - saving to ", savePath);
+            fs.writeFile(savePath, data, "utf-8", function(err, data) {
+                if (err) {
+                    console.log("error writing save file", err);
+                    reject(err);
+                }
+                resolve();
+            });
         });
-    });
-}
+    }
+    return self;
+})();

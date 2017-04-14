@@ -22,8 +22,10 @@ export class SidebarViewmodel {
 
         this.selectedDirectory = params.selectedDirectory;
         this.selectDirectory = this.selectDirectory.bind(this);
+
         this.currentFolder = params.currentFolder;
-        this.isFavoritesActive = ko.computed(this.isFavoritesActive, this);
+        this.selectDirectoryText = ko.pureComputed(this.selectDirectoryText, this);
+        this.isFavoritesActive = ko.pureComputed(this.isFavoritesActive, this);
         this.subs = [];
 
         this.initialize();
@@ -31,14 +33,14 @@ export class SidebarViewmodel {
 
     initialize() {
         let self = this;
-        let last = this.currentFolder();
+        let currentFolder = this.currentFolder();
         let isBookmarked = _(this.bookmarks()).map('folderPath').includes(this.currentFolder());
-        console.log("SidebarViewmodel::initialize- currentFolder:", last);
-        if (last) {
-            let baseName = path.basename(last);
+        console.log("SidebarViewmodel::initialize- currentFolder:", currentFolder);
+        if (currentFolder) {
+            let baseName = path.basename(currentFolder);
             var root = new Folder({
                 folderName: baseName,
-                folderPath: last,
+                folderPath: currentFolder,
                 isBookmarked: isBookmarked
             });
             self.folders([root]);
@@ -65,6 +67,10 @@ export class SidebarViewmodel {
         this.currentPage("manga-list");
     }
 
+    selectDirectoryText() {
+        // console.log(this.selectedDirectory().folderName);
+        return this.selectedDirectory() ? this.selectedDirectory().folderName : "";
+    }
     openDirectory() {
         var self = this;
         api.selectDirectory().then(function(folder) {
@@ -75,6 +81,7 @@ export class SidebarViewmodel {
     }
     showFavorites() {
         this.currentPage("favorites-list");
+        this.selectedDirectory(null);
     }
     isFavoritesActive() {
         return this.currentPage() == "favorites-list";

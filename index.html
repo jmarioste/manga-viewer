@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html id="html-top">
     <head>
-        <meta charset="UTF-8">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta charset="UTF-8">        
         <title data-bind="text:appTitle"></title>
         <base href="./">
         <script>
-        // You can also require other files to run in this process
-        require('./renderer.js');
+        // You can also require other files to run in this process        
         require("./dist/app-bundle.js");
         </script>
     </head>
-    <body data-bind="visible:isInitialize" style="display:none">        
-        <div class="topbar indigo darken-2" >
+    <body >        
+        <div class="topbar indigo darken-2" data-bind="visible:isInitialize" style="display:none">
             <i class="material-icons control" data-bind="toggleNav:'.wrapper'">menu</i>
             
             <span class="title-text" data-bind="text:appTitle"></span>

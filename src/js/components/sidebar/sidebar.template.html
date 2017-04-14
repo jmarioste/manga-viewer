@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar ">
     <div class="sidebar-favorites-manga collection with-header ">
         <a href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="click:showFavorites, active: isFavoritesActive">
             <i class="material-icons left">star</i>
@@ -11,12 +11,13 @@
             <strong class="grey-text text-darken-3"> Bookmarked Folders</strong>
         </a>
     </div>
-    <div class="sidebar-favorites collection" data-bind="foreach:bookmarks">
-        <a href="javascript:void(0);" class="item collection-item truncate" data-bind="
-            click:$component.selectDirectory">
-            <span class="grey-text text-darken-3" data-bind="text:folderName"></span>
-        </a>
-    </div>
+    <ul class="sidebar-favorites-items collection" data-bind="foreach:bookmarks">
+        <li class="item collection-item truncate" data-bind="
+            click:$component.selectDirectory,
+            active: $data.folderName === $parent.selectDirectoryText()">
+            <span data-bind="text:folderName"></span>
+        </li>
+    </ul>
     <div class="sidebar-directory-header collection with-header">
         <a href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="click:openDirectory">
             <i class="material-icons left">create_new_folder</i>

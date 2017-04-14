@@ -66,12 +66,12 @@ export class FavoritesListViewmodel {
     filteredManga() {
         let value = this.searchValue().toLowerCase();
         if (!value) {
-            return this.favoritesManga();
+            return _.sortBy(this.favoritesManga(), 'mangaTitle');
         } else {
-            return _.filter(this.favoritesManga(), function(manga) {
+            return _(this.favoritesManga()).filter(function(manga) {
                 let title = manga.mangaTitle;
                 return _.includes(title.toLowerCase(), value);
-            });
+            }).sortBy('mangaTitle').value();
         }
     }
 

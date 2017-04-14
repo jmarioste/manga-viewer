@@ -29,6 +29,9 @@
 	margin:0px;
 }
 
+.selected-folder{
+	padding-bottom:3px !important;
+}
 // .card .card-image{
 // 	margin:auto;
 // 	height:288px;
@@ -36,3 +39,7 @@
 // 		top: auto;
 // 	}
 // }
+
+.manga-list .input-field input[type=search] ~ .material-icons{
+	top:10px;
+}
