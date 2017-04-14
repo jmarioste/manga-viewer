@@ -81,6 +81,33 @@ ko.bindingHandlers.isFavorite = {
         }
     }
 }
+
+ko.bindingHandlers.visibility = {
+    update: function(element, valueAccessor) {
+        let isVisible = ko.unwrap(valueAccessor());
+
+        if (isVisible) {
+            $(element).css("visibility", "visible");
+        } else {
+            $(element).css("visibility", "hidden");
+        }
+    }
+}
+
+
+ko.bindingHandlers.onEnter = {
+    init: function(element, valueAccessor, allBindngs, viewModel) {
+
+        $("body").on('keyup', function(event) {
+            let isEnterKey = event.keyCode === '13';
+            let execute = ko.unwrap(valueAccessor());
+            if (isEnterKey) {
+                execute.call(viewModel);
+            }
+        })
+    }
+}
+
 ko.bindingHandlers.materialSelect = {
     init: function(element, valueAccessor) {
         let searchOption = valueAccessor();

@@ -3,3 +3,4 @@ dist
 npm-debug.log.*
 save-file.json
 src/js/common/folder.factory.js
+thumbnail

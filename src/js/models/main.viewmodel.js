@@ -13,6 +13,7 @@ export default class ViewModel {
         // "G:/Users/Shizkun/"
         this.currentPage = ko.observable("manga-list");
         this.currentFolder = ko.observable(params.currentFolder);
+        this.isInitialize = ko.observable(false);
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
         this.bookmarks = ko.observableArray(_.map(params.bookmarks, function(folderPath) {

@@ -23,6 +23,8 @@ $(document).ready(function() {
         MangaListViewmodel.registerComponent();
         FavoritesListViewmodel.registerComponent();
         ko.applyBindings(vm);
+
+        vm.isInitialize(true);
         console.log("app::Initializing..");
     });
 });

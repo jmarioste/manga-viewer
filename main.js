@@ -9,6 +9,7 @@ const url = require('url')
 
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
+const Promise = require('bluebird');
 const getMangaList = require('./src/js/main-process/get-mangalist.js');
 const getSettings = require('./src/js/main-process/get-settings.js');
 const selectDirectory = require('./src/js/main-process/select-directory.js');
@@ -36,13 +37,16 @@ function createWindow() {
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
-
+    mainWindow.maximize();
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        mainWindow = null
+        getMangaList.saveImageCache().then(function() {
+            mainWindow = null
+        });
+
     })
 }
 

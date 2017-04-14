@@ -9,9 +9,30 @@
 		font-weight:bold;
 		text-overflow:ellipsis;
 		white-space:break-word;
+		padding: 24px 15px 15px 15px;
+	}
+
+	.progress, .card-image {
+		transform: translate3d(0, 0, 0);
 	}
 }
 
 .bookmark-btn {
 	margin-right:15px;
 }
+
+#manga-list {
+
+}
+
+.progress{
+	margin:0px;
+}
+
+// .card .card-image{
+// 	margin:auto;
+// 	height:288px;
+// 	img {
+// 		top: auto;
+// 	}
+// }

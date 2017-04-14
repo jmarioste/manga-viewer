@@ -1,5 +1,5 @@
 import Manga from "js/models/manga.viewmodel";
-
+import api from "js/common/api";
 let instance = null;
 let cache = {};
 
@@ -16,26 +16,29 @@ export default class MangaFactory {
     getManga({
         mangaTitle,
         folderPath,
-        isFavorite
+        isFavorite,
+        thumbnail
     }) {
         if (!folderPath) {
             console.err("MangaFactory::getManga - folderPath is null");
             return;
         }
 
-        let cached = cache[folderPath];
+        let cached = cache[mangaTitle];
 
         if (_(cached).isNil()) {
             // console.log("MangaFactory::getManga - caching", mangaTitle);
-            cache[folderPath] = new Manga({
+
+            cache[mangaTitle] = new Manga({
                 mangaTitle,
                 folderPath,
-                isFavorite
+                isFavorite,
+                thumbnail
             });
         } else {
             // console.info("MangaFactory::geManga - returning a cached instance for ", mangaTitle);
         }
 
-        return cache[folderPath];
+        return cache[mangaTitle];
     }
 }

@@ -6,12 +6,14 @@ export default class Manga {
     constructor({
         mangaTitle,
         folderPath,
-        isFavorite
+        isFavorite,
+        thumbnail
     }) {
-
+        console.log("Manga::constructor")
         this.mangaTitle = mangaTitle || "";
         this.folderPath = folderPath;
         this.isFavorite = ko.observable(isFavorite).toggleable();
+        this.thumbnail = thumbnail;
     }
 
     toggleFolderOpen() {

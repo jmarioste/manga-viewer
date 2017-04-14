@@ -14,64 +14,54 @@ const ipc = window.require('electron').ipcRenderer;
 export class FavoritesListViewmodel {
     constructor(params) {
         this.subscriptions = [];
-        console.log("FavoritesListViewmodel", params.favorites);
+        console.log("FavoritesListViewmodel", params.favorites());
         this.favorites = params.favorites;
 
-        this.searchValue = ko.observable("").extend({
-            rateLimit: {
-                timeout: 500,
-                method: "notifyWhenChangesStop"
-            }
-        });
+        this.searchValue = ko.observable("");
         this.searching = ko.observable(false).extend({
             rateLimit: 300
         });
+
         this.mangaFactory = new MangaFactory();
-        this.favoritesManga = ko.computed(this.favoritesManga, this);
-        this.filteredManga = ko.computed(this.filteredManga, this);
+        this.favoritesManga = ko.observableArray([]);
+        this.filteredManga = ko.pureComputed(this.filteredManga, this);
         this.toggleFavorites = this.toggleFavorites.bind(this);
         this.initialize();
-
 
     }
 
     // methods
     initialize() {
-        this.favorites.subscribe(function(favorites) {
-            console.log("FavoritesListViewmodel::favorites", favorites.length);
-        }, this);
+        var self = this;
+        api.getFavorites(this.favorites()).then(function(mangas) {
+            console.log(mangas);
+            let favoritesManga = mangas.map(function(manga) {
+                manga.isFavorite = true;
+                return self.mangaFactory.getManga(manga);
+            });
+
+            self.favoritesManga(favoritesManga);
+        })
+
     }
 
     dispose() {
         this.subscriptions.forEach(sub => sub.dispose());
-        this.selectedDirectory = null;
-        this.favorites([]);
-        this.favoritesManga.dispose();
     }
 
     toggleFavorites(manga) {
         manga.isFavorite(!manga.isFavorite());
         if (manga.isFavorite()) {
             this.favorites.push(manga.folderPath);
+            this.favoritesManga.push(manga);
         } else {
             this.favorites.remove(manga.folderPath);
+            this.favoritesManga.remove(manga);
         }
     }
 
-    favoritesManga() {
-
-        let favorites = this.favorites().map((folderPath) => {
-            let mangaTitle = path.basename(folderPath);
-            let isFavorite = true;
-            console.log(folderPath);
-            return this.mangaFactory.getManga({
-                mangaTitle,
-                folderPath,
-                isFavorite
-            });
-        });
-        console.log("FavoritesListViewmodel::favoritesManga", favorites);
-        return favorites;
+    clearSearch() {
+        this.searchValue("");
     }
     filteredManga() {
         let value = this.searchValue().toLowerCase();
@@ -88,7 +78,8 @@ export class FavoritesListViewmodel {
     static registerComponent() {
         ko.components.register("favorites-list", {
             viewModel: FavoritesListViewmodel,
-            template: template
+            template: template,
+            synchronous: true
         });
     }
 }

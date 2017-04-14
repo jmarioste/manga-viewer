@@ -46,6 +46,17 @@ export default class api {
         return deferred.promise();
     }
 
+    static getFavorites(folderPaths) {
+        let deferred = $.Deferred();
+
+        ipc.send('get-favorites-list', folderPaths);
+        ipc.once('get-favorites-list-done', function(event, mangas) {
+
+            deferred.resolve(mangas);
+        });
+
+        return deferred.promise();
+    }
 
     static getSavedSettings() {
         let deferred = $.Deferred();

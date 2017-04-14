@@ -2,9 +2,24 @@ const path = require('path');
 const fs = require('fs');
 const ipc = require('electron').ipcMain;
 const _ = require('lodash');
+
+const Promise = require('bluebird');
 const recursive = require('recursive-readdir');
+const threads = require('threads');
+const spawn = threads.spawn;
+
+
+threads.config.set({
+    basepath: {
+        node: __dirname
+    }
+});
+
+let imageCache = {};
 
 exports.initializeEvents = function() {
+    let thread = spawn("./set-thumbnail.worker.js");
+
     ipc.on('get-subfolders', function(event, rootFolder) {
         fs.readdir(rootFolder, {}, function(err, files) {
             if (err) {
@@ -31,15 +46,59 @@ exports.initializeEvents = function() {
     });
 
     ipc.on('get-manga-list', function(event, data) {
+
         let rootFolder = data.rootFolder;
-        let searchValue = data.searchValue || "";
+        let searchValue = data.searchValue;
         let isRecursive = data.isRecursive;
+        let start = Date.now();
+
+        getImageCache().then(function(cache) {
+            imageCache = cache;
+            return getFiles(rootFolder, searchValue, isRecursive);
+        }).then(function(files) {
+            let mangas = getMangas(files);
+            thread.send({
+                mangas: mangas,
+                cache: imageCache,
+                cwd: process.cwd()
+            })
+        });
+
+
+        thread.once('message', function(response) {
+            imageCache = response.imageCache;
+            console.log("tread::on - message - manga-list");
+            event.sender.send('get-manga-list-done', response.mangas);
+        });
+
+    });
+
+    ipc.on('get-favorites-list', function(event, folderPaths) {
+        console.log('get-favorites-list::starting..');
+        let mangas = getMangas(folderPaths);
+        thread.send({
+            mangas: mangas,
+            cache: imageCache,
+            cwd: process.cwd()
+        })
+
+        thread.once('message', function(response) {
+            imageCache = response.imageCache;
+            console.log("tread::on - message - favorites-list");
+            event.sender.send('get-favorites-list-done', response.mangas);
+        });
+
+    });
+
+    function getFiles(rootFolder, searchValue, isRecursive) {
         let ignored = [];
-        console.log("get-manga-list::", rootFolder, searchValue, "isRecursive", isRecursive);
+        console.log("getMangas", rootFolder, searchValue, isRecursive);
 
         function isNotSearched(file, stats) {
-            let isNotSearched = stats.isFile() && path.basename(file).toLowerCase().indexOf(searchValue) < 0;
-            let isNotSupportedFileFormat = stats.isFile() && !/(\.rar$|\.zip$)/ig.test(path.extname(file))
+            let filePath = path.basename(file).toLowerCase();
+            let isNotSearched = filePath.indexOf(searchValue) < 0;
+            let zipRegex = /(\.zip$)/ig;
+            let isNotSupportedFileFormat = stats.isFile() && !zipRegex.test(path.extname(file));
             return isNotSearched || isNotSupportedFileFormat;
         }
 
@@ -51,20 +110,61 @@ exports.initializeEvents = function() {
         if (!isRecursive) {
             ignored.push(isDirectory);
         }
-        recursive(rootFolder, ignored, function(err, files) {
-            if (err) {
-                console.log(err);
-            }
 
-            let manga = _(files).map(function(filePath) {
-                mangaTitle = path.basename(filePath);
-                return {
-                    mangaTitle: mangaTitle,
-                    folderPath: filePath
+        return new Promise(function(resolve, reject) {
+            recursive(rootFolder, ignored, function(err, files) {
+                if (err) {
+                    console.log(err);
                 }
-            }).sortBy('mangaTitle').value();
-            console.log(manga);
-            event.sender.send('get-manga-list-done', manga)
+                resolve(files);
+            });
         })
-    });
+    }
+
+    function getMangas(files) {
+        files = _.slice(files, 0, 50);
+
+        return files.map(function(filePath) {
+            let mangaTitle = path.basename(filePath, ".zip");
+            return {
+                mangaTitle: mangaTitle,
+                folderPath: filePath
+            }
+        });
+    }
+
+    function getImageCache() {
+        return new Promise(function(resolve, reject) {
+            if (_.isEmpty(imageCache)) {
+                let thumbnailDb = path.join(process.cwd(), "thumbnails.json");
+                fs.readFile(thumbnailDb, "utf-8", function(err, data = "{}") {
+                    if (err) {
+                        console.log(err);
+                        imageCache = {}
+                        resolve(imageCache);
+                    }
+                    imageCache = JSON.parse(data);
+                    resolve(imageCache);
+                });
+            } else {
+                resolve(imageCache);
+            }
+        });
+    }
 };
+
+
+exports.saveImageCache = function() {
+    let savePath = path.resolve(process.cwd(), "thumbnails.json");
+    let data = JSON.stringify(imageCache, null, 4);
+    return new Promise(function(resovle, reject) {
+        console.log("get-mangalist::saveImageCache - saving to ", savePath);
+        fs.writeFile(savePath, data, "utf-8", function(err, data) {
+            if (err) {
+                console.log("error writing save file", err);
+                reject(err);
+            }
+            resolve();
+        });
+    });
+}

@@ -86,7 +86,8 @@ export class SidebarViewmodel {
     static registerComponent() {
         ko.components.register("sidebar", {
             viewModel: SidebarViewmodel,
-            template: template
+            template: template,
+            synchronous: true
         });
     };
 }

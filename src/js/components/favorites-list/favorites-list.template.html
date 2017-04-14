@@ -5,9 +5,10 @@
 			<span>Favorites</span>
 		</h4>
 
-		<div class="input-field col s12  m2 l3">
-			<input id="search_manga_input" type="text" data-bind="textInput:searchValue">
-			<label for="search_manga_input">Search Manga...</label>
+		<div class="input-field col s12  m6 l3">
+	          <input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
+	          <label class="label-icon" for="search"><i class="material-icons">search</i> </label>
+	          <i class="material-icons" data-bind="click:clearSearch">close</i>
 		</div>
 
 	</section>
@@ -15,7 +16,12 @@
 		<div class="col s12 m4 l2">
 			<div class="card">
 				<div class="card-image">
-					<img src="http://placehold.it/200x250">
+					<!-- ko if:$data.thumbnail  -->
+					<img data-bind="attr:{src: $data.thumbnail }" width="200" height="288">
+					<!-- /ko -->
+					<!-- ko ifnot: $data.thumbnail  -->
+					<img src="http://placehold.it/200x288" width="200" height="288">
+					<!-- /ko -->
 					<!-- <span class="card-title">Title</span> -->
 					<a class="btn-floating halfway-fab waves-effect waves-light indigo"
 						data-bind="click:$parent.toggleFavorites">
