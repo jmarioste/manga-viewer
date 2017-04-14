@@ -10,12 +10,12 @@
         </script>
     </head>
     <body >        
-        <div class="topbar indigo darken-2" data-bind="visible:isInitialize" style="display:none">
-            <i class="material-icons control" data-bind="toggleNav:'.wrapper'">menu</i>
+        <topbar params="selectedManga:selectedManga,
+            favorites: favorites,
+            currentPage: currentPage,
+            appTitle:appTitle">
             
-            <span class="title-text" data-bind="text:appTitle"></span>
-            
-        </div>
+        </topbar>
         <div class="wrapper show-nav">
             
             <div class="canvas ">
@@ -25,35 +25,38 @@
                 bookmarks:bookmarks,
                 currentPage: currentPage">                
                 </sidebar>
-                <div class="content">
-                    <!-- ko if: currentPage() == "manga-list" -->
-                        <manga-list params="
-                        currentFolder: currentFolder,
-                        selectedDirectory: selectedDirectory,
-                        bookmarks:bookmarks,
-                        favorites: favorites,
-                        isInitialize: isInitialize">
-                        
-                        </manga-list>
-                    <!-- /ko -->
-                    <!-- ko if: currentPage() == "favorites-list" -->
-                        <favorites-list params="favorites:favorites">                    
-                        </favorites-list>
-                    <!-- /ko -->
+                
+                <div class="content" data-bind="template:currentPage()">                    
                 </div>
-
-                
-                
             </div>
         </div>
         
     </body>
 
-    <template id="manga-list">
-
+    <template id="manga-list-view">
+        <manga-list params="
+            currentFolder: currentFolder,
+            selectedDirectory: selectedDirectory,
+            bookmarks:bookmarks,
+            favorites: favorites,
+            isInitialize: isInitialize,
+            selectedManga:selectedManga,
+            currentPage: currentPage">
+        </manga-list>
     </template>
-    <template id="favorites-list">
-            <favorites-list params="favorites:favorites">                    
-            </favorites-list>
+    <template id="favorites-list-view">
+        <favorites-list params="favorites:favorites,
+            selectedManga:selectedManga">                    
+        </favorites-list>
+    </template>
+    <template id="view-manga-view">
+    <!-- ko component: {name: 'view-manga', params:{
+        favorites:favorites,
+        selectedManga:selectedManga
+    }} -->
+    <!-- /ko -->
+<!--         params="favorites:favorites,
+            selectedManga:selectedManga">                    
+        </view-manga> -->
     </template>
 </html>

@@ -35,7 +35,7 @@
 
 	<div id="manga-list"  class="row"  data-bind="foreach:{data:mangas, afterRender: afterRender}">
 		<div class="col s12 m4 l2">
-			<div class="card">
+			<div class="card" data-bind="click:$parent.viewManga">
 				<div class="card-image valign-wrapper">
 					<!-- ko if: $data.thumbnail -->
 						<img data-bind="attr:{src: $data.thumbnail}" height="288">

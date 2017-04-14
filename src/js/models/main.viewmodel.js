@@ -9,13 +9,14 @@ export default class ViewModel {
     constructor(params) {
         params.bookmarks = _.without(params.bookmarks, null);
         let self = this;
-        this.appTitle = "Baiji Manga Viewer";
+        this.appTitle = ko.observable("Baiji Manga Viewer");
         // "G:/Users/Shizkun/"
-        this.currentPage = ko.observable("manga-list");
+        this.currentPage = ko.observable("manga-list-view");
         this.currentFolder = ko.observable(params.currentFolder);
         this.isInitialize = ko.observable(false);
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
+        this.selectedManga = ko.observable(null);
         this.bookmarks = ko.observableArray(_.map(params.bookmarks, function(folderPath) {
             let folderName = path.basename(folderPath);
             return new Folder({
@@ -37,5 +38,11 @@ export default class ViewModel {
         }, this).extend({
             rateLimit: 500
         });
+
+        this.selectedManga.subscribe(function(manga) {
+            if (manga) {
+                this.selectedDirectory(null);
+            }
+        }, this);
     }
 }

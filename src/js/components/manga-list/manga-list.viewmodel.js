@@ -10,28 +10,32 @@ const ipc = window.require('electron').ipcRenderer;
 
 export class MangaListViewmodel {
     constructor(params) {
+        console.log("MangaListViewmodel::constructor - end");
         var self = this;
         this.subscriptions = [];
-        this.mangas = ko.observableArray([]);
+
+
         this.selectedDirectory = params.selectedDirectory;
         this.bookmarks = params.bookmarks;
         this.favorites = params.favorites;
-        this.searchValue = ko.observable("").extend({
-            rateLimit: {
-                timeout: 300,
-                method: "notifyWhenChangesStop"
-            }
-        });
+        this.isInitialize = params.isInitialize;
+        this.currentPage = params.currentPage;
+        this.selectedManga = params.selectedManga;
+
+        this.searchValue = ko.observable("");
+        this.mangas = ko.observableArray([]);
         this.searching = ko.observable(false);
         this.mangaFactory = new MangaFactory();
-        this.isInitialize = params.isInitialize;
+
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleFavorites = this.toggleFavorites.bind(this);
         this.afterRender = this.afterRender.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
+        this.viewManga = this.viewManga.bind(this);
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
+
         this.searchOptions = ko.observableArray([{
             value: "non-recursive",
             text: "Current folder"
@@ -46,11 +50,12 @@ export class MangaListViewmodel {
         // this.initialize();
 
         this.initialize();
+        console.log("MangaListViewmodel::constructor - end");
     }
 
     // methods
     initialize() {
-        // console.log("MangaListViewmodel::initialize - ", this.favorites());
+        console.log("MangaListViewmodel::initialize - ");
         let computed = ko.computed(function function_name(argument) {
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
@@ -94,7 +99,7 @@ export class MangaListViewmodel {
 
     afterRender(element, data) {
         if (_.last(this.mangas()) == data) {
-            console.log("MangaListViewmodel::afterRender", data);
+            console.log("MangaListViewmodel::afterRender");
             this.isInitialize(true);
         }
 
@@ -137,6 +142,12 @@ export class MangaListViewmodel {
             this.favorites.remove(manga.folderPath);
         }
     }
+
+    viewManga(manga) {
+        this.selectedManga(manga);
+        this.currentPage("view-manga-view");
+    }
+
     static registerComponent() {
         ko.components.register("manga-list", {
             viewModel: MangaListViewmodel,
@@ -145,3 +156,5 @@ export class MangaListViewmodel {
         });
     }
 }
+
+MangaListViewmodel.registerComponent();

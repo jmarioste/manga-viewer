@@ -64,13 +64,14 @@ export class SidebarViewmodel {
 
     selectDirectory(folder) {
         this.selectedDirectory(folder);
-        this.currentPage("manga-list");
+        this.currentPage("manga-list-view");
     }
 
     selectDirectoryText() {
         // console.log(this.selectedDirectory().folderName);
         return this.selectedDirectory() ? this.selectedDirectory().folderName : "";
     }
+
     openDirectory() {
         var self = this;
         api.selectDirectory().then(function(folder) {
@@ -79,13 +80,16 @@ export class SidebarViewmodel {
             self.initialize();
         });
     }
+
     showFavorites() {
-        this.currentPage("favorites-list");
+        this.currentPage("favorites-list-view");
         this.selectedDirectory(null);
     }
+
     isFavoritesActive() {
         return this.currentPage() == "favorites-list";
     }
+
     dispose() {
         console.log("SidebarViewmodel:executing dispose");
     };
@@ -98,3 +102,5 @@ export class SidebarViewmodel {
         });
     };
 }
+
+SidebarViewmodel.registerComponent();

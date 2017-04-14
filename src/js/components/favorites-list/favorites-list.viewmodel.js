@@ -83,3 +83,5 @@ export class FavoritesListViewmodel {
         });
     }
 }
+
+FavoritesListViewmodel.registerComponent();
