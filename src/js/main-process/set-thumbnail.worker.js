@@ -4,16 +4,16 @@ module.exports = function(input, done) {
     const Zip = require('adm-zip');
     const Promise = require('bluebird');
 
-    let imageCache = input.cache;
+    let MangaCache = input.cache;
     let mangas = input.mangas;
     let cwd = input.cwd;
-
+    //get
     function setThumbnail(manga) {
         let filePath = manga.folderPath;
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
-            if (imageCache[mangaTitle] || manga.thumbnail) {
-                manga.thumbnail = imageCache[mangaTitle];
+            if (MangaCache[mangaTitle] && MangaCache[mangaTitle].thumbnail) {
+                resolve(manga);
             } else {
                 let zip = {};
                 try {
@@ -26,7 +26,7 @@ module.exports = function(input, done) {
 
                 if (zip) {
                     //find first image as thumbnail.
-                    let sorted = _(zip.getEntries()).sortBy('name');
+                    let sorted = _.sortBy(zip.getEntries(), 'name');
                     let entry = sorted.find(function(entry) {
                         let imageRegex = /(\.jpg$|\.png$)/;
                         return imageRegex.test(path.extname(entry.name))
@@ -34,11 +34,12 @@ module.exports = function(input, done) {
 
                     let extractTo = path.join(cwd, "thumbnail", mangaTitle);
                     zip.extractEntryTo(entry, extractTo, false, true);
-                    imageCache[mangaTitle] = path.join(extractTo, entry.name);
-                    manga.thumbnail = imageCache[mangaTitle];
 
-                    // imageCache[mangaTitle] = zip.readAsText(entry, 'base64');
-                    // manga.thumbnail = "data:image/bmp;base64," + imageCache[mangaTitle];
+                    MangaCache[mangaTitle] = manga;
+
+                    manga.thumbnail = path.join(extractTo, entry.name);
+                    manga.pages = sorted.length;
+
                 }
             }
 
@@ -48,8 +49,8 @@ module.exports = function(input, done) {
 
     Promise.map(mangas, setThumbnail).then(function(mangas) {
         done({
-            imageCache: imageCache,
-            mangas: mangas
+            MangaCache,
+            mangas
         });
     });
 }

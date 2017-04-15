@@ -16,6 +16,8 @@ export class FavoritesListViewmodel {
         this.subscriptions = [];
         console.log("FavoritesListViewmodel", params.favorites());
         this.favorites = params.favorites;
+        this.selectedManga = params.selectedManga;
+        this.currentPage = params.currentPage;
 
         this.searchValue = ko.observable("");
         this.searching = ko.observable(false).extend({
@@ -25,6 +27,7 @@ export class FavoritesListViewmodel {
         this.mangaFactory = new MangaFactory();
         this.favoritesManga = ko.observableArray([]);
         this.filteredManga = ko.pureComputed(this.filteredManga, this);
+
         this.toggleFavorites = this.toggleFavorites.bind(this);
         this.initialize();
 
@@ -73,6 +76,11 @@ export class FavoritesListViewmodel {
                 return _.includes(title.toLowerCase(), value);
             }).sortBy('mangaTitle').value();
         }
+    }
+
+    viewManga(manga) {
+        this.selectedManga(manga);
+        this.currentPage("view-manga-view");
     }
 
     static registerComponent() {

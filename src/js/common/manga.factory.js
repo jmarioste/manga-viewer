@@ -17,7 +17,8 @@ export default class MangaFactory {
         mangaTitle,
         folderPath,
         isFavorite,
-        thumbnail
+        thumbnail,
+        pages
     }) {
         if (!folderPath) {
             console.err("MangaFactory::getManga - folderPath is null");
@@ -27,13 +28,14 @@ export default class MangaFactory {
         let cached = cache[mangaTitle];
 
         if (_(cached).isNil()) {
-            // console.log("MangaFactory::getManga - caching", mangaTitle);
+            console.log("MangaFactory::getManga - pages", pages);
 
             cache[mangaTitle] = new Manga({
                 mangaTitle,
                 folderPath,
                 isFavorite,
-                thumbnail
+                thumbnail,
+                pages
             });
         } else {
             // console.info("MangaFactory::geManga - returning a cached instance for ", mangaTitle);

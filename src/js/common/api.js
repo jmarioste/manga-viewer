@@ -2,7 +2,6 @@ const ipc = window.require('electron').ipcRenderer
 
 import $ from "jquery";
 import fs from "fs";
-import path from "path";
 import _ from "lodash";
 
 import MangaFactory from "./manga.factory";
@@ -42,6 +41,24 @@ export default class api {
             deferred.resolve({
                 mangas
             });
+        });
+        return deferred.promise();
+    }
+
+    static getPages(start, end, folderPath) {
+        console.log("api::getPages - rootFolder", start, end, folderPath);
+
+        let deferred = $.Deferred();
+
+        ipc.send('get-pages', {
+            start,
+            end,
+            folderPath
+        });
+
+        ipc.once('get-pages-done', function(event, pages) {
+            console.log("get-pages-done")
+            deferred.resolve(pages);
         });
         return deferred.promise();
     }

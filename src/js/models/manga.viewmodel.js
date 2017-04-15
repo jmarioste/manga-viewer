@@ -7,14 +7,16 @@ export default class Manga {
         mangaTitle,
         folderPath,
         isFavorite,
-        thumbnail
+        thumbnail,
+        pages
     }) {
-        console.log("Manga::constructor")
+        console.log("Manga::constructor", pages);
         this.mangaTitle = mangaTitle || "";
         this.folderPath = folderPath;
         this.isFavorite = ko.observable(isFavorite).toggleable();
         this.thumbnail = thumbnail || "http://placehold.it/200x288";
-
+        this.pages = pages;
+        this.pageImages = ko.observableArray([thumbnail]);
         this.parseOtherInfo();
     }
     parseOtherInfo() {
@@ -30,7 +32,7 @@ export default class Manga {
 
         //parse language & translator - Limitation only english language for now
         title = title.replace(circle, "").trim();
-        let languageAndScanlator = _.first(title.match(/[\[\(]Eng.*/g)) || "";
+        let languageAndScanlator = _.first(title.match(/[\[\(]eng.*/gi)) || "";
 
         //set title        
         title = title.replace(languageAndScanlator, "").trim();

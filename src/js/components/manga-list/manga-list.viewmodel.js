@@ -68,7 +68,7 @@ export class MangaListViewmodel {
                 this.requesting.then(data => {
                     let mangas = data.mangas.map((manga) => {
                         manga.isFavorite = _.includes(this.favorites(), manga.folderPath);
-                        return this.mangaFactory.getManga(manga)
+                        return this.mangaFactory.getManga(manga);
                     });
                     this.mangas(_.sortBy(mangas, 'mangaTitle'));
                     this.searching(false);
@@ -137,11 +137,11 @@ export class MangaListViewmodel {
         if (manga.isFavorite()) {
             if (!_.includes(manga.folderPath)) {
                 this.favorites.push(manga.folderPath);
-                Materialize.toast(`Added to favorites!`, 2000);
+                Materialize.toast(`Added to favorites!`, 500);
             }
         } else {
             this.favorites.remove(manga.folderPath);
-            Materialize.toast(`Removed from favorites!`, 2000);
+            Materialize.toast(`Removed from favorites!`, 500);
         }
     }
 

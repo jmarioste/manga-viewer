@@ -125,9 +125,13 @@ ko.bindingHandlers.materialSelect = {
 }
 
 ko.bindingHandlers.src = {
-    update: function(element, valueAccessor) {
+    update: function(element, valueAccessor, allBindings) {
         let src = ko.unwrap(valueAccessor());
+        let isScrollTop = ko.unwrap(allBindings.get('scrollTopOnClick'));
         $(element).attr('src', src);
+        if (isScrollTop) {
+            $(".content").scrollTop(0);
+        }
     }
 }
 
@@ -142,3 +146,14 @@ ko.bindingHandlers.tooltip = {
         });
     }
 }
+
+// ko.bindingHandlers.scrollTopOnClick = {
+//     update: function(element, valueAccessor, allBindngs) {
+//         $(element).click(function(event) {
+//             let isTrue = !!ko.unwrap(valueAccessor());
+//             if (isTrue) {
+//                 $(".content").scrollTop(0);
+//             }
+//         })
+//     }
+// }
