@@ -12,7 +12,7 @@ module.exports = function(input, done) {
         let filePath = manga.folderPath;
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
-            if (imageCache[mangaTitle]) {
+            if (imageCache[mangaTitle] || manga.thumbnail) {
                 manga.thumbnail = imageCache[mangaTitle];
             } else {
                 let zip = {};
@@ -31,10 +31,14 @@ module.exports = function(input, done) {
                         let imageRegex = /(\.jpg$|\.png$)/;
                         return imageRegex.test(path.extname(entry.name))
                     });
+
                     let extractTo = path.join(cwd, "thumbnail", mangaTitle);
                     zip.extractEntryTo(entry, extractTo, false, true);
                     imageCache[mangaTitle] = path.join(extractTo, entry.name);
                     manga.thumbnail = imageCache[mangaTitle];
+
+                    // imageCache[mangaTitle] = zip.readAsText(entry, 'base64');
+                    // manga.thumbnail = "data:image/bmp;base64," + imageCache[mangaTitle];
                 }
             }
 

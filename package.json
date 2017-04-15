@@ -1,53 +1,54 @@
 {
-  "name": "baiji-manga-viewer",
-  "version": "1.0.0",
-  "description": "A modern manga viewer inspired by Quivi.",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "webpack --config webpack.config.js --watch"
-  },
-  "repository": "https://github.com/shizkun/manga-viewer",
-  "keywords": [
-    "Manga Viewer",
-    "quick",
-    "Baiji"
-  ],
-  "author": "shizkun",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "adm-zip": "0.4.7",
-    "babel-core": "6.24.0",
-    "babel-loader": "6.4.1",
-    "babel-preset-env": "1.3.2",
-    "bootstrap": "3.3.7",
-    "bootstrap-sass": "3.3.7",
-    "css-loader": "0.28.0",
-    "electron": "~1.6.2",
-    "file-loader": "0.11.1",
-    "font-awesome": "4.7.0",
-    "font-awesome-webpack-sass": "0.0.3",
-    "html-loader": "0.4.5",
-    "imports-loader": "0.7.1",
-    "jquery": "3.2.1",
-    "knockout": "3.4.2",
-    "less": "2.7.2",
-    "materialize-css": "0.98.1",
-    "node-sass": "4.5.2",
-    "resolve-url-loader": "2.0.2",
-    "sass-loader": "6.0.3",
-    "source-map-loader": "0.2.1",
-    "style-loader": "0.16.1",
-    "url-loader": "0.5.8",
-    "webpack": "2.3.2"
-  },
-  "dependencies": {
-    "bluebird": "3.5.0",
-    "lodash": "^4.17.4",
-    "material-design-icons-iconfont": "3.0.3",
-    "output-file": "1.1.1",
-    "recursive-readdir": "^2.1.1",
-    "roboto-fontface": "0.7.0",
-    "threads": "0.7.2"
-  }
+    "name": "baiji-manga-viewer",
+    "version": "1.0.0",
+    "description": "A modern manga viewer inspired by Quivi.",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "webpack --config webpack.config.js --watch"
+    },
+    "repository": "https://github.com/shizkun/manga-viewer",
+    "keywords": [
+        "Manga Viewer",
+        "quick",
+        "Baiji"
+    ],
+    "author": "shizkun",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "adm-zip": "0.4.7",
+        "babel-core": "6.24.0",
+        "babel-loader": "6.4.1",
+        "babel-preset-env": "1.3.2",
+        "bootstrap": "3.3.7",
+        "bootstrap-sass": "3.3.7",
+        "css-loader": "0.28.0",
+        "electron": "~1.6.2",
+        "file-loader": "0.11.1",
+        "font-awesome": "4.7.0",
+        "font-awesome-webpack-sass": "0.0.3",
+        "html-loader": "0.4.5",
+        "imports-loader": "0.7.1",
+        "jquery": "3.2.1",
+        "knockout": "3.4.2",
+        "less": "2.7.2",
+        "materialize-css": "0.98.2",
+        "node-sass": "4.5.2",
+        "resolve-url-loader": "2.0.2",
+        "sass-loader": "6.0.3",
+        "source-map-loader": "0.2.1",
+        "style-loader": "0.16.1",
+        "url-loader": "0.5.8",
+        "velocity-animate": "1.5.0",
+        "webpack": "2.3.2"
+    },
+    "dependencies": {
+        "bluebird": "3.5.0",
+        "lodash": "^4.17.4",
+        "material-design-icons-iconfont": "3.0.3",
+        "output-file": "1.1.1",
+        "recursive-readdir": "^2.1.1",
+        "roboto-fontface": "0.7.0",
+        "threads": "0.7.2"
+    }
 }

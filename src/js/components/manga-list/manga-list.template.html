@@ -24,7 +24,7 @@
 		</div>
 		<div class="input-field col s12  m6 l3">
 	          <input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
-	          <label class="label-icon" for="search"><i class="material-icons">search</i> </label>
+	          <label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
 	          <i class="material-icons" data-bind="click:clearSearch">close</i>
 		</div>
 
@@ -33,18 +33,38 @@
 		</div>
 	</section>
 
+	<div id="mangalist" class="row" data-bind="foreach:{data:mangas, afterRender: afterRender}">
+		<div class="col s12 m4 l2 manga" data-bind="click:$parent.viewManga">
+			<div class="manga-content">
+				<div class="image-container">
+					<img class="manga-image" data-bind="src:thumbnail" >	
+				</div>
+				<div class="info">
+					<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>	
+					<i class="material-icons action tooltipped" data-bind="isFavorite:isFavorite, 
+						click:$parent.toggleFavorites, 
+						clickBubble:false"">star</i>
+				</div>
+			</div>
+
+			
+		</div>
+	</div>
+</div>
+
+<template>
 	<div id="manga-list"  class="row"  data-bind="foreach:{data:mangas, afterRender: afterRender}">
 		<div class="col s12 m4 l2">
 			<div class="card" data-bind="click:$parent.viewManga">
 				<div class="card-image valign-wrapper">
 					<!-- ko if: $data.thumbnail -->
-						<img data-bind="attr:{src: $data.thumbnail}" height="288">
+						<img data-bind="attr:{src: $data.thumbnail}" >
 					<!-- /ko -->
 					<!-- ko ifnot: $data.thumbnail -->
-						<img src="http://placehold.it/200x288" width="200" height="288">
+						<img src="http://placehold.it/200x288" height="288">
 					<!-- /ko -->
-					<!-- <span class="card-title">Title</span> -->
-					<a class="btn-floating halfway-fab waves-effect waves-light indigo"
+					<!--  -->
+					<a class="btn-floating halfway-fab waves-effect waves-light indigo "
 						data-bind="click:$parent.toggleFavorites, clickBubble:false">
 						<i class="material-icons" data-bind="isFavorite:isFavorite"></i>
 					</a>
@@ -54,4 +74,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</template>

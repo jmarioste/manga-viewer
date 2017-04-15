@@ -5,3 +5,4 @@ save-file.json
 src/js/common/folder.factory.js
 thumbnail
 thumbnails.json
+*.bak

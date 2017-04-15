@@ -1,6 +1,6 @@
 import ko from "knockout";
-import $ from "jquery";
 import _ from "lodash";
+
 ko.bindingHandlers.toggleNav = {
     init: function(element, valueAccessor) {
         var wrapper = ko.unwrap(valueAccessor());
@@ -121,5 +121,24 @@ ko.bindingHandlers.materialSelect = {
         let value = ko.unwrap(valueAccessor());
         console.log("ko.bindingHandlers.materialSelect::update - value", value);
         $(element).material_select();
+    }
+}
+
+ko.bindingHandlers.src = {
+    update: function(element, valueAccessor) {
+        let src = ko.unwrap(valueAccessor());
+        $(element).attr('src', src);
+    }
+}
+
+ko.bindingHandlers.tooltip = {
+    init: function(element, valueAccessor, allBindings) {
+        let position = ko.unwrap(valueAccessor());
+        let text = allBindings.get('text');
+        $(element).attr('data-tooltip', text);
+        $(element).tooltip({
+            delay: 50,
+            html: text
+        });
     }
 }

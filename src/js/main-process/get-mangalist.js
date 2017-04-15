@@ -142,7 +142,8 @@ module.exports = (function() {
             let mangaTitle = path.basename(filePath, ".zip");
             return {
                 mangaTitle: mangaTitle,
-                folderPath: filePath
+                folderPath: filePath,
+                thumbnail: imageCache[mangaTitle]
             }
         });
     }

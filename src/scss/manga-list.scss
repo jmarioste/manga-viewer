@@ -12,7 +12,7 @@
 		padding: 24px 15px 15px 15px;
 	}
 
-	.progress, .card-image {
+	.progress, .card-image img {
 		transform: translate3d(0, 0, 0);
 	}
 }
@@ -42,4 +42,96 @@
 
 .manga-list .input-field input[type=search] ~ .material-icons{
 	top:10px;
+}
+#manga-list.hide-title {
+	.card {
+		.card-image{
+			&:hover{
+				.card-title, .favorite-icon{
+					opacity:1;
+				}
+
+			}
+			.card-title{
+				font-size:14px;
+				padding:5px;
+				background-color: rgba(black, 0.7);
+				width:100%;
+				opacity:0;
+				transition:.25s;
+			}
+
+			.favorite-icon {
+				position: absolute;
+				top: 0;
+				right: 0;
+				background-color: rgba(black, 0.7);
+				width:100%;
+				opacity:0;
+				transition:.25s;
+				color: white;
+				font-size:30px;
+				cursor:pointer;
+			}
+		}
+	}
+}
+
+#manga-list {
+	
+}
+
+.row .col.manga{
+
+	// padding: 5px;
+	// background-color: rgba(black, 0.5);
+	margin-bottom:5px;
+	// margin:2px;
+	
+	// border: 1px black solid;
+	.manga-content{
+		position:relative;
+		.image-container{
+			min-height:330px;
+			display:flex;
+			background-color: rgba(black, .3);
+			align-items:center;
+			.manga-image {
+				width:100%;	
+				max-height:330px;
+			}
+		}
+		
+		.info{
+			position:absolute;
+			left: 0px;
+			right: 0px;
+			bottom: 0px;
+			background-color: rgba(black, 0.5);
+			color:#fff;
+			display:flex;
+			align-items:center;
+			height:50px;
+			padding: 0px 5px;
+			// width:100%;
+
+			.title{
+				flex-grow:8;
+				font-size:16px;
+				margin-right:8px;
+				@extend .truncate;
+			}
+			.action {
+				flex-grow:2;
+				flex-shrink:0;
+				cursor:pointer;				
+				transition: .25s;
+				&:hover{
+					color: $secondary-color;
+					// opacity: 0.5;
+				}
+			}
+		}
+	}
+
 }
