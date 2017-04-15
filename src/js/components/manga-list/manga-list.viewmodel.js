@@ -137,9 +137,11 @@ export class MangaListViewmodel {
         if (manga.isFavorite()) {
             if (!_.includes(manga.folderPath)) {
                 this.favorites.push(manga.folderPath);
+                Materialize.toast(`Added to favorites!`, 2000);
             }
         } else {
             this.favorites.remove(manga.folderPath);
+            Materialize.toast(`Removed from favorites!`, 2000);
         }
     }
 

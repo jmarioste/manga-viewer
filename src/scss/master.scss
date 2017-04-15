@@ -15,3 +15,10 @@ $font-size: 14px;
 
 
 .no-flick{-webkit-transform:translate3d(0,0,0);}
+
+#toast-container {
+  top: 10% !important;
+  right: auto !important;
+  bottom: auto !important;
+  left:50%;  
+}
