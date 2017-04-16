@@ -1,6 +1,6 @@
 import ko from "knockout";
 import _ from "lodash";
-
+import Ps from "perfect-scrollbar";
 let onDispose = ko.utils.domNodeDisposal.addDisposeCallback;
 ko.bindingHandlers.toggleNav = {
     init: function(element, valueAccessor) {
@@ -44,11 +44,22 @@ ko.bindingHandlers.scroll = {
     init: function(element, valueAccessor) {
         $(element).css({
             height: `${$(element).outerHeight()}px`,
-            'overflow-y': "auto",
-            'overflow-x': "hidden"
         });
+
+        Ps.initialize(element);
+        onDispose(element, function() {
+            Ps.destroy(element);
+        })
+    },
+    update: function(element, valueAccessor) {
+        $(element).css({
+            height: `${$(element).outerHeight()}px`,
+        });
+        Ps.update(element);
     }
 }
+
+
 
 ko.bindingHandlers.tooltip = {
     init: function(element, valueAccessor) {
