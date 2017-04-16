@@ -1,4 +1,4 @@
-<div class="manga-list">
+<!-- <div class="manga-list"> -->
 	<section class="row">
 		<!-- ko if: selectedDirectory -->
 		<h4 class="col s12 l6 truncate selected-folder">
@@ -52,7 +52,17 @@
 			
 		</div>
 	</div>
-</div>
+	<div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
+		<div class="col s12 grey-text center-align">
+			<i class="material-icons large">create_new_folder</i>
+			<h5 class="">
+				No mangas found in this folder...
+			</h5>
+			<span> Please, select a new directory by clicking  Select directory on the left. :)</span>	
+		</div>
+		
+	</div>
+<!-- </div> -->
 
 <template>
 	<div id="mangalist" class="row" data-bind="foreach:{data:mangas, afterRender: afterRender}">

@@ -26,6 +26,7 @@ export class MangaListViewmodel {
         this.mangas = ko.observableArray([]);
         this.searching = ko.observable(false);
         this.mangaFactory = new MangaFactory();
+        this.showGuide = ko.observable(false);
 
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -34,6 +35,7 @@ export class MangaListViewmodel {
         this.clearSearch = this.clearSearch.bind(this);
         this.viewManga = this.viewManga.bind(this);
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
+
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
 
         this.searchOptions = ko.observableArray([{
@@ -72,6 +74,7 @@ export class MangaListViewmodel {
                     });
                     this.mangas(_.sortBy(mangas, 'mangaTitle'));
                     this.searching(false);
+                    this.showGuide(mangas.length <= 0);
                     this.requesting = null;
                 });
             }
