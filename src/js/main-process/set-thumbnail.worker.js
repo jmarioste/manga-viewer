@@ -31,26 +31,39 @@ module.exports = function(input, done) {
                         let imageRegex = /(\.jpg$|\.png$)/;
                         return imageRegex.test(path.extname(entry.name))
                     });
+                    if (entry) {
+                        let extractTo = path.join(cwd, "thumbnail", mangaTitle);
+                        zip.extractEntryTo(entry, extractTo, false, true);
 
-                    let extractTo = path.join(cwd, "thumbnail", mangaTitle);
-                    zip.extractEntryTo(entry, extractTo, false, true);
+                        MangaCache[mangaTitle] = manga;
 
-                    MangaCache[mangaTitle] = manga;
+                        manga.thumbnail = path.join(extractTo, entry.name);
+                        manga.pages = sorted.length;
+                        resolve(manga);
+                    } else {
+                        resolve(null)
+                    }
 
-                    manga.thumbnail = path.join(extractTo, entry.name);
-                    manga.pages = sorted.length;
 
                 }
             }
 
-            resolve(manga);
+
         })
     };
 
-    Promise.map(mangas, setThumbnail).then(function(mangas) {
+    Promise.each(mangas, setThumbnail).then(function(mangas) {
+
+        mangas = _.filter(mangas, function(manga) {
+            return !!manga.thumbnail;
+        });
+
+        console.log(mangas);
         done({
             MangaCache,
             mangas
         });
+    }, function(err) {
+        console.log(err);
     });
 }
