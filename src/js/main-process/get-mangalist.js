@@ -80,7 +80,7 @@ module.exports = (function() {
 
             thread.once('message', function(response) {
                 MangaCache = response.MangaCache;
-                console.log("tread::on - message - manga-list", JSON.stringify(response.mangas, null, 4));
+                // console.log("tread::on - message - manga-list", JSON.stringify(response.mangas, null, 4));
                 event.sender.send('get-manga-list-done', response.mangas);
             });
 
@@ -175,13 +175,14 @@ module.exports = (function() {
         return new Promise(function(resolve, reject) {
             if (_.isEmpty(MangaCache)) {
                 let mangaFile = path.join(process.cwd(), "manga-db.json");
-                fs.readFile(mangaFile, "utf-8", function(err, data = "{}") {
+                fs.readFile(mangaFile, "utf-8", function(err, data) {
                     if (err) {
                         console.log(err);
                         MangaCache = {}
                         resolve(MangaCache);
                     }
-                    MangaCache = JSON.parse(data);
+
+                    MangaCache = JSON.parse(data || "{}");
                     resolve(MangaCache);
                 });
             } else {
