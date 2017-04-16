@@ -1,4 +1,4 @@
-<div class="container manga-list">
+<div class="manga-list">
 	<section class="row">
 
 		<h4 class="col s12 m6 l9">
@@ -12,8 +12,8 @@
 		</div>
 
 	</section>
-	<div id="manga-list"  class="row"  data-bind="foreach:filteredManga">
-		<div class="col s12 m4 l3 xl2 manga" data-bind="click:$parent.viewManga">
+	<div id="mangalist" data-bind="foreach:filteredManga">
+		<div class="manga" data-bind="click:$parent.viewManga">
 
 			<div class="manga-content">
 
@@ -22,12 +22,11 @@
 				</div>
 
 				<div class="info">
-
-					<span class="title" data-bind="text:mangaTitle, tooltip:'bottom'"></span>	
-					<i class="material-icons action tooltipped" 
-						data-bind="isFavorite:isFavorite, 
-						click:$parent.toggleFavorites, 
-						clickBubble:false"">star</i>
+					<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>
+					<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
+						<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite, 
+						click:$parent.toggleFavorites">star</i>
+					</button>
 				</div>
 			</div>			
 		</div>		

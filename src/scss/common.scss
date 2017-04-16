@@ -27,3 +27,63 @@ hr {
 .progress{
     margin:0px;
 }
+
+.cbutton {
+    position: relative;
+    display: inline-block;
+    // margin: 1em;
+    padding: 0;
+    border: none;
+    background: none;
+    transition: color 0.7s;
+}
+
+.cbutton.cbutton--click,
+.cbutton:focus {
+    outline: none;
+    color: #fff;
+    background-color: rgba(#fff, 0) !important;
+}
+
+.cbutton__icon {
+    display: block;
+}
+
+.cbutton__text {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cbutton::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -35px 0 0 -35px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+.cbutton--effect-boris::after {
+    background: rgba(#fff,0.3);
+}
+
+.cbutton--effect-boris.cbutton--click::after {
+    animation: anim-effect-boris 0.3s forwards;
+}
+
+@keyframes anim-effect-boris {
+    0% {
+        transform: scale3d(0.3, 0.3, 1);
+    }
+    25%, 50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale3d(1.2, 1.2, 1);
+    }
+}

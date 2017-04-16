@@ -7,7 +7,7 @@
 @import "./topbar.scss";
 
 
-.no-flick{-webkit-transform:translate3d(0,0,0);}
+.no-flick{transform:translate3d(0,0,0);}
 
 #toast-container {
   top: 10% !important;

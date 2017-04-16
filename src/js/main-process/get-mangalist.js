@@ -116,7 +116,7 @@ module.exports = (function() {
             getPageThread.send(input)
 
             getPageThread.once('message', function(pages) {
-                console.log("tread::on - message - get-pages");
+                console.log("tread::onmessage - get-pages");
                 event.sender.send('get-pages-done', pages);
             });
 
@@ -131,7 +131,8 @@ module.exports = (function() {
             let filePath = path.basename(file).toLowerCase();
             let isNotSearched = filePath.indexOf(searchValue) < 0;
             let zipRegex = /(\.zip$)/ig;
-            let isNotSupportedFileFormat = stats.isFile() && !zipRegex.test(path.extname(file));
+            let isNotSupportedFileFormat = stats.isFile() &&
+                !zipRegex.test(path.extname(file));
             return isNotSearched || isNotSupportedFileFormat;
         }
 

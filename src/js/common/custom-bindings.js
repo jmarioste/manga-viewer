@@ -1,11 +1,16 @@
 import ko from "knockout";
 import _ from "lodash";
 
+let onDispose = ko.utils.domNodeDisposal.addDisposeCallback;
 ko.bindingHandlers.toggleNav = {
     init: function(element, valueAccessor) {
         var wrapper = ko.unwrap(valueAccessor());
-        $(element).click(function() {
+        $(element).on('click', function() {
             $(wrapper).toggleClass("show-nav");
+        });
+
+        onDispose(element, function() {
+            $(element).off('click')
         });
     }
 }
@@ -53,6 +58,10 @@ ko.bindingHandlers.tooltip = {
                 selector: 'body',
                 padding: 0
             }
+        });
+
+        onDispose(element, function() {
+            $(element).tooltip('remove')
         });
     }
 }
@@ -116,6 +125,11 @@ ko.bindingHandlers.materialSelect = {
             // console.log("changed", $(element).val());
             searchOption($(element).val());
         })
+
+        onDispose(element, function() {
+            $(element).material_select('destroy')
+            $('.tooltipped').tooltip('remove')
+        });
     },
     update: function(element, valueAccessor, allBindings) {
         let value = ko.unwrap(valueAccessor());
@@ -143,6 +157,26 @@ ko.bindingHandlers.tooltip = {
         $(element).tooltip({
             delay: 50,
             html: text
+        });
+    }
+}
+
+ko.bindingHandlers.singlePulseEffect = {
+    init: function(element, valueAccessor) {
+
+        let $element = $(element);
+        $element.on('click', function() {
+            console.log("single pulse click")
+            $element.addClass('cbutton--click');
+            $element.on('animationend', function() {
+                $element.off('animationend');
+                $element.removeClass('cbutton--click');
+            });
+        })
+
+        onDispose(element, function() {
+            console.log("onDispose", "singlePulseEffect");
+            $element.off("click");
         });
     }
 }

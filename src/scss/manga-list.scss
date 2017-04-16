@@ -1,6 +1,6 @@
 .container.manga-list {
-	width:95%;
-	max-width:100%;
+	width:98%;
+	max-width:98%;
 
 	.progress {
 		transform: translate3d(0, 0, 0);
@@ -20,54 +20,61 @@
 	top:10px;
 }
 
-.row .col.manga{
-
-	margin-bottom:5px;
-	
-	.manga-content{
-		position:relative;
-		.image-container{
-			min-height:330px;
-			display:flex;
-			background-color: rgba(black, .3);
-			align-items:center;
-			.manga-image {
-				width:100%;	
-				max-height:330px;
-				cursor:pointer;
-			}
-		}
+#mangalist {
+	display:flex;
+	flex-wrap:wrap;	
+	justify-content:start;
+	overflow:hidden;
+	align-items:flex-end;
+	.manga{
+		flex-basis:250px;
+		margin: 5px;
+		flex-grow:1;
+		margin-bottom:5px;
 		
-		.info{
-			position:absolute;
-			left: 0px;
-			right: 0px;
-			bottom: 0px;
-			background-color: rgba(black, 0.5);
-			color:#fff;
-			display:flex;
-			align-items:center;
-			height:50px;
-			padding: 0px 5px;
-			// width:100%;
-
-			.title{
-				flex-grow:8;
-				font-size:16px;
-				margin-right:8px;
-				@extend .truncate;
+		.manga-content{
+			position:relative;
+			.image-container{
+				display:flex;
+				background-color: rgba(black, .3);
+				align-items:center;
+				.manga-image {
+					width:100%;	
+					cursor:pointer;
+				}
 			}
-			.action {
-				flex-grow:2;
-				flex-shrink:0;
-				cursor:pointer;				
-				transition: .25s;
-				&:hover{
-					color: $secondary-color;
-					// opacity: 0.5;
+			
+			.info{
+				position:absolute;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
+				background-color: rgba(black, 0.5);
+				color:#fff;
+				display:flex;
+				align-items:center;
+				height:50px;
+				padding: 0px 5px;
+				// width:100%;
+
+				.title{
+					flex-grow:8;
+					font-size:16px;
+					margin-right:8px;
+					@extend .truncate;
+				}
+				.action {
+					flex-grow:2;
+					flex-shrink:0;
+					cursor:pointer;				
+					// transition: .25s;
+					// &:hover{
+					// 	color: $secondary-color;
+					// 	// opacity: 0.5;
+					// }
 				}
 			}
 		}
 	}
-
 }
+	

@@ -1,4 +1,4 @@
-<div class="container manga-list">
+<div class="manga-list">
 	<section class="row">
 		<!-- ko if: selectedDirectory -->
 		<h4 class="col s12 l6 truncate selected-folder">
@@ -33,6 +33,28 @@
 		</div>
 	</section>
 
+	<div id="mangalist" data-bind="foreach:{data:mangas, afterRender: afterRender}">
+		<div class="manga">
+			<div class="manga-content">
+				<div class="image-container">
+					<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >	
+				</div>
+				<div class="info">
+					<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>
+					<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
+						<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite, 
+						click:$parent.toggleFavorites">star</i>
+					</button>	
+					
+				</div>
+			</div>
+
+			
+		</div>
+	</div>
+</div>
+
+<template>
 	<div id="mangalist" class="row" data-bind="foreach:{data:mangas, afterRender: afterRender}">
 		<div class="col s12 m4 l3 xl2 manga">
 			<div class="manga-content">
@@ -50,4 +72,4 @@
 			
 		</div>
 	</div>
-</div>
+</template>
