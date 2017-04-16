@@ -29,6 +29,7 @@ export class FavoritesListViewmodel {
         this.filteredManga = ko.pureComputed(this.filteredManga, this);
 
         this.toggleFavorites = this.toggleFavorites.bind(this);
+        this.viewManga = this.viewManga.bind(this);
         this.initialize();
 
     }
