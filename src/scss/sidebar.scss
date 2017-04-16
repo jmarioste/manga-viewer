@@ -3,7 +3,7 @@ $sidebar-background: #fff;
 .wrapper {
     position: relative;
     overflow: hidden;
-    height: calc(100% - 50px);
+    height: calc(100% - 64px);
     width: 100%;
 }
 .canvas {
@@ -22,15 +22,16 @@ $sidebar-background: #fff;
     z-index: 10;
     display: flex;
     flex-direction: column;
-
+    font-size:13px;
     .collection {
         margin: 0px;
-        border-bottom: 0px !important;
-        border-left: 0px !important;
-        border-right: 0px !important;
+        // border-bottom: 0px !important;
+        // border-left: 0px !important;
+        // border-right: 0px !important;
+        border:0px;
         flex-shrink: 0;
         width: 299px;
-        
+    
         .material-icons {
             line-height: inherit;
         }
@@ -53,24 +54,30 @@ $sidebar-background: #fff;
 .sidebar-favorites.with-header, 
 .sidebar-favorites-manga {
     .collection-item {
-        padding: 10px 5px !important;
+        padding: 10px 16px !important;
     }
 }
 .sidebar-directory {
     flex-shrink: .5;
+    overflow-y: hidden;
+    &:hover{
+        overflow-y:scroll;
+    }
 }
 .sidebar-directory, .sidebar-favorites-items{
     .collection-item {
         transition: .25s;
         cursor: pointer;
+        width:100%;
         &:not(.active):hover {
             background-color: #ddd;
         }
         &.active {
             color: #fff !important;
-            background-color: $primary-color;
         }
-        @extend .grey-text, .text-darken-3;
+        // @extend .grey-text; 
+        color: rgba(black, .54);
+        border-bottom:none !important;
 
     }
 }

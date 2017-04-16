@@ -1,12 +1,3 @@
-.container.manga-list {
-	width:98%;
-	max-width:98%;
-
-	.progress {
-		transform: translate3d(0, 0, 0);
-	}
-}
-
 .bookmark-btn {
 	margin-right:15px;
 }
@@ -19,6 +10,12 @@
 .manga-list .input-field input[type=search] ~ .material-icons{
 	top:10px;
 }
+
+.selected-label{
+	@extend .indigo-text, .text-lighten-2;
+}
+
+
 
 #mangalist {
 	display:flex;
@@ -39,7 +36,7 @@
 				background-color: rgba(black, .3);
 				align-items:center;
 				.manga-image {
-					width:100%;	
+					width:100%;						
 					cursor:pointer;
 				}
 			}
@@ -68,10 +65,10 @@
 					flex-shrink:0;
 					cursor:pointer;				
 					// transition: .25s;
-					// &:hover{
-					// 	color: $secondary-color;
-					// 	// opacity: 0.5;
-					// }
+					&:hover{
+						// color: #304ffe; 
+						// opacity: 0.5;
+					}
 				}
 			}
 		}

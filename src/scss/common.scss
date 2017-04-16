@@ -16,11 +16,11 @@ hr {
 .content {
     z-index: 50;
     overflow: auto;
-    height: 100%;
+    min-height: 100%;
     flex-grow: 1;
     backface-visibility: hidden;
     transition: .3s ease all;
-    background-color: #fff;
+    background-color: #fafafa;
 }
 
 
@@ -30,12 +30,8 @@ hr {
 
 .cbutton {
     position: relative;
-    display: inline-block;
-    // margin: 1em;
-    padding: 0;
     border: none;
     background: none;
-    transition: color 0.7s;
 }
 
 .cbutton.cbutton--click,
@@ -60,15 +56,15 @@ hr {
     position: absolute;
     top: 50%;
     left: 50%;
-    margin: -35px 0 0 -35px;
-    width: 70px;
-    height: 70px;
+    margin: -27px 0 0 -27px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
 }
 .cbutton--effect-boris::after {
-    background: rgba(#fff,0.3);
+    background: rgba(#fff,0.2);
 }
 
 .cbutton--effect-boris.cbutton--click::after {
@@ -84,6 +80,6 @@ hr {
     }
     100% {
         opacity: 0;
-        transform: scale3d(1.2, 1.2, 1);
+        transform: scale3d(1, 1, 1);
     }
 }

@@ -1,9 +1,44 @@
-<div class="topbar indigo darken-2">
-    <i class="material-icons control" data-bind="toggleNav:'.wrapper'">menu</i>
-    <i class="material-icons favorite" data-bind="visibility:!!selectedManga(), isFavorite:isFavorite, click:toggleFavorite">star_border</i>
-    <span class="title-text" >
-    	<span data-bind="text:topBarText"></span>
-    </span>
-    <!-- /ko -->
+<template>
+<div class="topbar">
+	<i class="material-icons control" data-bind="toggleNav:'.wrapper'">menu</i>
+	<i class="material-icons favorite" >star_border</i>
+	<span class="title-text" >
+		<span data-bind="text:topBarText"></span>
+	</span>
+	<!-- /ko -->
 </div>
- 
+</template>
+<nav>
+	<div class="nav-wrapper">
+		
+		<a href="javascript:void(0);" class="">
+			<span>
+				<span data-bind="text:topBarText"></span>
+			</span>
+		</a>
+		<ul class="left">
+			<li>
+				<a href="javascript:void(0);" class="left" data-bind="toggleNav:'.wrapper'">
+					<i class="material-icons">menu</i>
+				</a>
+			</li>
+		</ul>
+		
+		<!-- ko if:selectedManga -->
+		<ul class="right" data-bind="visibility:!!selectedManga()">
+			<li>
+				<a  data-bind="click:toggleFavorite,singlePulseEffect" class="cbutton cbutton--effect-boris">
+					<i class="material-icons cbutton__icon" data-bind="isFavorite:isFavorite">star_border</i>
+				</a>
+			</li>
+		</ul>
+		<!-- /ko -->
+		<!-- <form class="right" data-bind="visibility:!selectedManga()">
+			<div class="input-field ">
+				<input id="search" type="search" placeholder="Search manga..">
+				<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+				<i class="material-icons">close</i>
+			</div>
+		</form> -->
+	</div>
+</nav>
