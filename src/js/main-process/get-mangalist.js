@@ -129,7 +129,7 @@ module.exports = (function() {
 
         function isNotSearched(file, stats) {
             let filePath = path.basename(file).toLowerCase();
-            let isNotSearched = filePath.indexOf(searchValue) < 0;
+            let isNotSearched = stats.isFile() && filePath.indexOf(searchValue) < 0;
             let zipRegex = /(\.zip$)/ig;
             let isNotSupportedFileFormat = stats.isFile() &&
                 !zipRegex.test(path.extname(file));
@@ -156,7 +156,8 @@ module.exports = (function() {
     };
 
     self.getMangas = function getMangas(files) {
-        files = _.slice(files, 0, 50);
+        // files = _.slice(files, 0, 50);
+        console.log(files);
         return files.map(function(filePath) {
             let mangaTitle = path.basename(filePath, ".zip");
             let cacheKey = path.basename(filePath);
