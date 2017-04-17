@@ -1,85 +1,63 @@
-<!-- <div class="manga-list"> -->
-	<section class="row">
-		<!-- ko if: selectedDirectory -->
-		<h4 class="col s12 l6 truncate selected-folder">
-			<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
-				data-bind="click:toggleBookmark">
-				<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
-			</a>
-			<span data-bind="text:selectedDirectoryText"></span>
-		</h4>
-		<!-- /ko -->
-		<!-- ko ifnot: selectedDirectory -->
-		<h4 class="col s12 l9">Manga list</h4>
-		<!-- /ko -->
-		<div class="input-field col s12 m6 l3" >
-			<select data-bind="
-				options:searchOptions,
-				optionsText: 'text',
-				optionsValue: 'value',
-				value: isRecursive,
-				materialSelect:isRecursive">
-			</select>
-			<label>Search and view options</label> 
-		</div>
-		<div class="input-field col s12  m6 l3">
-	          <input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
-	          <label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
-	          <i class="material-icons" data-bind="click:clearSearch">close</i>
-		</div>
-
-		<div class="progress col s12 m12 l12" data-bind="visibility:searching">
-			<div class="indeterminate"></div>
-		</div>
-	</section>
-
-	<div id="mangalist" data-bind="foreach:{data:mangas, afterRender: afterRender}">
-		<div class="manga">
-			<div class="manga-content">
-				<div class="image-container">
-					<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >	
-				</div>
-				<div class="info">
-					<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>
-					<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
-						<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite, 
-						click:$parent.toggleFavorites">star</i>
-					</button>	
-					
-				</div>
-			</div>
-
-			
+<section class="row">
+	<!-- ko if: selectedDirectory -->
+	<h4 class="col s12 l6 truncate selected-folder">
+	<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
+		data-bind="click:toggleBookmark">
+		<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
+	</a>
+	<span data-bind="text:selectedDirectoryText"></span>
+	</h4>
+	<!-- /ko -->
+	<!-- ko ifnot: selectedDirectory -->
+	<h4 class="col s12 l9">Manga list</h4>
+	<!-- /ko -->
+	<div class="input-field col s12 m6 l3" >
+		<select data-bind="
+			options:searchOptions,
+			optionsText: 'text',
+			optionsValue: 'value',
+			value: isRecursive,
+			materialSelect:isRecursive">
+		</select>
+		<label>Search and view options</label>
+	</div>
+	<div class="col s12  m6 l3">
+		<div class="input-field ">
+			<input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
+			<label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
+			<i class="material-icons" data-bind="click:clearSearch">close</i>
 		</div>
 	</div>
-	<div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
-		<div class="col s12 grey-text center-align">
-			<i class="material-icons large">create_new_folder</i>
-			<h5 class="">
-				No mangas found in this folder...
-			</h5>
-			<span> Please, select a new directory by clicking  Select directory on the left. :)</span>	
+	
+	<div class="progress col s12 m12 l12" data-bind="visibility:searching">
+		<div class="indeterminate"></div>
+	</div>
+</section>
+<div id="mangalist" data-bind="foreach:{data:mangas, afterRender: afterRender}">
+	<div class="manga">
+		<div class="manga-content">
+			<div class="image-container">
+				<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >
+			</div>
+			<div class="info">
+				<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>
+				<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
+				<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite,
+				click:$parent.toggleFavorites">star</i>
+				</button>
+				
+			</div>
 		</div>
 		
 	</div>
-<!-- </div> -->
-
-<template>
-	<div id="mangalist" class="row" data-bind="foreach:{data:mangas, afterRender: afterRender}">
-		<div class="col s12 m4 l3 xl2 manga">
-			<div class="manga-content">
-				<div class="image-container">
-					<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >	
-				</div>
-				<div class="info">
-					<span class="title" data-bind="text:titleShort, tooltip:'bottom'"></span>	
-					<i class="material-icons action tooltipped" data-bind="isFavorite:isFavorite, 
-						click:$parent.toggleFavorites, 
-						clickBubble:false"">star</i>
-				</div>
-			</div>
-
-			
-		</div>
+</div>
+<div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
+	<div class="col s12 grey-text center-align">
+		<i class="material-icons large">create_new_folder</i>
+		<h5 class="">
+		No mangas found in this folder...
+		</h5>
+		<span> Please, select a new directory by clicking  Select directory on the left. :)</span>
 	</div>
-</template>
+	
+</div>
