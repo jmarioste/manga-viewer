@@ -176,6 +176,8 @@ ko.bindingHandlers.singlePulseEffect = {
     init: function(element, valueAccessor) {
 
         let $element = $(element);
+        $element.addClass("cbutton cbutton--effect-boris")
+        $element.find("material-icons").addClass("cbutton__icon")
         $element.on('click', function() {
             console.log("single pulse click")
             $element.addClass('cbutton--click');

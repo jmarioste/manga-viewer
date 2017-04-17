@@ -38,14 +38,15 @@ export class ViewMangaViewmodel {
         this.preloadNextPages(1, 2);
         let selected = this.selectedManga();
         selected.pageImages([selected.thumbnail]);
-        let sub = this.command.subscribe(function (command) {
-            switch(command){
-                case ViewMangaCommand.NextPage: this.goNextPage();
+        let sub = this.command.subscribe(function(command) {
+            switch (command) {
+                case ViewMangaCommand.NextPage:
+                    this.goNextPage();
                     break;
-                case ViewMangaCommand.PrevPage: this.goToPreviousPage();
+                case ViewMangaCommand.PrevPage:
+                    this.goToPreviousPage();
                     break;
             };
-
         }, this);
     }
 
@@ -85,7 +86,7 @@ export class ViewMangaViewmodel {
         }
     }
 
-    goToPreviousPage(){
+    goToPreviousPage() {
         let index = this.currentPage();
         let selected = this.selectedManga();
         if (selected && index > 0) {

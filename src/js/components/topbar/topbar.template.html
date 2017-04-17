@@ -25,8 +25,8 @@
 		<!-- ko if:selectedManga -->
 		<ul class="center page-controls">
 			<li>
-				<a href="javascript:void(0);" data-bind="click: goPrevPage">
-					<i class="material-icons">navigate_before</i>
+				<a class="" href="javascript:void(0);" data-bind="click: goPrevPage,singlePulseEffect">
+					<i class="material-icons cbutton__icon">navigate_before</i>
 				</a>
 			</li>
 			<li>
@@ -34,15 +34,15 @@
 				<span data-bind="text:selectedManga().pages"></span>
 			</li>
 			<li>
-				<a href="javascript:void(0);" data-bind="click: goNextPage">
-					<i class="material-icons">navigate_next</i>
+				<a href="javascript:void(0);" data-bind="click: goNextPage, singlePulseEffect">
+					<i class="material-icons cbutton__icon">navigate_next</i>
 				</a>
 			</li>
 		</ul>
 		<ul class="right" data-bind="visibility:!!selectedManga()">
 			<li>
-				<a  data-bind="click:toggleFavorite,singlePulseEffect" class="cbutton cbutton--effect-boris">
-					<i class="material-icons cbutton__icon" data-bind="isFavorite:isFavorite">star_border</i>
+				<a  data-bind="click:toggleFavorite,singlePulseEffect">
+					<i class="material-icons" data-bind="isFavorite:isFavorite">star_border</i>
 				</a>
 			</li>
 		</ul>
