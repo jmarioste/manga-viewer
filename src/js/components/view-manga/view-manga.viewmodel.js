@@ -15,12 +15,14 @@ export class ViewMangaViewmodel {
         let self = this;
         this.subscriptions = [];
         this.selectedManga = params.selectedManga;
+        this.command = params.viewMangaCommand;
+        this.currentPage = params.currentViewMangaPage;
+
         this.option = ko.observable(1);
         this.scrollTopOnClick = ko.observable(true);
 
         this.switchClass = this.switchClass.bind(this);
         this.goNextPage = this.goNextPage.bind(this);
-        this.currentPage = ko.observable(0);
         this.viewOption = ko.pureComputed(this.viewOption, this);
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({
             rateLimit: 50
@@ -35,7 +37,17 @@ export class ViewMangaViewmodel {
         // this.preloadNextPages();
         this.preloadNextPages(1, 2);
         let selected = this.selectedManga();
-        selected.pageImages([selected.thumbnail])
+        selected.pageImages([selected.thumbnail]);
+        let sub = this.command.subscribe(function(command) {
+            switch (command) {
+                case ViewMangaCommand.NextPage:
+                    this.goNextPage();
+                    break;
+                case ViewMangaCommand.PrevPage:
+                    this.goToPreviousPage();
+                    break;
+            };
+        }, this);
     }
 
     dispose() {
@@ -59,7 +71,7 @@ export class ViewMangaViewmodel {
         //TODO: Return Logic for execeeding last page.
         let index = this.currentPage();
         let selected = this.selectedManga();
-        if (selected) {
+        if (selected && index < selected.pages - 1) {
 
             let lastIndex = selected.pageImages().length - 1;
             if (lastIndex - this.currentPage() <= 3) {
@@ -72,7 +84,14 @@ export class ViewMangaViewmodel {
             }
 
         }
+    }
 
+    goToPreviousPage() {
+        let index = this.currentPage();
+        let selected = this.selectedManga();
+        if (selected && index > 0) {
+            this.currentPage(index - 1);
+        }
     }
 
     currentImage() {
@@ -90,7 +109,7 @@ export class ViewMangaViewmodel {
         let selected = this.selectedManga();
         if (selected) {
             start = start || selected.pageImages().length;
-            end = end || this.currentPage() + 3;
+            end = end || Math.max(this.currentPage() + 3, selected.pages);
             console.log("pages", this.currentPage(), start, end);
             return api.getPages(start, end, selected.folderPath)
                 .then(function(pages) {
@@ -127,4 +146,8 @@ export class ViewMangaViewmodel {
     }
 }
 
+export const ViewMangaCommand = {
+    NextPage: 1,
+    PrevPage: 2
+}
 ViewMangaViewmodel.registerComponent();

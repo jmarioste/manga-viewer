@@ -1,37 +1,39 @@
 <!DOCTYPE html>
 <html id="html-top">
     <head>
-        <meta charset="UTF-8">        
+        <meta charset="UTF-8">
         <title data-bind="text:appTitle"></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <base href="./">
         <script>
-        // You can also require other files to run in this process        
+        // You can also require other files to run in this process
         require("./dist/app-bundle.js");
         </script>
     </head>
-    <body >        
+    <body >
         <topbar params="selectedManga:selectedManga,
             favorites: favorites,
             currentPage: currentPage,
-            appTitle:appTitle">
-            
+            appTitle:appTitle,
+            currentViewMangaPage: currentViewMangaPage,
+            viewMangaCommand: viewMangaCommand">
+
         </topbar>
         <div class="wrapper show-nav">
-            
+
             <div class="canvas ">
 
                 <sidebar params="currentFolder: currentFolder,
                 selectedDirectory: selectedDirectory,
                 bookmarks:bookmarks,
-                currentPage: currentPage">                
+                currentPage: currentPage">
                 </sidebar>
-                
-                <div class="content" data-bind="template:currentPage()">                    
+
+                <div class="content" data-bind="template:currentPage()">
                 </div>
             </div>
         </div>
-        
+
     </body>
 
     <template id="manga-list-view">
@@ -48,17 +50,16 @@
     <template id="favorites-list-view">
         <favorites-list params="favorites:favorites,
             selectedManga:selectedManga,
-            currentPage: currentPage">                    
+            currentPage: currentPage">
         </favorites-list>
     </template>
     <template id="view-manga-view">
     <!-- ko component: {name: 'view-manga', params:{
         favorites:favorites,
-        selectedManga:selectedManga
+        selectedManga:selectedManga,
+        currentViewMangaPage: currentViewMangaPage,
+        viewMangaCommand: viewMangaCommand
     }} -->
     <!-- /ko -->
-<!--         params="favorites:favorites,
-            selectedManga:selectedManga">                    
-        </view-manga> -->
     </template>
 </html>

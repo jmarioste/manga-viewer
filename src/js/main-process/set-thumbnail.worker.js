@@ -28,7 +28,7 @@ module.exports = function(input, done) {
                     //find first image as thumbnail.
                     let sorted = _.sortBy(zip.getEntries(), 'name');
                     let entry = sorted.find(function(entry) {
-                        let imageRegex = /(\.jpg$|\.png$)/;
+                        let imageRegex = /(\.jpg$|\.png$)/ig;
                         return imageRegex.test(path.extname(entry.name))
                     });
                     if (entry) {

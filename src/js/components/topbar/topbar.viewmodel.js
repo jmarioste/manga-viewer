@@ -4,7 +4,7 @@ import $ from "jquery";
 
 import api from "js/common/api.js";
 import template from "./topbar.template.html";
-
+import {ViewMangaCommand} from "js/components";
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {
@@ -16,10 +16,14 @@ export class TopBarViewmodel {
         this.favorites = params.favorites;
         this.currentPage = params.currentPage;
         this.appTitle = params.appTitle;
+        this.currentViewMangaPage = params.currentViewMangaPage;
+        this.viewMangaCommand = params.viewMangaCommand;
         this.mangaTitle = ko.pureComputed(this.mangaTitle, this);
         this.isFavorite = ko.pureComputed(this.isFavorite, this);
         this.topBarText = ko.pureComputed(this.topBarText, this);
         this.showSidebar = ko.observable();
+        this.goNextPage = this.goNextPage.bind(this);
+        this.goPrevPage = this.goPrevPage.bind(this);
         console.log("TopBarViewmodel::constructor - end", this.currentPage());
     }
 
@@ -41,6 +45,7 @@ export class TopBarViewmodel {
             return "";
         }
     }
+
     toggleFavorite() {
         let manga = this.selectedManga();
         manga.isFavorite(!manga.isFavorite());
@@ -50,6 +55,7 @@ export class TopBarViewmodel {
             this.favorites.remove(manga.folderPath);
         }
     }
+
     isFavorite() {
         let manga = this.selectedManga();
         if (manga) {
@@ -60,6 +66,13 @@ export class TopBarViewmodel {
 
     }
 
+    goNextPage(){
+        this.viewMangaCommand(ViewMangaCommand.NextPage);
+    }
+
+    goPrevPage(){
+        this.viewMangaCommand(ViewMangaCommand.PrevPage);
+    }
     topBarText() {
         if (this.selectedManga()) {
             return this.selectedManga().mangaTitle;
