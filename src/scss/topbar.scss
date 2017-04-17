@@ -5,7 +5,7 @@
   font-size: 24px;
   display: flex;
   align-items:center;
-  
+
 }
 .topbar {
 	.title-text{
@@ -15,10 +15,18 @@
 		line-height:0px;
 		cursor: pointer;
 		// font-size: 42px;
-	}	
+	}
 	.favorite{
 		line-height:0px;
 		cursor: pointer;
 		// font-size: 30px;
 	}
+}
+
+.center.page-controls{
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
+    left: 50%;
+    transform: translateX(-50%);
 }

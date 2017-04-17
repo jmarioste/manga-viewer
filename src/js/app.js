@@ -12,7 +12,7 @@ import {
     MangaListViewmodel,
     FavoritesListViewmodel,
     ViewMangaViewmodel
-} from "js/components/components.js";
+} from "js/components";
 
 
 $(document).ready(function() {

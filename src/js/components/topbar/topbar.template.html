@@ -10,7 +10,6 @@
 </template>
 <nav>
 	<div class="nav-wrapper">
-		
 		<a href="javascript:void(0);" class="">
 			<span>
 				<span data-bind="text:topBarText"></span>
@@ -23,8 +22,23 @@
 				</a>
 			</li>
 		</ul>
-		
 		<!-- ko if:selectedManga -->
+		<ul class="center page-controls">
+			<li>
+				<a href="javascript:void(0);" data-bind="click: goPrevPage">
+					<i class="material-icons">navigate_before</i>
+				</a>
+			</li>
+			<li>
+				<span data-bind="text:currentViewMangaPage() + 1"></span> /
+				<span data-bind="text:selectedManga().pages"></span>
+			</li>
+			<li>
+				<a href="javascript:void(0);" data-bind="click: goNextPage">
+					<i class="material-icons">navigate_next</i>
+				</a>
+			</li>
+		</ul>
 		<ul class="right" data-bind="visibility:!!selectedManga()">
 			<li>
 				<a  data-bind="click:toggleFavorite,singlePulseEffect" class="cbutton cbutton--effect-boris">
@@ -34,11 +48,11 @@
 		</ul>
 		<!-- /ko -->
 		<!-- <form class="right" data-bind="visibility:!selectedManga()">
-			<div class="input-field ">
-				<input id="search" type="search" placeholder="Search manga..">
-				<label class="label-icon" for="search"><i class="material-icons">search</i></label>
-				<i class="material-icons">close</i>
-			</div>
+				<div class="input-field ">
+						<input id="search" type="search" placeholder="Search manga..">
+						<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+						<i class="material-icons">close</i>
+				</div>
 		</form> -->
 	</div>
 </nav>
