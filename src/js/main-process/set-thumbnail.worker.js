@@ -1,9 +1,9 @@
+const path = require('path');
+const _ = require('lodash');
+const Zip = require('adm-zip');
+const Promise = require('bluebird');
+const sharp = require('sharp');
 module.exports = function(input, done) {
-    const path = require('path');
-    const _ = require('lodash');
-    const Zip = require('adm-zip');
-    const Promise = require('bluebird');
-
     let MangaCache = input.cache;
     let mangas = input.mangas;
     let cwd = input.cwd;
@@ -21,7 +21,7 @@ module.exports = function(input, done) {
                 } catch (e) {
                     console.log(e, filePath);
                     manga.thumbnail = "";
-                    resolve(manga);
+                    resolve(null);
                 }
 
                 if (zip) {
@@ -29,17 +29,26 @@ module.exports = function(input, done) {
                     let sorted = _.sortBy(zip.getEntries(), 'name');
                     let entry = sorted.find(function(entry) {
                         let imageRegex = /(\.jpg$|\.png$)/ig;
-                        return imageRegex.test(path.extname(entry.name))
+                        let buffer = entry.getData();
+                        return imageRegex.test(path.extname(entry.name)) && buffer.byteLength > 50000;
                     });
                     if (entry) {
-                        let extractTo = path.join(cwd, "thumbnail", mangaTitle);
-                        zip.extractEntryTo(entry, extractTo, false, true);
-
-                        MangaCache[mangaTitle] = manga;
-
-                        manga.thumbnail = path.join(extractTo, entry.name);
-                        manga.pages = sorted.length;
-                        resolve(manga);
+                        let buffer = entry.getData();
+                        console.log("size", buffer.byteLength);
+                        sharp(buffer)
+                            .resize(250, null)
+                            .png()
+                            .toBuffer()
+                            .then(function(data) {
+                                MangaCache[mangaTitle] = manga;
+                                let base64 = data.toString('base64');
+                                manga.thumbnail = `data:image/png;base64, ${base64}`;
+                                manga.pages = sorted.length;
+                                resolve(manga)
+                            }).catch(function(e) {
+                                console.log(e);
+                                resolve(null);
+                            });
                     } else {
                         resolve(null)
                     }
@@ -58,7 +67,7 @@ module.exports = function(input, done) {
             return !!manga.thumbnail;
         });
 
-        console.log(mangas);
+        // console.log(mangas);
         done({
             MangaCache,
             mangas

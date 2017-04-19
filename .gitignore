@@ -7,3 +7,5 @@ thumbnail
 thumbnails.json
 *.bak
 manga-db.json
+*.log
+*.gypi

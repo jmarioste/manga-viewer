@@ -73,7 +73,15 @@ app.on('activate', function() {
 })
 
 
+app.on('before-quit`', function() {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    getMangaList.saveMangaCache().then(function() {
+        mainWindow = null
+    });
 
+})
 
 
 // In this file you can include the rest of your app's specific main process

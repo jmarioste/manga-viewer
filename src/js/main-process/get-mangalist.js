@@ -156,7 +156,7 @@ module.exports = (function() {
     };
 
     self.getMangas = function getMangas(files) {
-        // files = _.slice(files, 0, 50);
+        files = _.slice(files, 0, 50);
         console.log(files);
         return files.map(function(filePath) {
             let mangaTitle = path.basename(filePath, ".zip");
@@ -196,7 +196,7 @@ module.exports = (function() {
     self.saveMangaCache = function saveMangaCache() {
         let savePath = path.resolve(process.cwd(), "manga-db.json");
         let data = JSON.stringify(MangaCache, null, 4);
-        console.log(data);
+        // console.log(data);
         return new Promise(function(resovle, reject) {
             console.log("get-mangalist::saveMangaCache - saving to ", savePath);
             fs.writeFile(savePath, data, "utf-8", function(err, data) {

@@ -24,6 +24,7 @@
     "bootstrap-sass": "3.3.7",
     "css-loader": "0.28.0",
     "electron": "~1.6.2",
+    "electron-rebuild": "1.5.7",
     "file-loader": "0.11.1",
     "font-awesome": "4.7.0",
     "font-awesome-webpack-sass": "0.0.3",
@@ -50,6 +51,7 @@
     "output-file": "1.1.1",
     "recursive-readdir": "^2.1.1",
     "roboto-fontface": "0.7.0",
+    "sharp": "0.17.3",
     "threads": "0.7.2"
   }
 }
