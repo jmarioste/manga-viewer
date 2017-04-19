@@ -33,7 +33,8 @@
 		<div class="indeterminate"></div>
 	</div>
 </section>
-<div id="mangalist" data-bind="foreach:{data:mangas, afterRender: afterRender}">
+<div id="mangalist" data-bind="">
+	<!-- ko foreach:{data:mangas, afterRender: afterRender}  -->
 	<div class="manga">
 		<div class="manga-content">
 			<div class="image-container">
@@ -50,7 +51,12 @@
 		</div>
 		
 	</div>
+	<!-- /ko -->
+	<div class="extra">
+		
+	</div>
 </div>
+
 <div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
 	<div class="col s12 grey-text center-align">
 		<i class="material-icons large">create_new_folder</i>

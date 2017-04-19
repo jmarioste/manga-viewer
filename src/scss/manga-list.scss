@@ -22,7 +22,12 @@
 	flex-wrap:wrap;	
 	justify-content:start;
 	overflow:hidden;
-	align-items:flex-end;
+	align-items:stretch;
+	.extra {
+		flex-basis:250px;
+		flex-grow:100;
+		flex-shrink:1;
+	}
 	.manga{
 		flex-basis:250px;
 		margin: 5px;
@@ -31,6 +36,7 @@
 		
 		.manga-content{
 			position:relative;
+			height:100%;
 			.image-container{
 				display:flex;
 				background-color: rgba(black, .3);

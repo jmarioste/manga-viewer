@@ -12,7 +12,8 @@
 		</div>
 
 	</section>
-	<div id="mangalist" data-bind="foreach:filteredManga">
+	<div id="mangalist">
+		<!-- ko foreach:data:filteredManga  -->
 		<div class="manga" data-bind="click:$parent.viewManga">
 
 			<div class="manga-content">
@@ -28,7 +29,11 @@
 					</button>
 				</div>
 			</div>			
-		</div>		
+		</div>
+		<!-- /ko  -->
+		<div class="extra">
+		
+		</div>	
 	</div>
 </div>
 
