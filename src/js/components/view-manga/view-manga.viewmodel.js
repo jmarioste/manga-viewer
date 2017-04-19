@@ -48,6 +48,7 @@ export class ViewMangaViewmodel {
                     break;
             };
         }, this);
+        this.subscriptions.push(sub);
     }
 
     dispose() {
