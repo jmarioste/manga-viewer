@@ -27,6 +27,24 @@ export class ViewMangaViewmodel {
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({
             rateLimit: 50
         });
+        this.page = ko.observable(1);
+        this.transformScale = ko.observable(1.0);
+        this.viewOptions = ko.observableArray([{
+            value: ViewOptions.FitToWidth,
+            icon: "fullscreen"
+        }, {
+            value: ViewOptions.FitToHeight,
+            icon: "fullscreen_exit"
+        }, {
+            value: ViewOptions.ZoomIn,
+            icon: "add"
+        }, {
+            value: ViewOptions.Default,
+            icon: "refresh"
+        }, {
+            value: ViewOptions.ZoomOut,
+            icon: "remove"
+        }])
 
         console.log("ViewMangaViewModel::constructor - end", this.selectedManga());
         this.initialize();
@@ -59,12 +77,32 @@ export class ViewMangaViewmodel {
         this.currentPage(0);
     }
 
-    switchClass() {
+    switchClass(viewOption) {
         let last = this.option();
-        if (last < 3) {
-            this.option(last + 1);
-        } else {
-            this.option(0);
+        this.option(viewOption.value);
+
+        switch (viewOption.value) {
+            case ViewOptions.Normal:
+                this.transformScale(1.0);
+                break;
+            case ViewOptions.FitToWidth:
+                this.transformScale(1.0);
+                break;
+            case ViewOptions.FitToHeight:
+                this.transformScale(1.0);
+                break;
+            case ViewOptions.ZoomIn:
+                let zoomInScale = Math.min(this.transformScale() + .20, 2.0);
+                this.transformScale(zoomInScale);
+                break;
+            case ViewOptions.ZoomOut:
+                let zoomOutScale = Math.max(this.transformScale() - .20, 0.5);
+                console.log(zoomOutScale);
+                this.transformScale(zoomOutScale);
+                break;
+            default:
+                this.transformScale(1.0);
+                break;
         }
     }
 
@@ -110,7 +148,7 @@ export class ViewMangaViewmodel {
         let selected = this.selectedManga();
         if (selected) {
             start = start || selected.pageImages().length;
-            end = end || Math.max(this.currentPage() + 3, selected.pages);
+            end = end || Math.min(this.currentPage() + 3, selected.pages);
             console.log("pages", this.currentPage(), start, end);
             return api.getPages(start, end, selected.folderPath)
                 .then(function(pages) {
@@ -124,18 +162,19 @@ export class ViewMangaViewmodel {
 
     viewOption() {
         switch (this.option()) {
-            case 0:
+            case ViewOptions.Normal:
+
                 return "normal";
-                break;
-            case 1:
+            case ViewOptions.FitToWidth:
                 return "fit-width";
-            case 2:
+            case ViewOptions.FitToHeight:
                 return "fit-height";
-            case 3:
-                return "zoom";
+            case ViewOptions.ZoomIn:
+                return "zoom-in";
+            case ViewOptions.ZoomOut:
+                return "zoom-out";
             default:
                 return "normal";
-                break;
         }
     }
     static registerComponent() {
@@ -150,5 +189,14 @@ export class ViewMangaViewmodel {
 export const ViewMangaCommand = {
     NextPage: 1,
     PrevPage: 2
-}
+};
+
+export const ViewOptions = {
+    FitToWidth: 1,
+    FitToHeight: 2,
+    ZoomOut: 4,
+    Default: 0,
+    ZoomIn: 3
+};
+
 ViewMangaViewmodel.registerComponent();

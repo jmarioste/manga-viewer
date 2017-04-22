@@ -59,7 +59,22 @@ ko.bindingHandlers.scroll = {
     }
 }
 
+ko.bindingHandlers.scrollEnd = {
+    init: function(element, valueAccessor) {
 
+        let observable = valueAccessor();
+
+        $(element).on('scroll', function() {
+            let scrollTop = $(element).scrollTop() //how much has been scrolled
+            let height = $(element).innerHeight() // inner height of the element
+            let scrollHeight = element.scrollHeight;
+            if (scrollTop + height >= scrollHeight) {
+                console.log(scrollTop, height, scrollHeight);
+                observable(observable() + 1);
+            }
+        })
+    }
+}
 
 ko.bindingHandlers.tooltip = {
     init: function(element, valueAccessor) {
@@ -194,13 +209,9 @@ ko.bindingHandlers.singlePulseEffect = {
     }
 }
 
-// ko.bindingHandlers.scrollTopOnClick = {
-//     update: function(element, valueAccessor, allBindngs) {
-//         $(element).click(function(event) {
-//             let isTrue = !!ko.unwrap(valueAccessor());
-//             if (isTrue) {
-//                 $(".content").scrollTop(0);
-//             }
-//         })
-//     }
-// }
+ko.bindingHandlers.scale = {
+    update: function(element, valueAccessor, allBindings) {
+        let scale = ko.unwrap(valueAccessor());
+        $(element).css('transform', `scale(${scale})`);
+    }
+}

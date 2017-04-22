@@ -18,7 +18,10 @@ export default class ViewModel {
         this.favorites = ko.observableArray(params.favorites);
         this.selectedManga = ko.observable(null);
         this.currentViewMangaPage = ko.observable(0);
-        this.viewMangaCommand = ko.observable(null).extend({notify:'always'});
+        this.viewMangaCommand = ko.observable(null).extend({
+            notify: 'always'
+        });
+        this.pagination = ko.observable(0);
 
         this.bookmarks = ko.observableArray(_.map(params.bookmarks, function(folderPath) {
             let folderName = path.basename(folderPath);

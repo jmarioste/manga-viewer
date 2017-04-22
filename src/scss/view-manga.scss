@@ -17,10 +17,18 @@
 	&.normal {		
 		
 	}
-	&.zoom {
+	&.zoom-in {
 		.manga-page{
-			transform:scale(2);
-			transform-origin: top center;
+			// transform:scale(2);
+			margin:0;
+			transform-origin: top left;
+		}
+	}
+	&.zoom-out {
+		.manga-page{
+			// transform:scale(.75);
+			margin:0 auto;
+			transform-origin: top left;
 		}
 	}
 }
@@ -30,4 +38,23 @@
 	margin:0 auto;
 	display:block;
 	// transition:.25s;
+}
+
+.view-controls{
+	// background-color: rgba(black, .5);
+	position: fixed;
+	right:50px;
+	bottom: 50px;
+	opacity: 0;
+	transition: .25s;
+	&:hover{
+		opacity:1;
+	}
+	.stuff {
+		display: flex;
+		flex-direction:column;
+		.btn {
+			margin:5px 10px;
+		}
+	}
 }

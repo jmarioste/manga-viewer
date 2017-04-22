@@ -1,5 +1,15 @@
 <div class="view-manga single-page" data-bind="css:viewOption">
 	<img class="manga-page" data-bind="src: $component.currentImage, 
 	click:$component.goNextPage, 
-	scrollTopOnClick:scrollTopOnClick" align="top">
+	scrollTopOnClick:scrollTopOnClick,
+	scale:transformScale" align="top">
+
+	<div class="view-controls">
+		<div class="stuff" data-bind="foreach:viewOptions">
+			<a class="btn btn-floating  waves-effect waves-light" data-bind="click:$component.switchClass, clickBubble:false">
+				<i class="material-icons" data-bind="text:icon"></i>
+			</a>
+		</div>
+		
+	</div>
 </div>
