@@ -15,12 +15,13 @@ hr {
 }
 .content {
     z-index: 50;
-    overflow: auto;
+    // overflow: auto;
     min-height: 100%;
     flex-grow: 1;
     backface-visibility: hidden;
     transition: .3s ease all;
     background-color: #fafafa;
+    position:relative;
 }
 
 

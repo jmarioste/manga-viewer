@@ -41,12 +41,13 @@ ko.bindingHandlers.active = {
 }
 
 ko.bindingHandlers.scroll = {
-    init: function(element, valueAccessor) {
+    init: function(element, valueAccessor, allBindings) {
+        let options = ko.unwrap(valueAccessor());
         $(element).css({
             height: `${$(element).outerHeight()}px`,
         });
 
-        Ps.initialize(element);
+        Ps.initialize(element, options);
         onDispose(element, function() {
             Ps.destroy(element);
         })

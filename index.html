@@ -30,7 +30,7 @@
                 currentPage: currentPage">
                 </sidebar>
 
-                <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd">
+                <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}">
                 </div>
             </div>
         </div>

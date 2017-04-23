@@ -1,7 +1,7 @@
 import ko from "knockout";
 import _ from "lodash";
 import $ from "jquery";
-
+import Ps from "perfect-scrollbar";
 import api from "js/common/api.js";
 import MangaFactory from "js/common/manga.factory.js";
 import template from "./manga-list.template.html";
@@ -140,7 +140,7 @@ export class MangaListViewmodel {
     }
 
     afterRender(element, data) {
-
+        // Ps.update($(".content")[0]);
     }
     selectedDirectoryText() {
         return this.selectedDirectory() ? this.selectedDirectory().folderName : "";
