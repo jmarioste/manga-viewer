@@ -37,16 +37,21 @@ export class FavoritesListViewmodel {
     // methods
     initialize() {
         var self = this;
-        api.getFavorites(this.favorites()).then(function(mangas) {
-            console.log(mangas);
-            let favoritesManga = mangas.map(function(manga) {
+        api.getFavorites(this.favorites());
+
+        ipc.on('get-favorites-list-progress', function(event, manga) {
+            if (manga) {
                 manga.isFavorite = true;
-                return self.mangaFactory.getManga(manga);
-            });
+                // let favoritesManga = self.favoritesManga();
+                manga = self.mangaFactory.getManga(manga);
+                self.favoritesManga.push(manga);
+                // self.mangas.valueHasMutated();
+            }
+        });
 
-            self.favoritesManga(favoritesManga);
-        })
-
+        ipc.on('get-favorites-list-done', function() {
+            console.log("this.favoritesManga.length", self.favoritesManga().length);
+        });
     }
 
     dispose() {

@@ -13,34 +13,17 @@ export default class MangaFactory {
         return instance;
     }
 
-    getManga({
-        mangaTitle,
-        folderPath,
-        isFavorite,
-        thumbnail,
-        pages
-    }) {
-        if (!folderPath) {
+    getManga(params) {
+        if (!params.folderPath) {
             console.err("MangaFactory::getManga - folderPath is null");
             return;
         }
 
-        let cached = cache[mangaTitle];
+        let cached = cache[params.mangaTitle];
 
         if (_(cached).isNil()) {
-            console.log("MangaFactory::getManga - pages", pages);
-
-            cache[mangaTitle] = new Manga({
-                mangaTitle,
-                folderPath,
-                isFavorite,
-                thumbnail,
-                pages
-            });
-        } else {
-            // console.info("MangaFactory::geManga - returning a cached instance for ", mangaTitle);
+            cache[params.mangaTitle] = new Manga(params);
         }
-
-        return cache[mangaTitle];
+        return cache[params.mangaTitle];
     }
 }

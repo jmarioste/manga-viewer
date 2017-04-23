@@ -3,17 +3,21 @@ const _ = require('lodash');
 const Zip = require('adm-zip');
 const Promise = require('bluebird');
 const sharp = require('sharp');
-module.exports = function(input, done) {
-    let MangaCache = input.cache;
+3
+
+module.exports = function(input, done, progress) {
     let mangas = input.mangas;
-    let cwd = input.cwd;
     //get
     function setThumbnail(manga) {
         let filePath = manga.folderPath;
+
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
-            if (MangaCache[mangaTitle] && MangaCache[mangaTitle].thumbnail) {
+            // console.log(manga.titleShort, "hasThumbnail", !!manga.thumbnail);
+
+            if (manga.thumbnail) {
                 resolve(manga);
+                progress(manga);
             } else {
                 let zip = {};
                 try {
@@ -21,7 +25,7 @@ module.exports = function(input, done) {
                 } catch (e) {
                     console.log(e, filePath);
                     manga.thumbnail = "";
-                    resolve(null);
+                    resolve(e);
                 }
 
                 if (zip) {
@@ -34,26 +38,28 @@ module.exports = function(input, done) {
                     });
                     if (entry) {
                         let buffer = entry.getData();
-                        console.log("size", buffer.byteLength);
+                        // console.log("size", buffer.byteLength, filePath);
                         sharp(buffer)
                             .resize(250, null)
                             .png()
                             .toBuffer()
                             .then(function(data) {
-                                MangaCache[mangaTitle] = manga;
                                 let base64 = data.toString('base64');
                                 manga.thumbnail = `data:image/png;base64, ${base64}`;
                                 manga.pages = sorted.length;
-                                resolve(manga)
+                                resolve(manga);
+                                progress(manga);
                             }).catch(function(e) {
                                 console.log(e);
                                 resolve(null);
                             });
                     } else {
-                        resolve(null)
+                        console.log("no entry", mangaTitle);
+                        resolve(manga);
                     }
-
-
+                } else {
+                    console.log("no zip", mangaTitle);
+                    resolve(manga);
                 }
             }
 
@@ -63,16 +69,11 @@ module.exports = function(input, done) {
 
     Promise.each(mangas, setThumbnail).then(function(mangas) {
 
-        mangas = _.filter(mangas, function(manga) {
-            return !!manga.thumbnail;
-        });
-
-        // console.log(mangas);
-        done({
-            MangaCache,
-            mangas
-        });
-    }, function(err) {
+        console.log("set-thumbnail.worker.js::all promise done");
+        done();
+    }).catch(function(err) {
+        console.log("set-thumbnail.worker.js - fail");
         console.log(err);
+        done();
     });
 }

@@ -1,13 +1,14 @@
-module.exports = function(input, done) {
-    const _ = require('lodash');
-    const Zip = require('adm-zip');
-    const Promise = require('bluebird');
+const _ = require('lodash');
+const Zip = require('adm-zip');
+const Promise = require('bluebird');
+const sharp = require('sharp');
 
+module.exports = function(input, done) {
 
     let filePath = input.folderPath;
     let start = input.start;
     let end = input.end
-    console.log("get-pages-thread", filePath, start);
+    console.log("get-pages-thread", filePath, start, end);
     let zip = new Zip(filePath);
     let entries = _(zip.getEntries()).sortBy('name').slice(start, end).value();
 

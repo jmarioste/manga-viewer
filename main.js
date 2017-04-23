@@ -36,17 +36,15 @@ function createWindow() {
     }))
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
     mainWindow.maximize();
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        getMangaList.saveMangaCache().then(function() {
-            mainWindow = null
-        });
-
+        getMangaList.saveMangaCache();
+        mainWindow = null
     })
 }
 
@@ -70,17 +68,6 @@ app.on('activate', function() {
     if (mainWindow === null) {
         createWindow()
     }
-})
-
-
-app.on('before-quit`', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    getMangaList.saveMangaCache().then(function() {
-        mainWindow = null
-    });
-
 })
 
 

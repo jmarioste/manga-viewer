@@ -21,13 +21,15 @@ export class MangaListViewmodel {
         this.isInitialize = params.isInitialize;
         this.currentPage = params.currentPage;
         this.selectedManga = params.selectedManga;
-
+        this.pagination = params.pagination;
+        this.scrollEnd = params.scrollEnd;
+        this.searching = params.searching;
         this.searchValue = ko.observable("");
         this.mangas = ko.observableArray([]);
-        this.searching = ko.observable(false);
+
         this.mangaFactory = new MangaFactory();
         this.showGuide = ko.observable(false);
-
+        this.totalMangaSearched = ko.observable(0);
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleFavorites = this.toggleFavorites.bind(this);
@@ -37,7 +39,6 @@ export class MangaListViewmodel {
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
 
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
-
         this.searchOptions = ko.observableArray([{
             value: "non-recursive",
             text: "Current folder"
@@ -49,7 +50,6 @@ export class MangaListViewmodel {
             rateLimit: 50
         });
         this.requesting = null;
-        // this.initialize();
 
         this.initialize();
         console.log("MangaListViewmodel::constructor - end");
@@ -57,6 +57,7 @@ export class MangaListViewmodel {
 
     // methods
     initialize() {
+        var self = this;
         console.log("MangaListViewmodel::initialize - ");
         let computed = ko.computed(function function_name(argument) {
             let value = this.searchValue().toLowerCase();
@@ -65,18 +66,11 @@ export class MangaListViewmodel {
             if (!this.requesting && selected) {
                 console.log("MangaListViewmodel::computed");
                 let path = selected.folderPath;
-                this.requesting = api.getMangaList(path, isRecursive, value);
+                api.getMangaList(path, isRecursive, value, 0);
+                this.requesting = true;
                 this.searching(true);
-                this.requesting.then(data => {
-                    let mangas = data.mangas.map((manga) => {
-                        manga.isFavorite = _.includes(this.favorites(), manga.folderPath);
-                        return this.mangaFactory.getManga(manga);
-                    });
-                    this.mangas(_.sortBy(mangas, 'mangaTitle'));
-                    this.searching(false);
-                    this.showGuide(mangas.length <= 0);
-                    this.requesting = null;
-                });
+                this.mangas([]);
+                this.pagination(0);
             }
 
         }, this).extend({
@@ -87,13 +81,54 @@ export class MangaListViewmodel {
             this.searchValue("");
         }, this);
 
+        let sub3 = this.scrollEnd.subscribe(function(scrollEnd) {
+            console.log("scrollEnd", scrollEnd);
+            if (scrollEnd && !this.requesting) {
+                this.pagination(this.pagination() + 1);
+            }
+        }, this);
+        let sub2 = this.pagination.subscribe(function(pagination) {
+            console.log("pagination updated");
+            let value = this.searchValue().toLowerCase();
+            let selected = this.selectedDirectory();
+            let isRecursive = this.isRecursive() == "recursive";
+
+            if (!this.requesting && selected) {
+                console.log("MangaListViewmodel::pagination changed", pagination);
+                let path = selected.folderPath;
+                api.getMangaList(path, isRecursive, value, pagination);
+                this.requesting = true;
+                this.searching(true);
+                this.scrollEnd(false);
+            }
+        }, this);
+
+        ipc.on('get-manga-list-progress', function(event, manga) {
+            if (manga) {
+                manga.isFavorite = _.includes(self.favorites(), manga.folderPath);
+                let mangas = self.mangas();
+                manga = self.mangaFactory.getManga(manga);
+                self.mangas.push(manga);
+                // self.mangas.valueHasMutated();
+            }
+        });
+
+        ipc.on('get-manga-list-done', function() {
+            self.requesting = false;
+            self.searching(false);
+            self.isInitialize(true);
+            console.log("this.mangas.length", self.mangas().length);
+        });
         this.subscriptions.push(computed);
         this.subscriptions.push(sub);
+        this.subscriptions.push(sub2);
+        this.subscriptions.push(sub3);
     }
 
     dispose() {
         console.log("MangaListViewmodel::dispose")
         this.subscriptions.forEach(sub => sub.dispose());
+        ipc.removeAllListeners(['get-manga-list-progress', 'get-manga-list-done']);
     }
 
     clearSearch() {
@@ -101,10 +136,6 @@ export class MangaListViewmodel {
     }
 
     afterRender(element, data) {
-        if (_.last(this.mangas()) == data) {
-            console.log("MangaListViewmodel::afterRender");
-            this.isInitialize(true);
-        }
 
     }
     selectedDirectoryText() {

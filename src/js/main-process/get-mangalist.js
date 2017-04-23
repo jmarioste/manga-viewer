@@ -8,20 +8,19 @@ const recursive = require('recursive-readdir');
 const threads = require('threads');
 const spawn = threads.spawn;
 
-
+global.MangaCache = {};
 
 module.exports = (function() {
     let self = {};
-    let MangaCache = {};
     threads.config.set({
         basepath: {
             node: __dirname
         }
     });
 
-    let thread = spawn("./set-thumbnail.worker.js");
+    let thread;
     let getPageThread = spawn("./get-manga-pages.worker.js");
-
+    let favoritesThread;
     self.initializeEvents = function() {
         self.initializeGetSubFolder();
         self.initializeGetMangaList();
@@ -58,54 +57,85 @@ module.exports = (function() {
     }
 
     self.initializeGetMangaList = function() {
+        let processing = false;
         ipc.on('get-manga-list', function(event, data) {
-
+            if (processing) {
+                return;
+            }
+            processing = true;
+            console.log("get-mangalist.js::ipc.on::get-manga-list");
             let rootFolder = data.rootFolder;
             let searchValue = data.searchValue;
             let isRecursive = data.isRecursive;
-            let start = Date.now();
+            let pagination = data.pagination;
+            console.log("pagination", +pagination);
 
-            self.getMangaCache().then(function(cache) {
-                MangaCache = cache;
+            thread = spawn("./set-thumbnail.worker.js");
+
+            self.getMangaCache().then(function() {
                 return self.getFiles(rootFolder, searchValue, isRecursive);
             }).then(function(files) {
-                let mangas = self.getMangas(files);
+                let mangas = self.getMangas(files) || [];
+                let start = pagination * 50;
+                let end = Math.min((pagination + 1) * 50, files.length);
+                mangas = mangas.slice(start, end);
                 thread.send({
-                    mangas: mangas,
-                    cache: MangaCache,
-                    cwd: process.cwd()
+                    mangas: mangas
                 })
             });
 
 
-            thread.once('message', function(response) {
-                MangaCache = response.MangaCache;
-                // console.log("tread::on - message - manga-list", JSON.stringify(response.mangas, null, 4));
-                event.sender.send('get-manga-list-done', response.mangas);
+            thread.on('progress', function(manga) {
+                console.log("thread.on::progress");
+                global.MangaCache[manga.mangaTitle] = manga;
+                event.sender.send('get-manga-list-progress', manga);
             });
-
+            thread.on('done', function() {
+                // thread.disconnect();
+                console.log("done");
+                processing = false;
+                thread.kill();
+                event.sender.send('get-manga-list-done');
+            })
         });
     }
 
     self.initializeGetFavoritesList = function() {
+        let processing = false;
         ipc.on('get-favorites-list', function(event, folderPaths) {
+            if (processing) {
+                return;
+            }
+            processing = true;
+
             console.log('get-favorites-list::starting..');
-            self.getMangaCache().then(function(cache) {
-                MangaCache = cache;
+            if (favoritesThread) {
+                console.log("stopping thead");
+                favoritesThread.kill();
+                favoritesThread = spawn("./set-thumbnail.worker.js");
+            } else {
+                favoritesThread = spawn("./set-thumbnail.worker.js");
+            }
+
+            self.getMangaCache().then(function() {
                 let mangas = self.getMangas(folderPaths);
-                thread.send({
-                    mangas: mangas,
-                    cache: MangaCache,
-                    cwd: process.cwd()
+                favoritesThread.send({
+                    mangas: mangas
                 })
             })
 
 
-            thread.once('message', function(response) {
-                MangaCache = response.MangaCache;
-                console.log("tread::on - message - favorites-list");
-                event.sender.send('get-favorites-list-done', response.mangas);
+            favoritesThread.on('progress', function(manga) {
+                console.log("favoritesThread.on::message");
+                global.MangaCache[manga.mangaTitle] = manga;
+                event.sender.send('get-favorites-list-progress', manga);
             });
+            favoritesThread.on('done', function() {
+                favoritesThread.kill();
+                processing = false;
+                console.log("done");
+                event.sender.send('get-favorites-list-done');
+            })
 
         });
     }
@@ -125,7 +155,7 @@ module.exports = (function() {
 
     self.getFiles = function getFiles(rootFolder, searchValue, isRecursive) {
         let ignored = [];
-        console.log("getMangas", rootFolder, searchValue, isRecursive);
+        console.log("getFiles", rootFolder, searchValue, isRecursive);
 
         function isNotSearched(file, stats) {
             let filePath = path.basename(file).toLowerCase();
@@ -156,38 +186,69 @@ module.exports = (function() {
     };
 
     self.getMangas = function getMangas(files) {
-        files = _.slice(files, 0, 50);
-        console.log(files);
-        return files.map(function(filePath) {
+        let mangas = files.map(function(filePath) {
             let mangaTitle = path.basename(filePath, ".zip");
             let cacheKey = path.basename(filePath);
-            let cached = MangaCache[cacheKey] || {};
-            console.log('cached', cached.pages);
-            return {
+            let cached = global.MangaCache[mangaTitle] || {};
+            let manga = {
                 mangaTitle: mangaTitle,
                 folderPath: filePath,
                 thumbnail: cached.thumbnail,
                 pages: cached.pages
             }
+            self.parseInfo(manga);
+            return manga;
         });
+        return mangas;
     }
 
+    self.parseInfo = function(manga) {
+        let title = manga.mangaTitle.trim();
+        //parse event
+        let event = _.first(title.match(/^\(.*?\)/g));
+        manga.event = event;
+
+        //parse circle
+        title = title.replace(event, "").trim();
+        let circle = _.first(title.match(/^\[.*?\]/g));
+        manga.circle = circle;
+
+        //parse language & translator - Limitation only english language for now
+        title = title.replace(circle, "").trim();
+        let languageAndScanlator = _.first(title.match(/[\[\(]eng.*/gi)) || "";
+
+        //set title        
+        title = title.replace(languageAndScanlator, "").trim();
+        manga.titleShort = title;
+
+        //parse language
+        let language = _.first(languageAndScanlator.match(/[\[\(]Eng.*?[\]\)]/g));
+        manga.language = language;
+
+        //parse resolution
+        let scanlatorAndResolution = languageAndScanlator.replace(language, "").trim();
+        let resolution = _.first(scanlatorAndResolution.match(/[-][0-9]+[x]/g));
+        manga.resolution = resolution;
+
+        //set scanlator
+        manga.scanlator = scanlatorAndResolution.replace(resolution, "");
+    }
     self.getMangaCache = function getMangaCache() {
         return new Promise(function(resolve, reject) {
-            if (_.isEmpty(MangaCache)) {
+            if (_.isEmpty(global.MangaCache)) {
                 let mangaFile = path.join(process.cwd(), "manga-db.json");
                 fs.readFile(mangaFile, "utf-8", function(err, data) {
                     if (err) {
                         console.log(err);
-                        MangaCache = {}
-                        resolve(MangaCache);
+                        resolve();
+                    } else {
+                        global.MangaCache = JSON.parse(data || "{}");
+                        resolve();
                     }
 
-                    MangaCache = JSON.parse(data || "{}");
-                    resolve(MangaCache);
                 });
             } else {
-                resolve(MangaCache);
+                resolve();
             }
         });
     }
@@ -195,18 +256,11 @@ module.exports = (function() {
 
     self.saveMangaCache = function saveMangaCache() {
         let savePath = path.resolve(process.cwd(), "manga-db.json");
-        let data = JSON.stringify(MangaCache, null, 4);
-        // console.log(data);
-        return new Promise(function(resovle, reject) {
-            console.log("get-mangalist::saveMangaCache - saving to ", savePath);
-            fs.writeFile(savePath, data, "utf-8", function(err, data) {
-                if (err) {
-                    console.log("error writing save file", err);
-                    reject(err);
-                }
-                resolve();
-            });
-        });
+        let data = JSON.stringify(global.MangaCache, null, 4);
+        console.log("get-mangalist::saveMangaCache - saving to ", savePath);
+        fs.writeFileSync(savePath, data, "utf-8");
+        console.log("get-mangalist::saveMangaCache - done");
     }
+
     return self;
 })();

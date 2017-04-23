@@ -22,7 +22,10 @@ export default class ViewModel {
             notify: 'always'
         });
         this.pagination = ko.observable(0);
-
+        this.scrollEnd = ko.observable(false).extend({
+            // notify: 'always',
+            rateLimit: 500
+        });
         this.bookmarks = ko.observableArray(_.map(params.bookmarks, function(folderPath) {
             let folderName = path.basename(folderPath);
             return new Folder({
@@ -31,7 +34,7 @@ export default class ViewModel {
                 isBookmarked: true
             });
         }));
-
+        this.searching = ko.observable(false);
         this.sub = ko.computed(function() {
             let currentFolder = this.currentFolder();
             let bookmarks = _.map(this.bookmarks(), 'folderPath');

@@ -25,24 +25,17 @@ export default class api {
         return deferred.promise();
     }
 
-    static getMangaList(rootFolder, isRecursive, searchValue) {
+    static getMangaList(rootFolder, isRecursive, searchValue, pagination) {
         console.log("api::getMangaList - rootFolder", rootFolder,
             "isRecursive", isRecursive,
             "searchValue:", searchValue);
 
-        let deferred = $.Deferred();
-
         ipc.send('get-manga-list', {
             rootFolder,
             isRecursive,
-            searchValue
+            searchValue,
+            pagination
         });
-        ipc.once('get-manga-list-done', function(event, mangas) {
-            deferred.resolve({
-                mangas
-            });
-        });
-        return deferred.promise();
     }
 
     static getPages(start, end, folderPath) {
@@ -67,12 +60,12 @@ export default class api {
         let deferred = $.Deferred();
 
         ipc.send('get-favorites-list', folderPaths);
-        ipc.once('get-favorites-list-done', function(event, mangas) {
+        // ipc.once('get-favorites-list-done', function(event, mangas) {
 
-            deferred.resolve(mangas);
-        });
+        //     deferred.resolve(mangas);
+        // });
 
-        return deferred.promise();
+        // return deferred.promise();
     }
 
     static getSavedSettings() {

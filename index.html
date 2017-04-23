@@ -16,7 +16,8 @@
             currentPage: currentPage,
             appTitle:appTitle,
             currentViewMangaPage: currentViewMangaPage,
-            viewMangaCommand: viewMangaCommand">
+            viewMangaCommand: viewMangaCommand,
+            searching: searching">
 
         </topbar>
         <div class="wrapper show-nav">
@@ -29,7 +30,7 @@
                 currentPage: currentPage">
                 </sidebar>
 
-                <div class="content" data-bind="template:currentPage()">
+                <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd">
                 </div>
             </div>
         </div>
@@ -44,7 +45,10 @@
             favorites: favorites,
             isInitialize: isInitialize,
             selectedManga:selectedManga,
-            currentPage: currentPage">
+            currentPage: currentPage,
+            pagination: pagination,
+            scrollEnd: scrollEnd,
+            searching:searching">
         </manga-list>
     </template>
     <template id="favorites-list-view">
