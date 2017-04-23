@@ -165,12 +165,19 @@ ko.bindingHandlers.tooltip = {
     init: function(element, valueAccessor, allBindings) {
         let position = ko.unwrap(valueAccessor());
         let text = allBindings.get('text');
-        $(element).attr('data-tooltip', text);
-        $(element).tooltip({
-            delay: 50,
-            html: text,
-            position: position
+        $(element).on('mouseenter', function() {
+            $(element).attr('data-tooltip', text);
+            $(element).tooltip({
+                delay: 50,
+                position: position
+            });
+            $(element).trigger('mouseenter.tooltip')
         });
+
+        $(element).on('mouseout', function() {
+            $(element).tooltip('remove');
+        });
+
         onDispose(element, function(element) {
             $(element).tooltip('remove');
         })
@@ -203,5 +210,26 @@ ko.bindingHandlers.scale = {
     update: function(element, valueAccessor, allBindings) {
         let scale = ko.unwrap(valueAccessor());
         $(element).css('transform', `scale(${scale})`);
+    }
+}
+
+
+ko.bindingHandlers.switch = {
+    init: function(element, valueAccessor) {
+        let isOn = valueAccessor();
+        $(element).on('change', function() {
+            let value = $(element).prop('checked');
+            console.log("switch.changed", value);
+            isOn(value);
+        });
+        onDispose(element, function() {
+            $(element).off('change');
+        });
+    },
+    update: function(element, valueAccessor, allBindings) {
+        let value = ko.unwrap(valueAccessor());
+        console.log("ko.bindingHandlers.materialSelect::update - value", value);
+        $(element).val(value);
+        $(element).trigger('change');
     }
 }
