@@ -1,10 +1,14 @@
 $sidebar-background: #fff;
-
+body {
+    display:flex;
+    flex-direction: column;
+}
 .wrapper {
     position: relative;
     overflow: hidden;
     height: calc(100% - 69px);
     width: 100%;
+    flex-grow:1;
 }
 .canvas {
     height: 100%;
