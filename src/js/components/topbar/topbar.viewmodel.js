@@ -4,7 +4,9 @@ import $ from "jquery";
 
 import api from "js/common/api.js";
 import template from "./topbar.template.html";
-import {ViewMangaCommand} from "js/components";
+import {
+    ViewMangaCommand
+} from "js/components";
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {
@@ -18,6 +20,7 @@ export class TopBarViewmodel {
         this.appTitle = params.appTitle;
         this.currentViewMangaPage = params.currentViewMangaPage;
         this.viewMangaCommand = params.viewMangaCommand;
+        this.searching = params.searching;
         this.mangaTitle = ko.pureComputed(this.mangaTitle, this);
         this.isFavorite = ko.pureComputed(this.isFavorite, this);
         this.topBarText = ko.pureComputed(this.topBarText, this);
@@ -66,11 +69,11 @@ export class TopBarViewmodel {
 
     }
 
-    goNextPage(){
+    goNextPage() {
         this.viewMangaCommand(ViewMangaCommand.NextPage);
     }
 
-    goPrevPage(){
+    goPrevPage() {
         this.viewMangaCommand(ViewMangaCommand.PrevPage);
     }
     topBarText() {

@@ -53,9 +53,9 @@ export class ViewMangaViewmodel {
     // methods
     initialize() {
         // this.preloadNextPages();
-        this.preloadNextPages(1, 2);
+        this.preloadNextPages(0, 2);
         let selected = this.selectedManga();
-        selected.pageImages([selected.thumbnail]);
+        selected.pageImages([]);
         let sub = this.command.subscribe(function(command) {
             switch (command) {
                 case ViewMangaCommand.NextPage:
