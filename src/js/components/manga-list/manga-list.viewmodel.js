@@ -39,16 +39,20 @@ export class MangaListViewmodel {
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
 
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
-        this.searchOptions = ko.observableArray([{
-            value: "non-recursive",
-            text: "Current folder"
-        }, {
-            value: "recursive",
-            text: "Include subfolders"
-        }]);
-        this.isRecursive = ko.observable("non-recursive").extend({
-            rateLimit: 50
-        });
+        // this.searchOptions = ko.observableArray([{
+        //     value: "non-recursive",
+        //     text: "Current folder"
+        // }, {
+        //     value: "recursive",
+        //     text: "Include subfolders"
+        // }]);
+        // this.isRecursive = ko.observable("non-recursive").extend({
+        //     rateLimit: 50
+        // });
+        this.isRecursive = ko.observable(false);
+        this.isRecursiveText = ko.pureComputed(function() {
+            return this.isRecursive() ? "On" : "Off";
+        }, this);
         this.requesting = null;
 
         this.initialize();
@@ -62,7 +66,7 @@ export class MangaListViewmodel {
         let computed = ko.computed(function function_name(argument) {
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
-            let isRecursive = this.isRecursive() == "recursive";
+            let isRecursive = this.isRecursive();
             if (!this.requesting && selected) {
                 console.log("MangaListViewmodel::computed");
                 let path = selected.folderPath;

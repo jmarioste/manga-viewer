@@ -11,15 +11,13 @@
 	<!-- ko ifnot: selectedDirectory -->
 	<h4 class="col s12 l9">Manga list</h4>
 	<!-- /ko -->
-	<div class="input-field col s12 m6 l3" >
-		<select data-bind="
-			options:searchOptions,
-			optionsText: 'text',
-			optionsValue: 'value',
-			value: isRecursive,
-			materialSelect:isRecursive">
-		</select>
-		<label>Search and view options</label>
+	<div class="include-subfolders switch col s12 m6 l3">
+		<label class="right">
+			Include subfolders
+			<input type="checkbox" data-bind="switch:isRecursive">
+			<span class="lever"></span>
+			<span data-bind="text:isRecursiveText"></span>
+		</label>
 	</div>
 	<div class="col s12  m6 l3">
 		<div class="input-field ">
@@ -54,7 +52,6 @@
 		
 	</div>
 </div>
-
 <div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
 	<div class="col s12 grey-text center-align">
 		<i class="material-icons large">create_new_folder</i>

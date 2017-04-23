@@ -7,7 +7,7 @@
 	padding-bottom:3px !important;
 }
 
-.manga-list .input-field input[type=search] ~ .material-icons{
+.input-field input[type=search] .material-icons{
 	top:10px;
 }
 
@@ -15,7 +15,9 @@
 	@extend .indigo-text, .text-lighten-2;
 }
 
-
+.include-subfolders.switch {
+	padding: 35px 10px 10px;
+}
 
 #mangalist {
 	display:flex;
