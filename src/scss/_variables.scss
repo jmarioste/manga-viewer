@@ -1,8 +1,11 @@
 $roboto-font-path: "~materialize-css/fonts/roboto/";
 $material-design-icons-font-path: "~material-design-icons-iconfont/dist/fonts/";
 // $primary-color: #3f51b5;
-$primary-color: #3f51b5;
-$secondary-color: #3f51b5 ;
+$primary-color: #00bcd4;
+$secondary-color: #ffab00 ;
 $text-color: lighten(black, 30%);
 $border-color: #e5e5e5;
 $font-size: 14px;
+$collection-active-bg-color: $primary-color;
+$collection-active-color: lighten($primary-color, 55%);
+$collection-link-color: $primary-color;
