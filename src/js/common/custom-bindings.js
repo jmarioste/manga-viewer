@@ -70,25 +70,11 @@ ko.bindingHandlers.scrollEnd = {
             let scrollHeight = element.scrollHeight;
             if (scrollTop + height >= scrollHeight) {
                 console.log(scrollTop, height, scrollHeight);
-                observable(observable() + 1);
+                observable(true);
+            } else {
+                observable(false);
             }
         })
-    }
-}
-
-ko.bindingHandlers.tooltip = {
-    init: function(element, valueAccessor) {
-        let text = ko.unwrap(valueAccessor());
-        $(element).tooltip({
-            viewport: {
-                selector: 'body',
-                padding: 0
-            }
-        });
-
-        onDispose(element, function() {
-            $(element).tooltip('remove')
-        });
     }
 }
 
@@ -153,8 +139,8 @@ ko.bindingHandlers.materialSelect = {
         })
 
         onDispose(element, function() {
-            $(element).material_select('destroy')
-            $('.tooltipped').tooltip('remove')
+            $(element).material_select('destroy');
+
         });
     },
     update: function(element, valueAccessor, allBindings) {
@@ -182,8 +168,12 @@ ko.bindingHandlers.tooltip = {
         $(element).attr('data-tooltip', text);
         $(element).tooltip({
             delay: 50,
-            html: text
+            html: text,
+            position: position
         });
+        onDispose(element, function(element) {
+            $(element).tooltip('remove');
+        })
     }
 }
 
