@@ -1,74 +1,110 @@
 const path = require('path');
 const _ = require('lodash');
-const Zip = require('adm-zip');
+const yauzl = require('yauzl');
 const Promise = require('bluebird');
 const sharp = require('sharp');
-3
-
+const fs = require('fs');
 module.exports = function(input, done, progress) {
     let mangas = input.mangas;
-    //get
+    let appPath = input.appPath;
+    let yauzlOptions = {
+        lazyEntries: true
+    };
+    console.log("set-thumbnail.worker.js", appPath);
+
     function setThumbnail(manga) {
         let filePath = manga.folderPath;
-
+        console.log("setThumbnail", manga.titleShort);
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
-            // console.log(manga.titleShort, "hasThumbnail", !!manga.thumbnail);
-
             if (manga.thumbnail) {
                 resolve(manga);
                 progress(manga);
             } else {
-                let zip = {};
-                try {
-                    zip = new Zip(filePath);
-                } catch (e) {
-                    console.log(e, filePath);
-                    manga.thumbnail = "";
-                    resolve(e);
-                }
-
-                if (zip) {
-                    //find first image as thumbnail.
-                    let sorted = _.sortBy(zip.getEntries(), 'name');
-                    let entry = sorted.find(function(entry) {
-                        let imageRegex = /(\.jpg$|\.png$)/ig;
-                        let buffer = entry.getData();
-                        return imageRegex.test(path.extname(entry.name)) && buffer.byteLength > 50000;
-                    });
-                    if (entry) {
-                        let buffer = entry.getData();
-                        // console.log("size", buffer.byteLength, filePath);
-                        sharp(buffer)
-                            .resize(250, null)
-                            .png()
-                            .toBuffer()
-                            .then(function(data) {
-                                let base64 = data.toString('base64');
-                                manga.thumbnail = `data:image/png;base64, ${base64}`;
-                                manga.pages = sorted.length;
-                                resolve(manga);
-                                progress(manga);
-                            }).catch(function(e) {
-                                console.log(e);
-                                resolve(null);
-                            });
-                    } else {
-                        console.log("no entry", mangaTitle);
+                getImages(manga)
+                    .then(extractThumbnail)
+                    .then(function(manga) {
                         resolve(manga);
-                    }
-                } else {
-                    console.log("no zip", mangaTitle);
-                    resolve(manga);
-                }
-            }
+                        progress(manga);
 
+                    });
+            }
 
         })
     };
 
-    Promise.each(mangas, setThumbnail).then(function(mangas) {
+    function getImages(manga) {
+        return new Promise(function(resolve, reject) {
+            let images = [];
 
+            yauzlOpen(manga.folderPath).then(function(zip) {
+                zip.readEntry();
+                zip.on('entry', function(entry) {
+                    let isImage = /(\.jpg$|\.png$)/ig.test(entry.fileName);
+                    if (isImage && entry.uncompressedSize > 60000) {
+                        images.push({
+                            path: entry.fileName
+                        });
+                    }
+                    zip.readEntry();
+                })
+
+                zip.on("end", function() {
+                    console.log("zip.once::end");
+                    zip.close();
+                    resolve({
+                        images: images,
+                        manga: manga
+                    });
+                });
+            })
+        })
+    };
+
+    function extractThumbnail(params) {
+        let {
+            manga,
+            images
+        } = params;
+
+        let resize = sharp().resize(250, null).png();
+        let dest = path.join(appPath, "/images", manga._id + ".png");
+        let writeStream = fs.createWriteStream(dest);
+
+        return new Promise(function(resolve, reject) {
+            yauzlOpen(manga.folderPath).then(function(zip) {
+                images = _.sortBy(images, 'path');
+                zip.readEntry();
+                zip.on('entry', function(entry) {
+                    if (images[0].path === entry.fileName) {
+                        zip.openReadStream(entry, function(err, readStream) {
+                            if (err) throw err;
+
+                            readStream.pipe(resize).pipe(writeStream);
+                            writeStream.on("finish", function() {
+                                manga.thumbnail = dest;
+                                manga.pages = images.length;
+                                resolve(manga);
+                                zip.close()
+                            });
+                        });
+                    } else {
+                        zip.readEntry();
+                    }
+                });
+            });
+        })
+    }
+
+    function yauzlOpen(path) {
+        return new Promise(function(resolve, rejec) {
+            yauzl.open(path, yauzlOptions, function(err, zip) {
+                if (err) throw err;
+                resolve(zip);
+            });
+        });
+    }
+    Promise.each(mangas, setThumbnail).then(function(mangas) {
         console.log("set-thumbnail.worker.js::all promise done");
         done();
     }).catch(function(err) {

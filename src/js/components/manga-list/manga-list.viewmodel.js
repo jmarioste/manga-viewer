@@ -39,16 +39,7 @@ export class MangaListViewmodel {
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
 
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
-        // this.searchOptions = ko.observableArray([{
-        //     value: "non-recursive",
-        //     text: "Current folder"
-        // }, {
-        //     value: "recursive",
-        //     text: "Include subfolders"
-        // }]);
-        // this.isRecursive = ko.observable("non-recursive").extend({
-        //     rateLimit: 50
-        // });
+
         this.isRecursive = ko.observable(false);
         this.isRecursiveText = ko.pureComputed(function() {
             return this.isRecursive() ? "On" : "Off";
@@ -95,7 +86,7 @@ export class MangaListViewmodel {
             console.log("pagination updated");
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
-            let isRecursive = this.isRecursive() == "recursive";
+            let isRecursive = this.isRecursive();
 
             if (!this.requesting && selected) {
                 console.log("MangaListViewmodel::pagination changed", pagination);
@@ -110,9 +101,9 @@ export class MangaListViewmodel {
         ipc.on('get-manga-list-progress', function(event, manga) {
             if (manga) {
                 manga.isFavorite = _.includes(self.favorites(), manga.folderPath);
-                let mangas = self.mangas();
                 manga = self.mangaFactory.getManga(manga);
                 self.mangas.push(manga);
+
                 // self.mangas.valueHasMutated();
             }
         });

@@ -9,3 +9,5 @@ thumbnails.json
 manga-db.json
 *.log
 *.gypi
+*.db
+images

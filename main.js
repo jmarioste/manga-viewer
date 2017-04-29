@@ -11,7 +11,6 @@ const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
 const Promise = require('bluebird');
 const getMangaList = require('./src/js/main-process/get-mangalist.js');
-const getSettings = require('./src/js/main-process/get-settings.js');
 const selectDirectory = require('./src/js/main-process/select-directory.js');
 const fs = require('fs');
 
@@ -23,11 +22,11 @@ function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+        show: false
     })
     getMangaList.initializeEvents();
     selectDirectory.initializeEvents();
-    getSettings.initializeGetSettingsEvents();
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
@@ -35,6 +34,10 @@ function createWindow() {
         slashes: true
     }))
 
+    var dir = app.getAppPath() + '/images';
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
     mainWindow.maximize();
@@ -43,9 +46,12 @@ function createWindow() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        getMangaList.saveMangaCache();
         mainWindow = null
-    })
+    });
+
+    mainWindow.once('ready-to-show', function() {
+        mainWindow.show()
+    });
 }
 
 // This method will be called when Electron has finished

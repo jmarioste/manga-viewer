@@ -57,15 +57,7 @@ export default class api {
     }
 
     static getFavorites(folderPaths) {
-        let deferred = $.Deferred();
-
         ipc.send('get-favorites-list', folderPaths);
-        // ipc.once('get-favorites-list-done', function(event, mangas) {
-
-        //     deferred.resolve(mangas);
-        // });
-
-        // return deferred.promise();
     }
 
     static getSavedSettings() {
@@ -73,16 +65,12 @@ export default class api {
 
         if (!api.getSavedSettings.called) {
             api.getSavedSettings.called = true;
-            ipc.send("read-settings");
-            ipc.once("read-settings-done", function(event, data) {
-
-                api.appSettings = data ? data : defaults;
-                console.log("read-settings done", api.appSettings);
-                deferred.resolve(api.appSettings);
-            });
-
+            let value = localStorage.getItem('settings');
+            let settings = JSON.parse(value || "{}");
+            api.appSettings = settings;
+            deferred.resolve(api.appSettings);
         } else {
-            deferrd.resolve(api.appSettings);
+            deferred.resolve(api.appSettings);
         }
 
         return deferred.promise();
@@ -91,11 +79,8 @@ export default class api {
 
     static writeSettings(settings) {
         _.extend(api.appSettings, settings);
-
-        ipc.send("set-settings", api.appSettings);
-        ipc.once("set-settings-done", function(event, data) {
-            console.log("set-settings done", data);
-        });
+        let str = JSON.stringify(api.appSettings || {});
+        localStorage.setItem('settings', str);
     }
 
     static selectDirectory() {

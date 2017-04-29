@@ -43,10 +43,11 @@
     "bluebird": "3.5.0",
     "lodash": "^4.17.4",
     "material-design-icons-iconfont": "3.0.3",
-    "output-file": "1.1.1",
+    "nedb": "1.8.0",
     "recursive-readdir": "^2.1.1",
     "roboto-fontface": "0.7.0",
     "sharp": "0.17.3",
-    "threads": "0.7.2"
+    "threads": "0.7.2",
+    "yauzl": "2.8.0"
   }
 }
