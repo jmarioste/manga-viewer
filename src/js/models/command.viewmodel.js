@@ -8,5 +8,7 @@ export default class Command {
 export const DefaultCommandHotkeys = {
     BOOKMARK_FOLDER: "CTRL + D",
     NEXT_PAGE: "RIGHT ARROW",
-    PREVIOUS_PAGE: "LEFT ARROW"
+    PREVIOUS_PAGE: "LEFT ARROW",
+    FOCUS_SEARCH: "CTRL + F",
+    OPEN_DIRECTORY: "CTRL + O"
 }

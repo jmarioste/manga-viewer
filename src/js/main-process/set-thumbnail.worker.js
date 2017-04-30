@@ -39,9 +39,10 @@ module.exports = function(input, done, progress) {
             let images = [];
 
             yauzlOpen(manga.folderPath).then(function(zip) {
-                console.log("getImages::afte yauzlOpen")
                 zip.readEntry();
+                console.log("getImages::after readEntry");
                 zip.on('entry', function(entry) {
+                    console.log("getImages::on entry");
                     let isImage = /(\.jpg$|\.png$)/ig.test(entry.fileName);
                     if (isImage && entry.uncompressedSize > 60000) {
                         images.push({
@@ -59,6 +60,10 @@ module.exports = function(input, done, progress) {
                         manga: manga
                     });
                 });
+                zip.on("error", function(error) {
+                    console.log("getImages::zip.on::error", error);
+                    reject(error);
+                });
             }).catch(function(err) {
                 reject(err);
             })
@@ -66,6 +71,7 @@ module.exports = function(input, done, progress) {
     };
 
     function extractThumbnail(params) {
+        console.log("extractThumbnail::start");
         let {
             manga,
             images
@@ -97,6 +103,10 @@ module.exports = function(input, done, progress) {
                         console.log("extractThumbnail::zip.readEntry");
                     }
                 });
+                zip.on("error", function(error) {
+                    console.log("extractThumbnail zip.on::error", error);
+                    reject(error);
+                })
             }).catch(function(err) {
                 reject(err);
             })

@@ -4,6 +4,7 @@ import _ from "lodash";
 import api from "js/common/api";
 import Folder from "js/models/folder.viewmodel";
 import template from "./sidebar.template.html";
+import Command from "js/models/command.viewmodel";
 import path from "path";
 
 export class SidebarViewmodel {
@@ -13,6 +14,7 @@ export class SidebarViewmodel {
         var self = this;
         this.bookmarks = params.bookmarks;
         this.currentPage = params.currentPage;
+        this.appCommands = params.appCommands;
         this.folders = ko.observableArray();
 
         this.directories = ko.computed(this.getFolderTree, this).extend({
@@ -28,6 +30,9 @@ export class SidebarViewmodel {
         this.isFavoritesActive = ko.pureComputed(this.isFavoritesActive, this);
         this.subs = [];
 
+        this.commands = [
+            new Command(this.appCommands().OPEN_DIRECTORY, this.openDirectory)
+        ]
         this.initialize();
     }
 

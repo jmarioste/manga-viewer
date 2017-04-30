@@ -1,47 +1,35 @@
 <section class="row">
 	<h4 class="col s12">
-		General Settings
+	General Settings
 	</h4>
 </section>
-
 <section class="row">
-	<div class="switch col s12">
-		<label >
-			Include subfolders
-			<input type="checkbox" data-bind="switch:isRecursive">
-			<span class="lever"></span>
-			<span data-bind="text:isRecursiveText"></span>
-		</label>
+	<div class=" col s12">
+		<div class="col l3">
+			<div class="switch col s12">
+				<label >
+					Include subfolders
+					<input type="checkbox" data-bind="switch:isRecursive">
+					<span class="lever"></span>
+					<span data-bind="text:isRecursiveText"></span>
+				</label>
+			</div>
+		</div>
 	</div>
 </section>
-
 <section class="row">
 	<h4 class="col s12">
-		Hotkeys
+	Hotkeys
 	</h4>
 </section>
-
-<section class="row">
-	<div class="valign-wrapper col s12">
-		<label class=" settings-label valign">Bookmark folder</label>
-		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:bookmarkFolderBinding">
-			<span class="settings-label" data-bind="text:bookmarkFolderBinding"></span>
-			<input type="text" class=" settings-input" data-bind="value:bookmarkFolderBinding">
-		</a>
-	</div>
-	<div class="valign-wrapper col s12">
-		<label class=" settings-label valign">Previous page</label>
-		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:previousPageKey">
-			<span class="settings-label" data-bind="text:previousPageKey"></span>
-			<input type="text" class=" settings-input" data-bind="value:previousPageKey">
-		</a>
-	</div>
-	<div class="valign-wrapper col s12">
-		<label class=" settings-label valign">Next page</label>
-		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:nextPageKey">
-			<span class="settings-label" data-bind="text:nextPageKey"></span>
-			<input type="text" class=" settings-input" data-bind="value:nextPageKey">
-		</a>
+<section class="row" data-bind="foreach:commandsList">
+	<div class=" col s12">
+		<div class="col l4 valign-wrapper">
+			<label class="settings-label valign col s6" data-bind="text:label"></label>
+			<a class="waves-effect waves-light btn-flat settings-key col s6" data-bind="keybind:hotkey">
+				<span class="settings-label" data-bind="text:hotkey"></span>
+				<input type="text" class=" settings-input" data-bind="value:hotkey">
+			</a>
+		</div>
 	</div>
 </section>
-

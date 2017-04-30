@@ -17,7 +17,8 @@
             appTitle:appTitle,
             currentViewMangaPage: currentViewMangaPage,
             viewMangaCommand: viewMangaCommand,
-            searching: searching" style="-webkit-app-region: drag">
+            searching: searching,
+            appCommands: appCommands" style="-webkit-app-region: drag">
 
         </topbar>
         <div class="wrapper show-nav">
@@ -27,7 +28,8 @@
                 <sidebar params="currentFolder: currentFolder,
                 selectedDirectory: selectedDirectory,
                 bookmarks:bookmarks,
-                currentPage: currentPage">
+                currentPage: currentPage,
+                appCommands: appCommands">
                 </sidebar>
 
                 <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}">

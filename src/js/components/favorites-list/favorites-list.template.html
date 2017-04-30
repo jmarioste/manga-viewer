@@ -1,39 +1,34 @@
 <div class="manga-list">
 	<section class="row">
-
 		<h4 class="col s12 m6 l9">
-			<span>Favorites</span>
+		<span>Favorites</span>
 		</h4>
-
-		<div class="input-field col s12  m6 l3">
-	          <input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
-	          <label class="label-icon" for="search"><i class="material-icons">search</i> </label>
-	          <i class="material-icons clear-search" data-bind="click:clearSearch">close</i>
+		<div class="col s12  m6 l3">
+			<div class="input-field">						
+				<input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
+				<label class="label-icon" for="search"><i class="material-icons">search</i> </label>
+				<i class="material-icons clear" data-bind="click:clearSearch">close</i>
+			</div>
 		</div>
-
 	</section>
 	<div id="mangalist">
 		<!-- ko foreach:filteredManga  -->
 		<div class="manga" data-bind="click:$parent.viewManga">
-
 			<div class="manga-content">
-
 				<div class="image-container">
-					<img class="manga-image" data-bind="src:thumbnail" >	
+					<img class="manga-image" data-bind="src:thumbnail" >
 				</div>
-
 				<div class="info">
 					<span class="title" data-bind="text:titleShort, tooltip:'top'"></span>
 					<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, click:$parent.toggleFavorites, clickBubble:false">
-						<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite">star</i>
+					<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite">star</i>
 					</button>
 				</div>
-			</div>			
+			</div>
 		</div>
 		<!-- /ko  -->
 		<div class="extra">
-		
-		</div>	
+			
+		</div>
 	</div>
 </div>
-

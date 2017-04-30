@@ -22,9 +22,9 @@
 	</div>
 	<div class="col s12  m6 l3">
 		<div class="input-field ">
-			<input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
+			<input id="search" type="search" data-bind="value:searchValue, hasFocus:isSearchFocused, removeFocusOnEnter" placeholder="Search Manga...">
 			<label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
-			<i class="material-icons" data-bind="click:clearSearch">close</i>
+			<i class="material-icons clear" data-bind="click:clearSearch">close</i>
 		</div>
 	</div>
 	

@@ -14,7 +14,7 @@ export class MangaListViewmodel {
         var self = this;
         this.subscriptions = [];
 
-
+        //params
         this.selectedDirectory = params.selectedDirectory;
         this.bookmarks = params.bookmarks;
         this.favorites = params.favorites;
@@ -25,8 +25,11 @@ export class MangaListViewmodel {
         this.scrollEnd = params.scrollEnd;
         this.searching = params.searching;
         this.appCommands = params.appCommands;
+
+
         this.isRecursive = ko.observable(params.isRecursive());
         this.searchValue = ko.observable("");
+        this.isSearchFocused = ko.observable(false);
         this.mangas = ko.observableArray([]);
 
         this.mangaFactory = new MangaFactory();
@@ -38,6 +41,7 @@ export class MangaListViewmodel {
         this.afterRender = this.afterRender.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
         this.viewManga = this.viewManga.bind(this);
+        this.focusSearch = this.focusSearch.bind(this);
 
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
 
@@ -51,7 +55,8 @@ export class MangaListViewmodel {
 
         this.initialize();
         this.commands = [
-            new Command(this.appCommands().BOOKMARK_FOLDER, this.toggleBookmark)
+            new Command(this.appCommands().BOOKMARK_FOLDER, this.toggleBookmark),
+            new Command(this.appCommands().FOCUS_SEARCH, this.focusSearch)
         ];
         console.log("MangaListViewmodel::constructor - end");
     }
@@ -185,6 +190,10 @@ export class MangaListViewmodel {
         this.currentPage("view-manga-view");
     }
 
+    focusSearch() {
+        this.isSearchFocused(false);
+        this.isSearchFocused(true);
+    }
     static registerComponent() {
         ko.components.register("manga-list", {
             viewModel: MangaListViewmodel,
