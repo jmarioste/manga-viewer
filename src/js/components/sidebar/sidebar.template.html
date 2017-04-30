@@ -28,7 +28,7 @@
     <ul class="sidebar-directory list collection" data-bind="scroll,foreach: directories">
         <li class="item collection-item truncate" data-bind="
             style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory,
-            active: $data == $parent.selectedDirectory() && $component.currentPage == 'manga-list-view'">
+            active: $data == $parent.selectedDirectory() && $component.currentPage() == 'manga-list-view'">
             <i class="material-icons left" data-bind="
             isOpenFolder:isOpen,
             click: toggleFolderOpen, clickBubble:false">

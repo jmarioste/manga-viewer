@@ -18,7 +18,6 @@ export class MangaListViewmodel {
         this.selectedDirectory = params.selectedDirectory;
         this.bookmarks = params.bookmarks;
         this.favorites = params.favorites;
-        this.isInitialize = params.isInitialize;
         this.currentPage = params.currentPage;
         this.selectedManga = params.selectedManga;
         this.pagination = params.pagination;
@@ -33,7 +32,7 @@ export class MangaListViewmodel {
         this.mangas = ko.observableArray([]);
 
         this.mangaFactory = new MangaFactory();
-        this.showGuide = ko.observable(false);
+        this.showGuide = ko.observable();
         this.totalMangaSearched = ko.observable(0);
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -122,7 +121,7 @@ export class MangaListViewmodel {
         ipc.on('get-manga-list-done', function() {
             self.requesting = false;
             self.searching(false);
-            self.isInitialize(true);
+            self.showGuide(self.mangas().length <= 0);
             console.log("this.mangas.length", self.mangas().length);
         });
         this.subscriptions.push(computed);

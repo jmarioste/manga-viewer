@@ -17,13 +17,8 @@ import {
 
 
 $(document).ready(function() {
-    // api.getSavedSettings();
-    let vm;
-    api.getSavedSettings().then(function(settings) {
-        vm = new ViewModel(settings);
-        ko.applyBindings(vm);
 
-        vm.isInitialize(true);
-        console.log("app::Initializing..");
+    api.getSavedSettings().then(function(settings) {
+        ko.applyBindings(new ViewModel(settings));
     });
 });
