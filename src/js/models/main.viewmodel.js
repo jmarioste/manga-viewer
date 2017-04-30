@@ -16,7 +16,6 @@ export default class ViewModel {
         // "G:/Users/Shizkun/"
         this.currentPage = ko.observable(params.currentPage || "manga-list-view");
         this.currentFolder = ko.observable(params.currentFolder);
-        this.isInitialize = ko.observable(false);
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
         this.selectedManga = ko.observable();
@@ -27,7 +26,6 @@ export default class ViewModel {
         });
         this.pagination = ko.observable(0);
         this.scrollEnd = ko.observable(false).extend({
-            // notify: 'always',
             rateLimit: 500
         });
         this.appCommands = ko.observable(_.extend({}, DefaultCommandHotkeys, params.appCommands));
