@@ -54,7 +54,7 @@ ko.bindingHandlers.keybind = {
 
         $element.on('click', function() {
             $element.removeClass("btn-flat").addClass("btn");
-            $element.find('.settings-label').hide();
+            $label.hide();
             $input.show();
             $input.trigger('focus');
 
@@ -64,7 +64,7 @@ ko.bindingHandlers.keybind = {
                 $input.off("keydown", keyPressHandler);
                 $element.removeClass("btn").addClass("btn-flat");
                 $input.hide();
-                $element.find('.settings-label').show();
+                $label.show();
                 $body.trigger('listen.unpause');
             });
 

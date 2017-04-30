@@ -9,7 +9,6 @@ ko.bindingHandlers.isFavorite = {
             $(element).parent(".cbutton").trigger('pulse-effect');
         })
         onDispose(element, function() {
-            console.log("isFavorite dispose");
             sub.dispose();
         })
     },
@@ -21,7 +20,5 @@ ko.bindingHandlers.isFavorite = {
         } else {
             $(element).text("star_border");
         }
-
-
     }
 }

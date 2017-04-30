@@ -6,7 +6,6 @@ ko.bindingHandlers.switch = {
         let isOn = valueAccessor();
         $(element).on('change', function() {
             let value = $(element).prop('checked');
-            console.log("switch.changed", value);
             isOn(value);
         });
         onDispose(element, function() {
