@@ -142,7 +142,7 @@ module.exports = (function() {
                 db.find({
                     folderPath: manga.folderPath
                 }, function(err, docs) {
-                    console.log(docs);
+                    // console.log(docs);
                     if (!docs.length) {
                         db.insert(manga);
                     }
@@ -155,6 +155,38 @@ module.exports = (function() {
                 console.log("done");
                 event.sender.send('get-favorites-list-done');
             })
+
+        });
+
+        ipc.on('get-manga', function(event, folderPath) {
+            console.log('get-manga::starting..');
+            favoritesThread = spawn("./set-thumbnail.worker.js");
+
+            self.getMangas([folderPath]).then(function(mangas) {
+                favoritesThread.send({
+                    mangas: mangas
+                })
+            });
+
+            favoritesThread.on('progress', function(manga) {
+                console.log("get-manga.on::message");
+                db.find({
+                    folderPath: manga.folderPath
+                }, function(err, docs) {
+                    // console.log(docs);
+                    if (!docs.length) {
+                        db.insert(manga);
+                    }
+                });
+                event.sender.send('get-manga-progress', manga);
+            });
+
+            favoritesThread.on('done', function() {
+                favoritesThread.kill();
+                processing = false;
+                console.log("done");
+                event.sender.send('get-manga-done');
+            });
 
         });
     }

@@ -10,11 +10,9 @@ module.exports = function(input, done, progress) {
     let yauzlOptions = {
         lazyEntries: true
     };
-    console.log("set-thumbnail.worker.js", appPath);
 
     function setThumbnail(manga) {
         let filePath = manga.folderPath;
-        console.log("setThumbnail", manga.titleShort);
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
             if (manga.thumbnail) {
@@ -27,6 +25,8 @@ module.exports = function(input, done, progress) {
                         resolve(manga);
                         progress(manga);
 
+                    }).catch(function(err) {
+                        resolve(); //do not include manga
                     });
             }
 
@@ -34,10 +34,12 @@ module.exports = function(input, done, progress) {
     };
 
     function getImages(manga) {
+        console.log("getImages::", manga.titleShort);
         return new Promise(function(resolve, reject) {
             let images = [];
 
             yauzlOpen(manga.folderPath).then(function(zip) {
+                console.log("getImages::afte yauzlOpen")
                 zip.readEntry();
                 zip.on('entry', function(entry) {
                     let isImage = /(\.jpg$|\.png$)/ig.test(entry.fileName);
@@ -57,6 +59,8 @@ module.exports = function(input, done, progress) {
                         manga: manga
                     });
                 });
+            }).catch(function(err) {
+                reject(err);
             })
         })
     };
@@ -70,7 +74,7 @@ module.exports = function(input, done, progress) {
         let resize = sharp().resize(250, null).png();
         let dest = path.join(appPath, "/images", manga._id + ".png");
         let writeStream = fs.createWriteStream(dest);
-
+        console.log("extractThumbnail::after writeStream");
         return new Promise(function(resolve, reject) {
             yauzlOpen(manga.folderPath).then(function(zip) {
                 images = _.sortBy(images, 'path');
@@ -90,20 +94,34 @@ module.exports = function(input, done, progress) {
                         });
                     } else {
                         zip.readEntry();
+                        console.log("extractThumbnail::zip.readEntry");
                     }
                 });
-            });
+            }).catch(function(err) {
+                reject(err);
+            })
         })
     }
 
     function yauzlOpen(path) {
-        return new Promise(function(resolve, rejec) {
+        console.log("yauzlOpen");
+        return new Promise(function(resolve, reject) {
             yauzl.open(path, yauzlOptions, function(err, zip) {
-                if (err) throw err;
-                resolve(zip);
+                console.log("yauzlOpen::callback");
+                if (err) {
+
+                    console.log("rejecting ", err);
+                    reject(err);
+                    // throw err;
+                } else {
+                    console.log("yauzlOpen::resolving");
+                    resolve(zip);
+                }
+
             });
         });
     }
+
     Promise.each(mangas, setThumbnail).then(function(mangas) {
         console.log("set-thumbnail.worker.js::all promise done");
         done();

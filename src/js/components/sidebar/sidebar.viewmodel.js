@@ -86,6 +86,11 @@ export class SidebarViewmodel {
         this.selectedDirectory(null);
     }
 
+    showSettings() {
+        this.currentPage("settings-page-view");
+        this.selectedDirectory(null);
+    }
+
     isFavoritesActive() {
         return this.currentPage() == "favorites-list";
     }

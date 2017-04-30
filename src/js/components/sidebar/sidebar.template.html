@@ -28,7 +28,7 @@
     <ul class="sidebar-directory list collection" data-bind="scroll,foreach: directories">
         <li class="item collection-item truncate" data-bind="
             style: { paddingLeft: paddingLeft() }, click:$parent.selectDirectory,
-            active: $data == $parent.selectedDirectory()">
+            active: $data == $parent.selectedDirectory() && $component.currentPage == 'manga-list-view'">
             <i class="material-icons left" data-bind="
             isOpenFolder:isOpen,
             click: toggleFolderOpen, clickBubble:false">
@@ -37,7 +37,8 @@
         </li>
     </ul>
     <div class="collection sidebar-settings">
-        <a href="javascript:void(0);" class="collection-item waves-effect waves-light">
+        <a href="javascript:void(0);" class="collection-item waves-effect waves-light"
+        data-bind="active:currentPage()=='settings-page-view', click: showSettings">
             <i class="left material-icons">settings</i>
             <strong class="">Settings</strong>
         </a>

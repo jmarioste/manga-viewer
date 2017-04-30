@@ -229,8 +229,152 @@ ko.bindingHandlers.switch = {
     },
     update: function(element, valueAccessor, allBindings) {
         let value = ko.unwrap(valueAccessor());
-        console.log("ko.bindingHandlers.materialSelect::update - value", value);
-        $(element).val(value);
-        $(element).trigger('change');
+        // console.log("ko.bindingHandlers.materialSelect::update - value", value, $(element).val());
+        if (value) {
+            $(element).prop('checked', true);
+        } else {
+            $(element).prop('checked', false);
+        }
+
+        // $(element).trigger('change');
+    }
+}
+
+
+ko.bindingHandlers.keybind = {
+    init: function(element, valueAccessor) {
+        let key = valueAccessor();
+        let $element = $(element);
+        let $input = $element.find('.settings-input');
+        let $label = $element.find('.settings-label');
+
+        function keyPressHandler(event) {
+            event.preventDefault();
+            let combo = "";
+            let alt = event.altKey ? "ALT" : null;
+            let shiftKey = event.shiftKey ? "SHIFT" : null;
+            let ctrlKey = event.ctrlKey ? "CTRL" : null;
+            let hasModfiers = !ctrlKey || !alt || !shiftKey;
+            let letter = "";
+            console.log(event.key);
+            console.log(event.keyCode);
+            if (!_.includes([16, 17, 18, 91], event.keyCode)) {
+                letter = String.fromCharCode(event.keyCode);
+            }
+            if (_.includes([37, 38, 39, 40], event.keyCode)) {
+                switch (event.keyCode) {
+                    case 37:
+                        letter = "LEFT ARROW";
+                        break;
+                    case 38:
+                        letter = "UP ARROW";
+                        break;
+                    case 39:
+                        letter = "RIGHT ARROW";
+                        break;
+                    case 40:
+                        letter = "DOWN ARROW";
+                        break;
+                }
+            }
+            if (letter) {
+                let text = _.without([ctrlKey, alt, shiftKey, letter], null).join(" + ");
+                console.log(letter);;
+                key(text);
+
+            }
+
+            return false;
+        }
+
+        function clickHandler(event) {
+            key("LEFT CLICK");
+        }
+
+        $element.on('click', function() {
+            $element.removeClass("btn-flat").addClass("btn");
+            $element.find('.settings-label').hide();
+            $input.show();
+            $input.trigger('focus');
+            $input.on("keydown", keyPressHandler);
+            $input.on("click", clickHandler);
+            $input.on("blur", function() {
+                $input.off("keydown", keyPressHandler);
+                $element.removeClass("btn").addClass("btn-flat");
+                $input.hide();
+                $element.find('.settings-label').show();
+            });
+
+        });
+
+        onDispose(element, function() {
+            $element.off('click');
+            $input.off('keydown');
+        })
+    }
+}
+
+ko.bindingHandlers.listenTo = {
+    init: function(element, valueAccessor) {
+        let commands = ko.unwrap(valueAccessor());
+        console.log("custom-bindings::listenTo::init");
+
+        function keyPressHandler(event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            let combo = "";
+            let alt = event.altKey ? "ALT" : null;
+            let shiftKey = event.shiftKey ? "SHIFT" : null;
+            let ctrlKey = event.ctrlKey ? "CTRL" : null;
+            let hasModfiers = !ctrlKey || !alt || !shiftKey;
+            let letter = "";
+            console.log(event.key);
+            if (!_.includes([16, 17, 18, 91], event.keyCode)) {
+                letter = String.fromCharCode(event.keyCode);
+            }
+            if (_.includes([37, 38, 39, 40], event.keyCode)) {
+                switch (event.keyCode) {
+                    case 37:
+                        letter = "LEFT ARROW";
+                        break;
+                    case 38:
+                        letter = "UP ARROW";
+                        break;
+                    case 39:
+                        letter = "RIGHT ARROW";
+                        break;
+                    case 40:
+                        letter = "DOWN ARROW";
+                        break;
+                }
+            }
+            if (letter) {
+                let input = _.without([ctrlKey, alt, shiftKey, letter], null).join(" + ");
+                $("body").trigger("command", input);
+            }
+            console.log("on key up")
+            return false;
+        }
+
+        function clickHandler(event) {
+            key("LEFT CLICK");
+        }
+
+        $("body").on("keyup", keyPressHandler)
+        $("body").on("command", function(event, input) {
+            let command = _.find(commands, {
+                hotkey: input
+            });
+            if (command) {
+
+                command.execute()
+                console.log("should execute command");
+            }
+        })
+
+        onDispose(element, function() {
+            $("body").on("keyup", keyPressHandler);
+            $("body").off("command");
+        })
     }
 }

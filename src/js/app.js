@@ -11,7 +11,8 @@ import {
     SidebarViewmodel,
     MangaListViewmodel,
     FavoritesListViewmodel,
-    ViewMangaViewmodel
+    ViewMangaViewmodel,
+    SettingsPageViewmodel
 } from "js/components";
 
 

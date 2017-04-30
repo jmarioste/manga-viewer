@@ -1,0 +1,47 @@
+<section class="row">
+	<h4 class="col s12">
+		General Settings
+	</h4>
+</section>
+
+<section class="row">
+	<div class="switch col s12">
+		<label >
+			Include subfolders
+			<input type="checkbox" data-bind="switch:isRecursive">
+			<span class="lever"></span>
+			<span data-bind="text:isRecursiveText"></span>
+		</label>
+	</div>
+</section>
+
+<section class="row">
+	<h4 class="col s12">
+		Hotkeys
+	</h4>
+</section>
+
+<section class="row">
+	<div class="valign-wrapper col s12">
+		<label class=" settings-label valign">Bookmark folder</label>
+		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:bookmarkFolderBinding">
+			<span class="settings-label" data-bind="text:bookmarkFolderBinding"></span>
+			<input type="text" class=" settings-input" data-bind="value:bookmarkFolderBinding">
+		</a>
+	</div>
+	<div class="valign-wrapper col s12">
+		<label class=" settings-label valign">Previous page</label>
+		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:previousPageKey">
+			<span class="settings-label" data-bind="text:previousPageKey"></span>
+			<input type="text" class=" settings-input" data-bind="value:previousPageKey">
+		</a>
+	</div>
+	<div class="valign-wrapper col s12">
+		<label class=" settings-label valign">Next page</label>
+		<a class="waves-effect waves-light btn-flat settings-key" data-bind="keybind:nextPageKey">
+			<span class="settings-label" data-bind="text:nextPageKey"></span>
+			<input type="text" class=" settings-input" data-bind="value:nextPageKey">
+		</a>
+	</div>
+</section>
+

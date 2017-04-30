@@ -3,48 +3,51 @@ import _ from "lodash";
 import $ from "jquery";
 
 import "scss/view-manga.scss";
-import api from "js/common/api";
 import "js/common/ko.custom-functions";
-import template from "./view-manga.template.html";
 
+import api from "js/common/api";
+import Pages from "js/common/pages-enum";
+import MangaFactory from "js/common/manga.factory";
+import template from "./view-manga.template.html";
+import {
+    viewOptions,
+    ViewOptions
+} from "./view-options.js";
+import Command from "js/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 
 export class ViewMangaViewmodel {
     constructor(params) {
         console.log("ViewMangaViewModel::constructor - end");
         let self = this;
+        //params
         this.subscriptions = [];
         this.selectedManga = params.selectedManga;
+        this.selectedMangaPath = params.selectedMangaPath;
         this.command = params.viewMangaCommand;
         this.currentPage = params.currentViewMangaPage;
+        this.appCommands = params.appCommands;
 
+        //class defined
         this.option = ko.observable(1);
         this.scrollTopOnClick = ko.observable(true);
+        this.page = ko.observable(1);
+        this.transformScale = ko.observable(1.0);
+        this.viewOptions = ko.observableArray(viewOptions);
+        this.mangaFactory = new MangaFactory();
+        this.commands = [
+            new Command(this.appCommands().NEXT_PAGE, this.goNextPage),
+            new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage)
+        ];
 
+        //functions
         this.switchClass = this.switchClass.bind(this);
         this.goNextPage = this.goNextPage.bind(this);
+        this.goToPreviousPage = this.goToPreviousPage.bind(this);
         this.viewOption = ko.pureComputed(this.viewOption, this);
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({
             rateLimit: 50
         });
-        this.page = ko.observable(1);
-        this.transformScale = ko.observable(1.0);
-        this.viewOptions = ko.observableArray([{
-            value: ViewOptions.FitToWidth,
-            icon: "fullscreen"
-        }, {
-            value: ViewOptions.FitToHeight,
-            icon: "fullscreen_exit"
-        }, {
-            value: ViewOptions.ZoomIn,
-            icon: "add"
-        }, {
-            value: ViewOptions.Default,
-            icon: "refresh"
-        }, {
-            value: ViewOptions.ZoomOut,
-            icon: "remove"
-        }])
 
         console.log("ViewMangaViewModel::constructor - end", this.selectedManga());
         this.initialize();
@@ -53,9 +56,24 @@ export class ViewMangaViewmodel {
     // methods
     initialize() {
         // this.preloadNextPages();
-        this.preloadNextPages(0, 2);
-        let selected = this.selectedManga();
-        selected.pageImages([]);
+        if (!this.selectedManga()) {
+            if (this.selectedMangaPath()) {
+                let request = api.getManga(this.selectedMangaPath());
+                request.then((manga) => {
+                    manga = this.mangaFactory.getManga(manga);
+                    this.selectedManga(manga);
+                    manga.pageImages([]);
+                    this.preloadNextPages(0, 2);
+                })
+            } else {
+                this.currentPage(Pages.MangaList);
+            }
+        } else {
+            this.preloadNextPages(0, 2);
+            let selected = this.selectedManga();
+            selected.pageImages([]);
+        }
+
         let sub = this.command.subscribe(function(command) {
             switch (command) {
                 case ViewMangaCommand.NextPage:
@@ -107,6 +125,7 @@ export class ViewMangaViewmodel {
     }
 
     goNextPage() {
+        console.log("ViewMangaViewmodel::goNextPage");
         //TODO: Return Logic for execeeding last page.
         let index = this.currentPage();
         let selected = this.selectedManga();
@@ -191,12 +210,5 @@ export const ViewMangaCommand = {
     PrevPage: 2
 };
 
-export const ViewOptions = {
-    FitToWidth: 1,
-    FitToHeight: 2,
-    ZoomOut: 4,
-    Default: 0,
-    ZoomIn: 3
-};
 
 ViewMangaViewmodel.registerComponent();

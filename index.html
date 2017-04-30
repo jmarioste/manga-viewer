@@ -17,7 +17,7 @@
             appTitle:appTitle,
             currentViewMangaPage: currentViewMangaPage,
             viewMangaCommand: viewMangaCommand,
-            searching: searching">
+            searching: searching" style="-webkit-app-region: drag">
 
         </topbar>
         <div class="wrapper show-nav">
@@ -48,7 +48,9 @@
             currentPage: currentPage,
             pagination: pagination,
             scrollEnd: scrollEnd,
-            searching:searching">
+            searching:searching,
+            isRecursive:isRecursive,
+            appCommands: appCommands">
         </manga-list>
     </template>
     <template id="favorites-list-view">
@@ -61,9 +63,19 @@
     <!-- ko component: {name: 'view-manga', params:{
         favorites:favorites,
         selectedManga:selectedManga,
+        selectedMangaPath:selectedMangaPath,
         currentViewMangaPage: currentViewMangaPage,
-        viewMangaCommand: viewMangaCommand
+
+        viewMangaCommand: viewMangaCommand,
+        appCommands: appCommands
     }} -->
     <!-- /ko -->
+    </template>
+
+    <template id="settings-page-view">
+        <settings-page params="
+            isRecursive: isRecursive, 
+            commands:appCommands">
+        <settings-page>
     </template>
 </html>

@@ -5,7 +5,7 @@ import Ps from "perfect-scrollbar";
 import api from "js/common/api.js";
 import MangaFactory from "js/common/manga.factory.js";
 import template from "./manga-list.template.html";
-
+import Command from "js/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 
 export class MangaListViewmodel {
@@ -24,6 +24,8 @@ export class MangaListViewmodel {
         this.pagination = params.pagination;
         this.scrollEnd = params.scrollEnd;
         this.searching = params.searching;
+        this.appCommands = params.appCommands;
+        this.isRecursive = ko.observable(params.isRecursive());
         this.searchValue = ko.observable("");
         this.mangas = ko.observableArray([]);
 
@@ -36,17 +38,21 @@ export class MangaListViewmodel {
         this.afterRender = this.afterRender.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
         this.viewManga = this.viewManga.bind(this);
+
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
 
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
 
-        this.isRecursive = ko.observable(false);
+
         this.isRecursiveText = ko.pureComputed(function() {
             return this.isRecursive() ? "On" : "Off";
         }, this);
         this.requesting = null;
 
         this.initialize();
+        this.commands = [
+            new Command(this.appCommands().BOOKMARK_FOLDER, this.toggleBookmark)
+        ];
         console.log("MangaListViewmodel::constructor - end");
     }
 
