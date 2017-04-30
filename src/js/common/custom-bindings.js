@@ -93,14 +93,26 @@ ko.bindingHandlers.toggleBookmark = {
 }
 
 ko.bindingHandlers.isFavorite = {
+    init: function(element, valueAccessor) {
+        let observable = valueAccessor();
+        let sub = observable.subscribe(function() {
+            $(element).parent(".cbutton").trigger('pulse-effect');
+        })
+        onDispose(element, function() {
+            console.log("isFavorite dispose");
+            sub.dispose();
+        })
+    },
     update: function(element, valueAccessor) {
         let isFavorite = ko.unwrap(valueAccessor());
-
         if (isFavorite) {
             $(element).text("star");
+
         } else {
             $(element).text("star_border");
         }
+
+
     }
 }
 
@@ -113,6 +125,7 @@ ko.bindingHandlers.visibility = {
         } else {
             $(element).css("visibility", "hidden");
         }
+        $
     }
 }
 
@@ -191,13 +204,16 @@ ko.bindingHandlers.singlePulseEffect = {
         let $element = $(element);
         $element.addClass("cbutton cbutton--effect-boris")
         $element.find("material-icons").addClass("cbutton__icon")
-        $element.on('click', function() {
+        $element.on('pulse-effect', function() {
             console.log("single pulse click")
             $element.addClass('cbutton--click');
             $element.on('animationend', function() {
                 $element.off('animationend');
                 $element.removeClass('cbutton--click');
             });
+        })
+        $element.on('click', function() {
+            $element.trigger('pulse-effect');
         })
 
         onDispose(element, function() {
@@ -343,13 +359,18 @@ ko.bindingHandlers.keybind = {
 }
 
 ko.bindingHandlers.listenTo = {
-    init: function(element, valueAccessor) {
+    init: function(element, valueAccessor, allBindings) {
+        let context = allBindings.get('context') || "";
+        let preventPropagation = allBindings.get('preventPropagation');
         let commands = ko.unwrap(valueAccessor());
+        let $body = $("body");
         console.log("custom-bindings::listenTo::init");
 
         function keyPressHandler(event) {
             event.preventDefault();
-            event.stopImmediatePropagation();
+            if (preventPropagation) {
+                event.stopImmediatePropagation();
+            }
             let combo = "";
             let alt = event.altKey ? "ALT" : null;
             let shiftKey = event.shiftKey ? "SHIFT" : null;
@@ -378,7 +399,7 @@ ko.bindingHandlers.listenTo = {
             }
             if (letter) {
                 let input = _.without([ctrlKey, alt, shiftKey, letter], null).join(" + ");
-                $("body").trigger("command", input);
+                $body.trigger("command." + context, input);
             }
             console.log("on key up")
             return false;
@@ -388,17 +409,16 @@ ko.bindingHandlers.listenTo = {
             key("LEFT CLICK");
         }
 
-        $("body").on("keyup", keyPressHandler);
-        $("body").on("listen.pause", function() {
-            console.log("$body command.pause");
-            $("body").off("keyup", keyPressHandler);
+        $body.on("keyup." + context, keyPressHandler);
+        $body.on("listen.pause", function() {
+            $body.off("keyup." + context, keyPressHandler);
         });
 
-        $("body").on("listen.unpause", function() {
-            console.log("$body command.unpause");
-            $("body").on("keyup", keyPressHandler);
+        $body.on("listen.unpause", function() {
+            $body.on("keyup." + context, keyPressHandler);
         });
-        $("body").on("command", function(event, input) {
+
+        $body.on("command." + context, function(event, input) {
             let command = _.find(commands, {
                 hotkey: input
             });
@@ -410,8 +430,9 @@ ko.bindingHandlers.listenTo = {
         })
 
         onDispose(element, function() {
-            $("body").on("keyup", keyPressHandler);
-            $("body").off("command");
+            $body.off("listen.pause");
+            $body.off("listen.unpause");
+            $body.off("command." + context);
         })
     }
 }

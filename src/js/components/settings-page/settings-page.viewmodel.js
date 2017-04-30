@@ -47,10 +47,12 @@ export class SettingsPageViewmodel {
     getLabelFor(key) {
         let map = {
             BOOKMARK_FOLDER: "Bookmark folder",
+            BOOKMARK_MANGA: "Add to favorites",
             NEXT_PAGE: "Next page",
             PREVIOUS_PAGE: "Previous page",
             FOCUS_SEARCH: "Focus search",
-            OPEN_DIRECTORY: "Open directory"
+            OPEN_DIRECTORY: "Open directory",
+
         }
         return map[key] || key;
     }

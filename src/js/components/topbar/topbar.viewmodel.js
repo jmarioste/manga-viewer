@@ -3,6 +3,7 @@ import _ from "lodash";
 import $ from "jquery";
 
 import api from "js/common/api.js";
+import Command from "js/models/command.viewmodel";
 import template from "./topbar.template.html";
 import {
     ViewMangaCommand
@@ -18,6 +19,8 @@ export class TopBarViewmodel {
         this.favorites = params.favorites;
         this.currentPage = params.currentPage;
         this.appTitle = params.appTitle;
+        this.appCommands = params.appCommands;
+
         this.currentViewMangaPage = params.currentViewMangaPage;
         this.viewMangaCommand = params.viewMangaCommand;
         this.searching = params.searching;
@@ -25,8 +28,15 @@ export class TopBarViewmodel {
         this.isFavorite = ko.pureComputed(this.isFavorite, this);
         this.topBarText = ko.pureComputed(this.topBarText, this);
         this.showSidebar = ko.observable();
+
         this.goNextPage = this.goNextPage.bind(this);
         this.goPrevPage = this.goPrevPage.bind(this);
+        this.toggleFavorite = this.toggleFavorite.bind(this);
+
+        this.commands = [
+            new Command(this.appCommands().BOOKMARK_MANGA, this.toggleFavorite),
+        ];
+
         console.log("TopBarViewmodel::constructor - end", this.currentPage());
     }
 
@@ -50,6 +60,7 @@ export class TopBarViewmodel {
     }
 
     toggleFavorite() {
+        console.log("toggleFavorite");
         let manga = this.selectedManga();
         manga.isFavorite(!manga.isFavorite());
         if (manga.isFavorite()) {

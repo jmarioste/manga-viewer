@@ -35,10 +35,7 @@ export class ViewMangaViewmodel {
         this.transformScale = ko.observable(1.0);
         this.viewOptions = ko.observableArray(viewOptions);
         this.mangaFactory = new MangaFactory();
-        this.commands = [
-            new Command(this.appCommands().NEXT_PAGE, this.goNextPage),
-            new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage)
-        ];
+
 
         //functions
         this.switchClass = this.switchClass.bind(this);
@@ -48,6 +45,11 @@ export class ViewMangaViewmodel {
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({
             rateLimit: 50
         });
+
+        this.commands = [
+            new Command(this.appCommands().NEXT_PAGE, this.goNextPage),
+            new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage)
+        ];
 
         console.log("ViewMangaViewModel::constructor - end", this.selectedManga());
         this.initialize();
@@ -66,7 +68,7 @@ export class ViewMangaViewmodel {
                     this.preloadNextPages(0, 2);
                 })
             } else {
-                this.currentPage(Pages.MangaList);
+                // this.currentPage(0);
             }
         } else {
             this.preloadNextPages(0, 2);

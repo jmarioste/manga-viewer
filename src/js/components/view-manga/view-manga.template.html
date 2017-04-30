@@ -1,4 +1,9 @@
-<div class="view-manga single-page" data-bind="css:viewOption, listenTo:commands">
+<div class="view-manga single-page" data-bind="
+css:viewOption, 
+listenTo:commands, 
+preventPropagation: true,
+context:'view-manga'">
+
 	<img class="manga-page" data-bind="src: $component.currentImage, 
 	click:$component.goNextPage, 
 	scrollTopOnClick:scrollTopOnClick,
