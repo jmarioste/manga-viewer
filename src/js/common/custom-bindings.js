@@ -240,6 +240,31 @@ ko.bindingHandlers.switch = {
     }
 }
 
+ko.bindingHandlers.removeFocusOnEnter = {
+    init: function(element, valueAccessor, allBindings) {
+        let hasFocus = allBindings.get('hasFocus');
+        $(element).on('keyup', function(event) {
+            if (event.key === "Enter") {
+                hasFocus(false);
+            }
+        });
+        onDispose(element, function() {
+            $(element).off('change');
+        });
+    },
+}
+ko.bindingHandlers.oldhasFocus = ko.bindingHandlers.hasFocus;
+ko.bindingHandlers.hasFocus = {
+    init: ko.bindingHandlers.oldhasFocus.init,
+    update: function(element, valueAccessor, allBindings) {
+        let hasFocus = ko.unwrap(valueAccessor());
+        if (hasFocus) {
+            $(element).select();
+        }
+        ko.bindingHandlers.oldhasFocus.update(element, valueAccessor, allBindings);
+
+    }
+}
 
 ko.bindingHandlers.keybind = {
     init: function(element, valueAccessor) {
@@ -247,9 +272,12 @@ ko.bindingHandlers.keybind = {
         let $element = $(element);
         let $input = $element.find('.settings-input');
         let $label = $element.find('.settings-label');
+        let $body = $("body");
 
         function keyPressHandler(event) {
             event.preventDefault();
+            $body.trigger('listen.pause');
+            // event.stopImmediatePropagation();
             let combo = "";
             let alt = event.altKey ? "ALT" : null;
             let shiftKey = event.shiftKey ? "SHIFT" : null;
@@ -283,8 +311,6 @@ ko.bindingHandlers.keybind = {
                 key(text);
 
             }
-
-            return false;
         }
 
         function clickHandler(event) {
@@ -296,6 +322,7 @@ ko.bindingHandlers.keybind = {
             $element.find('.settings-label').hide();
             $input.show();
             $input.trigger('focus');
+
             $input.on("keydown", keyPressHandler);
             $input.on("click", clickHandler);
             $input.on("blur", function() {
@@ -303,6 +330,7 @@ ko.bindingHandlers.keybind = {
                 $element.removeClass("btn").addClass("btn-flat");
                 $input.hide();
                 $element.find('.settings-label').show();
+                $body.trigger('listen.unpause');
             });
 
         });
@@ -360,7 +388,16 @@ ko.bindingHandlers.listenTo = {
             key("LEFT CLICK");
         }
 
-        $("body").on("keyup", keyPressHandler)
+        $("body").on("keyup", keyPressHandler);
+        $("body").on("listen.pause", function() {
+            console.log("$body command.pause");
+            $("body").off("keyup", keyPressHandler);
+        });
+
+        $("body").on("listen.unpause", function() {
+            console.log("$body command.unpause");
+            $("body").on("keyup", keyPressHandler);
+        });
         $("body").on("command", function(event, input) {
             let command = _.find(commands, {
                 hotkey: input
