@@ -2,6 +2,7 @@ import ko from "knockout";
 import _ from "lodash";
 
 import api from "js/common/api";
+import Pages from "js/common/pages.enum";
 import Folder from "js/models/folder.viewmodel";
 import template from "./sidebar.template.html";
 import Command from "js/models/command.viewmodel";
@@ -9,26 +10,22 @@ import path from "path";
 
 export class SidebarViewmodel {
 
-    constructor(params) {
+    constructor(params) 
+    {
         console.log("SidebarViewmodel::constructor");
         var self = this;
+        this.subs = [];
         this.bookmarks = params.bookmarks;
         this.currentPage = params.currentPage;
         this.appCommands = params.appCommands;
+        this.currentFolder = params.currentFolder;
+        this.selectedDirectory = params.selectedDirectory;
         this.folders = ko.observableArray();
 
-        this.directories = ko.computed(this.getFolderTree, this).extend({
-            rateLimit: 50
-        });
-        this.map = {};
-
-        this.selectedDirectory = params.selectedDirectory;
         this.selectDirectory = this.selectDirectory.bind(this);
-
-        this.currentFolder = params.currentFolder;
         this.selectDirectoryText = ko.pureComputed(this.selectDirectoryText, this);
         this.isFavoritesActive = ko.pureComputed(this.isFavoritesActive, this);
-        this.subs = [];
+        this.directories = ko.pureComputed(this.getFolderTree, this).extend({ rateLimit: 50 });
 
         this.commands = [
             new Command(this.appCommands().OPEN_DIRECTORY, this.openDirectory)
@@ -69,7 +66,7 @@ export class SidebarViewmodel {
 
     selectDirectory(folder) {
         this.selectedDirectory(folder);
-        this.currentPage("manga-list-view");
+        this.currentPage(Pages.MangaList);
     }
 
     selectDirectoryText() {
@@ -87,17 +84,17 @@ export class SidebarViewmodel {
     }
 
     showFavorites() {
-        this.currentPage("favorites-list-view");
+        this.currentPage(Pages.MangaList);
         this.selectedDirectory(null);
     }
 
     showSettings() {
-        this.currentPage("settings-page-view");
+        this.currentPage(Pages.SettingsPage);
         this.selectedDirectory(null);
     }
 
     isFavoritesActive() {
-        return this.currentPage() == "favorites-list";
+        return this.currentPage() == Pages.FavortiesList;
     }
 
     dispose() {

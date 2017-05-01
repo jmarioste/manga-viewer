@@ -6,13 +6,10 @@ import "scss/view-manga.scss";
 import "js/common/ko.custom-functions";
 
 import api from "js/common/api";
-import Pages from "js/common/pages-enum";
+import Pages from "js/common/pages.enum";
 import MangaFactory from "js/common/manga.factory";
 import template from "./view-manga.template.html";
-import {
-    viewOptions,
-    ViewOptions
-} from "./view-options.js";
+import { viewOptions, ViewOptions } from "./view-options.js";
 import Command from "js/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 
@@ -42,9 +39,7 @@ export class ViewMangaViewmodel {
         this.goNextPage = this.goNextPage.bind(this);
         this.goToPreviousPage = this.goToPreviousPage.bind(this);
         this.viewOption = ko.pureComputed(this.viewOption, this);
-        this.currentImage = ko.pureComputed(this.currentImage, this).extend({
-            rateLimit: 50
-        });
+        this.currentImage = ko.pureComputed(this.currentImage, this).extend({ rateLimit: 50 });
 
         this.commands = [
             new Command(this.appCommands().NEXT_PAGE, this.goNextPage),
