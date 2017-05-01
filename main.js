@@ -25,7 +25,8 @@ function createWindow() {
         height: 600,
         show: false,
         titleBarStyle: 'hidden',
-        frame: false
+        frame: false,
+        minWidth: 960
     })
     getMangaList.initializeEvents();
     selectDirectory.initializeEvents();

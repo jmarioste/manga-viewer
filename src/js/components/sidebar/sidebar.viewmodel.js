@@ -78,7 +78,6 @@ export class SidebarViewmodel {
     openDirectory() {
         var self = this;
         api.selectDirectory().then(function(folder) {
-            console.log(`You selected ${folder}`);
             self.currentFolder(folder);
             self.initialize();
         });
