@@ -5,7 +5,7 @@
 </section>
 <section class="row">
 	<div class=" col s12">
-		<div class="col l3">
+		<div class="col s12 l3">
 			<div class="switch col s12">
 				<label >
 					Include subfolders
@@ -18,15 +18,31 @@
 	</div>
 </section>
 <section class="row">
+	<div class=" col s12">
+		<div class="col s12 m12 l3">
+			<div class="input-field col s12" >
+				<select data-bind="
+					options:viewOptions,
+					optionsText: 'text',
+					optionsValue: 'value',
+					value: viewOption,
+					materialSelect:viewOption">
+				</select>
+				<label>Search and view options</label>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="row">
 	<h4 class="col s12">
-	Hotkeys
+	Hotkey Shortcuts
 	</h4>
 </section>
 <section class="row" data-bind="foreach:commandsList">
 	<div class=" col s12">
-		<div class="col l4 valign-wrapper">
+		<div class="col s12 m12 l5 valign-wrapper">
 			<label class="settings-label valign col s6" data-bind="text:label"></label>
-			<a class="waves-effect waves-light btn-flat settings-key col s6" data-bind="keybind:hotkey">
+			<a class="waves-effect waves-light btn-flat settings-key col s12" data-bind="keybind:hotkey">
 				<span class="settings-label" data-bind="text:hotkey"></span>
 				<input type="text" class=" settings-input" data-bind="value:hotkey">
 			</a>
