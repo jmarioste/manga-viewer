@@ -31,13 +31,11 @@ export class MangaListViewmodel {
         this.isSearchFocused = ko.observable(false);
         this.mangas = ko.observableArray([]);
 
-        this.mangaFactory = new MangaFactory();
         this.showGuide = ko.observable();
         this.totalMangaSearched = ko.observable(0);
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleFavorites = this.toggleFavorites.bind(this);
-        this.afterRender = this.afterRender.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
         this.viewManga = this.viewManga.bind(this);
         this.focusSearch = this.focusSearch.bind(this);
@@ -111,10 +109,8 @@ export class MangaListViewmodel {
         ipc.on('get-manga-list-progress', function(event, manga) {
             if (manga) {
                 manga.isFavorite = _.includes(self.favorites(), manga.folderPath);
-                manga = self.mangaFactory.getManga(manga);
+                manga = MangaFactory.getManga(manga);
                 self.mangas.push(manga);
-
-                // self.mangas.valueHasMutated();
             }
         });
 
@@ -124,6 +120,7 @@ export class MangaListViewmodel {
             // self.showGuide(self.mangas().length <= 0);
             console.log("this.mangas.length", self.mangas().length);
         });
+
         this.subscriptions.push(computed);
         this.subscriptions.push(sub);
         this.subscriptions.push(sub2);
