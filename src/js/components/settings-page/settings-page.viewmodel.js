@@ -6,7 +6,8 @@ import $ from "jquery";
 import path from "path";
 
 import api from "js/common/api.js";
-
+import { ViewOptions } from "js/components";
+import { SelectItem } from "js/models";
 
 const ipc = window.require('electron').ipcRenderer;
 
@@ -15,7 +16,13 @@ export class SettingsPageViewmodel {
         this.subscriptions = [];
         this.isRecursive = params.isRecursive;
         this.commands = params.commands;
-        console.log(this.commands());
+        this.viewOption = ko.observable(ViewOptions.Default)
+        this.viewOptions = ko.observableArray([
+            new SelectItem("Normal size", ViewOptions.Default),
+            new SelectItem("Fit to width", ViewOptions.FitToWidth),
+            new SelectItem("Fit to height", ViewOptions.FitToHeight),
+        ]);
+
         this.isRecursiveText = ko.pureComputed(function() {
             return this.isRecursive() ? "On" : "Off";
         }, this);
@@ -36,6 +43,8 @@ export class SettingsPageViewmodel {
         }, this).extend({
             rateLimit: 50
         });
+
+        this.subscriptions.push(sub);
     }
 
     dispose() {
