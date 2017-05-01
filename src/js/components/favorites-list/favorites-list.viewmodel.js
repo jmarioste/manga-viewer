@@ -24,7 +24,6 @@ export class FavoritesListViewmodel {
             rateLimit: 300
         });
 
-        this.mangaFactory = new MangaFactory();
         this.favoritesManga = ko.observableArray([]);
         this.filteredManga = ko.pureComputed(this.filteredManga, this);
 
@@ -42,10 +41,8 @@ export class FavoritesListViewmodel {
         ipc.on('get-favorites-list-progress', function(event, manga) {
             if (manga) {
                 manga.isFavorite = true;
-                // let favoritesManga = self.favoritesManga();
-                manga = self.mangaFactory.getManga(manga);
+                manga = MangaFactory.getManga(manga);
                 self.favoritesManga.push(manga);
-                // self.mangas.valueHasMutated();
             }
         });
 

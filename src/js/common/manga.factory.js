@@ -1,29 +1,18 @@
-import Manga from "js/models/manga.viewmodel";
+import { Manga } from "js/models";
 import api from "js/common/api";
-let instance = null;
 let cache = {};
 
-export default class MangaFactory {
+class MangaFactory {
 
-    constructor() {
-        if (!instance) {
-            instance = this;
-        }
-
-        return instance;
-    }
 
     getManga(params) {
-        if (!params.folderPath) {
-            console.err("MangaFactory::getManga - folderPath is null");
-            return;
-        }
-
         let cached = cache[params.mangaTitle];
-
-        if (_(cached).isNil()) {
-            cache[params.mangaTitle] = new Manga(params);
+        if (!cached) {
+            cached = new Manga(params);
+            cache[params.mangaTitle] = cached;
         }
-        return cache[params.mangaTitle];
+        return cached;
     }
 }
+
+export default new MangaFactory();

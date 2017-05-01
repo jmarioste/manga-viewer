@@ -6,7 +6,6 @@ import $ from "jquery";
 import path from "path";
 
 import api from "js/common/api.js";
-import MangaFactory from "js/common/manga.factory.js";
 
 
 const ipc = window.require('electron').ipcRenderer;

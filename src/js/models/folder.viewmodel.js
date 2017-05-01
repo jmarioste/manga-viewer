@@ -44,6 +44,6 @@ export default class Folder {
     }
 
     paddingLeft() {
-        return `${20 + 20 * this.level}px`;
+        return `${16 + 20 * this.level}px`;
     }
 }

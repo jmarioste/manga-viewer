@@ -31,7 +31,6 @@ export class ViewMangaViewmodel {
         this.page = ko.observable(1);
         this.transformScale = ko.observable(1.0);
         this.viewOptions = ko.observableArray(viewOptions);
-        this.mangaFactory = new MangaFactory();
 
 
         //functions
@@ -57,7 +56,7 @@ export class ViewMangaViewmodel {
             if (this.selectedMangaPath()) {
                 let request = api.getManga(this.selectedMangaPath());
                 request.then((manga) => {
-                    manga = this.mangaFactory.getManga(manga);
+                    manga = MangaFactory.getManga(manga);
                     this.selectedManga(manga);
                     manga.pageImages([]);
                     this.preloadNextPages(0, 2);

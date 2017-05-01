@@ -2,7 +2,7 @@ import ko from "knockout";
 import _ from "lodash";
 import api from "js/common/api";
 import "js/common/ko.custom-functions";
-export default class Manga {
+export class Manga {
     constructor({
         mangaTitle,
         folderPath,
@@ -29,13 +29,5 @@ export default class Manga {
         this.language = language;
         this.circle = circle;
         this.resolution = resolution;
-    }
-
-    toggleFolderOpen() {
-        this.isOpen(!this.isOpen());
-    }
-
-    paddingLeft() {
-        return `${5 + 20 * this.level}px`;
     }
 }

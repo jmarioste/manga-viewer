@@ -22,8 +22,10 @@ export class SidebarViewmodel {
         this.folders = ko.observableArray();
 
         this.selectDirectory = this.selectDirectory.bind(this);
+        this.isFolderActive = this.isFolderActive.bind(this);
         this.selectDirectoryText = ko.pureComputed(this.selectDirectoryText, this);
         this.isFavoritesActive = ko.pureComputed(this.isFavoritesActive, this);
+        this.isSettingsActive = ko.pureComputed(this.isSettingsActive, this);
         this.directories = ko.pureComputed(this.getFolderTree, this).extend({ rateLimit: 50 });
 
         this.commands = [
@@ -94,7 +96,19 @@ export class SidebarViewmodel {
     }
 
     isFavoritesActive() {
-        return this.currentPage() == Pages.FavortiesList;
+        return this.currentPage() === Pages.FavortiesList;
+    }
+
+    isSettingsActive() {
+        return this.currentPage() === Pages.SettingsPage;
+    }
+
+    isFolderActive(folder) {
+        console.log(folder.folderName, this);
+        let isFolderSelected = _.includes([Pages.MangaList, Pages.FavortiesList], this.currentPage());
+        let sameDirectory = this.selectDirectoryText() === folder.folderName;
+
+        return sameDirectory && isFolderSelected;
     }
 
     dispose() {
