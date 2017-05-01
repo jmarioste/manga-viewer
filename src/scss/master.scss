@@ -19,14 +19,17 @@
 }
 
 .title-bar {
-	
+	color : #fff;
+	padding-left: 16px;
+
 	.close-icon {
 		color : #fff;
-		height: 24dp;
+		height: 24dp;		
 		padding: 0px 5px;
-
 		&:hover {
 			background-color: #d50000;
+			transition: background-color .2s
 		}
+		-webkit-app-region: no-drag;
 	}
 }

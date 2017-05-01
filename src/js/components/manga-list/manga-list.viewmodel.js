@@ -121,7 +121,7 @@ export class MangaListViewmodel {
         ipc.on('get-manga-list-done', function() {
             self.requesting = false;
             self.searching(false);
-            self.showGuide(self.mangas().length <= 0);
+            // self.showGuide(self.mangas().length <= 0);
             console.log("this.mangas.length", self.mangas().length);
         });
         this.subscriptions.push(computed);

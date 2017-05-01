@@ -3,18 +3,17 @@ import _ from "lodash";
 import path from "path";
 
 import api from "js/common/api.js";
+import Pages from "js/common/pages.enum";
 import Folder from "js/models/folder.viewmodel.js";
-import {
-    DefaultCommandHotkeys
-} from "js/models/command.viewmodel";
-
+import { DefaultCommandHotkeys } from "js/models/command.viewmodel";
+const { remote } = window.require('electron');
 export default class ViewModel {
     constructor(params) {
         params.bookmarks = _.without(params.bookmarks, null);
         let self = this;
         this.appTitle = ko.observable("Baiji Manga Viewer");
         // "G:/Users/Shizkun/"
-        this.currentPage = ko.observable(params.currentPage || "manga-list-view");
+        this.currentPage = ko.observable(params.currentPage || Pages.MangaList);
         this.currentFolder = ko.observable(params.currentFolder);
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
@@ -64,9 +63,10 @@ export default class ViewModel {
                 this.selectedDirectory(null);
             }
         }, this);
+    }
 
-        this.isRecursive.subscribe(function(value) {
-            console.log("MainViewmodel::isRecursive changed", value);
-        })
+    closeWindow() {
+        let current = remote.getCurrentWindow();
+        current.close();
     }
 }

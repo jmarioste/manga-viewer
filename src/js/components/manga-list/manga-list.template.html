@@ -1,63 +1,67 @@
+<div class="row">
+	
 
-<section class="row" data-bind="listenTo:commands, context:'manga-list'">
-	<!-- ko if: selectedDirectory -->
-	<h4 class="col s12 l6 truncate selected-folder">
-	<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
-		data-bind="click:toggleBookmark">
-		<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
-	</a>
-	<span data-bind="text:selectedDirectoryText"></span>
-	</h4>
-	<!-- /ko -->
-	<!-- ko ifnot: selectedDirectory -->
-	<h4 class="col s12 l6">Manga list</h4>
-	<!-- /ko -->
-	<div class="include-subfolders switch col s12 m6 l3">
-		<label class="right">
-			Include subfolders
-			<input type="checkbox" data-bind="switch:isRecursive">
-			<span class="lever"></span>
-			<span data-bind="text:isRecursiveText"></span>
-		</label>
-	</div>
-	<div class="col s12  m6 l3">
-		<div class="input-field ">
-			<input id="search" type="search" data-bind="value:searchValue, hasFocus:isSearchFocused, removeFocusOnEnter" placeholder="Search Manga...">
-			<label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
-			<i class="material-icons clear" data-bind="click:clearSearch">close</i>
+
+	<section class="col s12" data-bind="listenTo:commands, context:'manga-list'">
+		<!-- ko if: selectedDirectory -->
+		<h4 class="col s12 l6 truncate selected-folder">
+		<a class="bookmark-btn btn btn-floating left waves-effect waves-light"
+			data-bind="click:toggleBookmark">
+			<i class="material-icons" data-bind="toggleBookmark:isBookmarked">bookmark_border</i>
+		</a>
+		<span data-bind="text:selectedDirectoryText"></span>
+		</h4>
+		<!-- /ko -->
+		<!-- ko ifnot: selectedDirectory -->
+		<h4 class="col s12 l6">Manga list</h4>
+		<!-- /ko -->
+		<div class="include-subfolders switch col s12 m6 l3">
+			<label class="right">
+				Include subfolders
+				<input type="checkbox" data-bind="switch:isRecursive">
+				<span class="lever"></span>
+				<span data-bind="text:isRecursiveText"></span>
+			</label>
 		</div>
-	</div>
-	
-	
-</section>
-<div id="mangalist">
-	<!-- ko foreach:{data:mangas, afterRender: afterRender}  -->
-	<div class="manga">
-		<div class="manga-content">
-			<div class="image-container">
-				<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >
-			</div>
-			<div class="info">
-				<span class="title" data-bind="text:titleShort, tooltip:'top'"></span>
-				<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
-				<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite,
-				click:$parent.toggleFavorites">star</i>
-				</button>
-				
+		<div class="col s12  m6 l3">
+			<div class="input-field ">
+				<input id="search" type="search" data-bind="value:searchValue, hasFocus:isSearchFocused, removeFocusOnEnter" placeholder="Search Manga...">
+				<label class="label-icon" for="search"><i class="material-icons ">search</i> </label>
+				<i class="material-icons clear" data-bind="click:clearSearch">close</i>
 			</div>
 		</div>
 		
-	</div>
-	<!-- /ko -->
-	<div class="extra">
 		
+	</section>
+	<div id="mangalist" class="col s12">
+		<!-- ko foreach:{data:mangas, afterRender: afterRender}  -->
+		<div class="manga">
+			<div class="manga-content">
+				<div class="image-container">
+					<img class="manga-image" data-bind="src:thumbnail, click:$parent.viewManga" >
+				</div>
+				<div class="info">
+					<span class="title" data-bind="text:titleShort, tooltip:'top'"></span>
+					<button class="cbutton cbutton--effect-boris" data-bind="singlePulseEffect:true, clickBubble:false">
+					<i class="material-icons cbutton__icon action" data-bind="isFavorite:isFavorite,
+					click:$parent.toggleFavorites">star</i>
+					</button>
+					
+				</div>
+			</div>
+			
+		</div>
+		<!-- /ko -->
+		<div class="extra">
+			
+		</div>
 	</div>
-</div>
-<div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
-	<div class="col s12 grey-text center-align">
-		<i class="material-icons large">create_new_folder</i>
-		<h5 class="">
-		No mangas found in this folder...
-		</h5>
-	</div>	
+<!-- 	<div id="no-manga-guide" class="row" style="display:none" data-bind="visible:showGuide">
+		<div class="col s12 grey-text center-align">
+			<i class="material-icons large">create_new_folder</i>
+			<h5 class="">
+			No mangas found in this folder...
+			</h5>
+		</div>	
+	</div> -->
 </div>
