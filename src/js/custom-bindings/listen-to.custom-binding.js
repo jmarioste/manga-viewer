@@ -1,5 +1,12 @@
 import ko from "knockout";
 let onDispose = ko.utils.domNodeDisposal.addDisposeCallback;
+let KeyMap = {
+    Control: "CTRL",
+    ArrowLeft: "LEFT ARROW",
+    ArrowUp: "UP ARROW",
+    ArrowRight: "RIGHT ARROW",
+    ArrowDown: "DOWN ARROW"
+};
 ko.bindingHandlers.listenTo = {
     init: function(element, valueAccessor, allBindings) {
         let context = allBindings.get('context') || "";
@@ -24,21 +31,9 @@ ko.bindingHandlers.listenTo = {
                 letter = String.fromCharCode(event.keyCode);
             }
             if (_.includes([37, 38, 39, 40], event.keyCode)) {
-                switch (event.keyCode) {
-                    case 37:
-                        letter = "LEFT ARROW";
-                        break;
-                    case 38:
-                        letter = "UP ARROW";
-                        break;
-                    case 39:
-                        letter = "RIGHT ARROW";
-                        break;
-                    case 40:
-                        letter = "DOWN ARROW";
-                        break;
-                }
+                letter = KeyMap[event.key];
             }
+
             if (letter) {
                 let input = _.without([ctrlKey, alt, shiftKey, letter], null).join(" + ");
                 $body.trigger("command." + context, input);
