@@ -140,9 +140,6 @@ export class MangaListViewmodel {
         this.searchValue("");
     }
 
-    afterRender(element, data) {
-        // Ps.update($(".content")[0]);
-    }
     selectedDirectoryText() {
         return this.selectedDirectory() ? this.selectedDirectory().folderName : "";
     }
@@ -158,14 +155,11 @@ export class MangaListViewmodel {
             let bookmarkPaths = _.map(this.bookmarks(), 'folderPath');
             current.isBookmarked(!isBookmarked);
             if (current.isBookmarked() && !_.includes(bookmarkPaths, current.folderPath)) {
-                console.log("bookmarking");
                 this.bookmarks.push(current);
             } else {
-                console.log("unbookmarking", this.bookmarks());
                 this.bookmarks.remove(function(folder) {
                     return folder.folderPath === current.folderPath;
                 });
-                console.log("unbookmarked", this.bookmarks());
             }
 
         }

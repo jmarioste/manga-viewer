@@ -5,9 +5,7 @@ import $ from "jquery";
 import api from "js/common/api.js";
 import Command from "js/models/command.viewmodel";
 import template from "./topbar.template.html";
-import {
-    ViewMangaCommand
-} from "js/components";
+import { ViewMangaCommand } from "js/components";
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {
@@ -77,7 +75,6 @@ export class TopBarViewmodel {
         } else {
             return false;
         }
-
     }
 
     goNextPage() {

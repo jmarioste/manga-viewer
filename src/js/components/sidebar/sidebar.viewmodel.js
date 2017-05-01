@@ -10,8 +10,7 @@ import path from "path";
 
 export class SidebarViewmodel {
 
-    constructor(params) 
-    {
+    constructor(params) {
         console.log("SidebarViewmodel::constructor");
         var self = this;
         this.subs = [];
@@ -81,6 +80,7 @@ export class SidebarViewmodel {
             self.currentFolder(folder);
             self.initialize();
         });
+
     }
 
     showFavorites() {
