@@ -55,10 +55,14 @@ module.exports = function(input, done, progress) {
                 zip.on("end", function() {
                     console.log("zip.once::end");
                     zip.close();
-                    resolve({
-                        images: images,
-                        manga: manga
-                    });
+                    if (images.length) {
+                        resolve({
+                            images: images,
+                            manga: manga
+                        });
+                    } else {
+                        reject("No images found in .zip file");
+                    }
                 });
                 zip.on("error", function(error) {
                     console.log("getImages::zip.on::error", error);
