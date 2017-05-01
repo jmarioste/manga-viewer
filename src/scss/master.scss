@@ -17,3 +17,16 @@
   bottom: auto !important;
   left:50%;  
 }
+
+.title-bar {
+	
+	.close-icon {
+		color : #fff;
+		height: 24dp;
+		padding: 0px 5px;
+
+		&:hover {
+			background-color: #d50000;
+		}
+	}
+}
