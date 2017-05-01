@@ -8,6 +8,10 @@ ko.bindingHandlers.hasFocus = {
         let hasFocus = ko.unwrap(valueAccessor());
         if (hasFocus) {
             $(element).select();
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
         }
         oldFocus.update(element, valueAccessor, allBindings);
 
