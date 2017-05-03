@@ -10,8 +10,8 @@ const url = require('url')
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
 const Promise = require('bluebird');
-const getMangaList = require('./src/js/main-process/get-mangalist.js');
-const selectDirectory = require('./src/js/main-process/select-directory.js');
+const getMangaList = require('./src/main-process/get-mangalist.js');
+const selectDirectory = require('./src/main-process/select-directory.js');
 const fs = require('fs');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -32,7 +32,7 @@ function createWindow() {
     selectDirectory.initializeEvents();
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, './index.html'),
         protocol: 'file:',
         slashes: true
     }))
