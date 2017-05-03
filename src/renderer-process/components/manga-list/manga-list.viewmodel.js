@@ -2,10 +2,10 @@ import ko from "knockout";
 import _ from "lodash";
 import $ from "jquery";
 import Ps from "perfect-scrollbar";
-import api from "js/common/api.js";
-import MangaFactory from "js/common/manga.factory.js";
+import api from "renderer-process/common/api.js";
+import MangaFactory from "renderer-process/common/manga.factory.js";
 import template from "./manga-list.template.html";
-import Command from "js/models/command.viewmodel";
+import Command from "renderer-process/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 
 export class MangaListViewmodel {

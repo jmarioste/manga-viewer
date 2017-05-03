@@ -66,6 +66,7 @@ export default class api {
         return deferred.promise();
     }
     static getSavedSettings() {
+        console.log("api.getSavedSettings");
         let deferred = $.Deferred();
 
         if (!api.getSavedSettings.called) {

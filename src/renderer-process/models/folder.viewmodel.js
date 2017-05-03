@@ -1,6 +1,6 @@
 import ko from "knockout";
 import _ from "lodash";
-import api from "js/common/api.js";
+import api from "renderer-process/common/api.js";
 
 export default class Folder {
     constructor({

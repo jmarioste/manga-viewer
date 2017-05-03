@@ -1,5 +1,5 @@
-import { Manga } from "js/models";
-import api from "js/common/api";
+import { Manga } from "renderer-process/models";
+import api from "renderer-process/common/api";
 let cache = {};
 
 class MangaFactory {

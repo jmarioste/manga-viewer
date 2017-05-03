@@ -2,15 +2,15 @@ import ko from "knockout";
 import _ from "lodash";
 import $ from "jquery";
 
-import "scss/view-manga.scss";
-import "js/common/ko.custom-functions";
+import "renderer-process/scss/view-manga.scss";
+import "renderer-process/common/ko.custom-functions";
 
-import api from "js/common/api";
-import Pages from "js/common/pages.enum";
-import MangaFactory from "js/common/manga.factory";
+import api from "renderer-process/common/api";
+import Pages from "renderer-process/common/pages.enum";
+import MangaFactory from "renderer-process/common/manga.factory";
 import template from "./view-manga.template.html";
 import { viewOptions, ViewOptions } from "./view-options.js";
-import Command from "js/models/command.viewmodel";
+import Command from "renderer-process/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 
 export class ViewMangaViewmodel {

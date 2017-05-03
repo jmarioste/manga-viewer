@@ -1,11 +1,11 @@
 import ko from "knockout";
 import _ from "lodash";
 
-import api from "js/common/api";
-import Pages from "js/common/pages.enum";
-import Folder from "js/models/folder.viewmodel";
+import api from "renderer-process/common/api";
+import Pages from "renderer-process/common/pages.enum";
+import Folder from "renderer-process/models/folder.viewmodel";
 import template from "./sidebar.template.html";
-import Command from "js/models/command.viewmodel";
+import Command from "renderer-process/models/command.viewmodel";
 import path from "path";
 
 export class SidebarViewmodel {

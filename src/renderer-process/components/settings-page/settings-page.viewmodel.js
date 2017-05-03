@@ -5,9 +5,9 @@ import _ from "lodash";
 import $ from "jquery";
 import path from "path";
 
-import api from "js/common/api.js";
-import { ViewOptions } from "js/components";
-import { SelectItem } from "js/models";
+import api from "renderer-process/common/api.js";
+import { ViewOptions } from "renderer-process/components";
+import { SelectItem } from "renderer-process/models";
 
 const ipc = window.require('electron').ipcRenderer;
 

@@ -5,8 +5,8 @@ import _ from "lodash";
 import $ from "jquery";
 import path from "path";
 
-import api from "js/common/api.js";
-import MangaFactory from "js/common/manga.factory.js";
+import api from "renderer-process/common/api.js";
+import MangaFactory from "renderer-process/common/manga.factory.js";
 
 
 const ipc = window.require('electron').ipcRenderer;

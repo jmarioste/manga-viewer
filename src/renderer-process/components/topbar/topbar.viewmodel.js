@@ -2,10 +2,10 @@ import ko from "knockout";
 import _ from "lodash";
 import $ from "jquery";
 
-import api from "js/common/api.js";
-import Command from "js/models/command.viewmodel";
+import api from "renderer-process/common/api.js";
+import Command from "renderer-process/models/command.viewmodel";
 import template from "./topbar.template.html";
-import { ViewMangaCommand } from "js/components";
+import { ViewMangaCommand } from "renderer-process/components";
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {

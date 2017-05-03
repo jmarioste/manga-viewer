@@ -1,7 +1,7 @@
 import ko from "knockout";
 import _ from "lodash";
-import api from "js/common/api";
-import "js/common/ko.custom-functions";
+import api from "renderer-process/common/api";
+import "renderer-process/common/ko.custom-functions";
 export class Manga {
     constructor({
         mangaTitle,

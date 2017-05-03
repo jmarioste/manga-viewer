@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack')
 module.exports = {
-    entry: './src/js/app.js',
+    entry: './src/renderer-process/app.js',
     output: {
         filename: 'app-bundle.js',
         path: path.resolve(__dirname, 'dist'),

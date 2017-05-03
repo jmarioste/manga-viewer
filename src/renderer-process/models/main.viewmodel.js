@@ -2,13 +2,14 @@ import ko from "knockout";
 import _ from "lodash";
 import path from "path";
 
-import api from "js/common/api.js";
-import Pages from "js/common/pages.enum";
-import Folder from "js/models/folder.viewmodel.js";
-import { DefaultCommandHotkeys } from "js/models/command.viewmodel";
+import api from "renderer-process/common/api.js";
+import Pages from "renderer-process/common/pages.enum";
+import Folder from "renderer-process/models/folder.viewmodel.js";
+import { DefaultCommandHotkeys } from "renderer-process/models/command.viewmodel";
 const { remote } = window.require('electron');
 export default class ViewModel {
     constructor(params) {
+        console.log("MainViewModel::constructor")
         params.bookmarks = _.without(params.bookmarks, null);
         let self = this;
         this.subscriptions = [];

@@ -1,6 +1,6 @@
 import ko from "knockout";
 
-import { DefaultCommandHotkeys } from "js/models";
+import { DefaultCommandHotkeys } from "renderer-process/models";
 
 export class Settings {
     constructor(params) {
