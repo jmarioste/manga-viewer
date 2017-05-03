@@ -31,8 +31,6 @@ export class MangaListViewmodel {
         this.isSearchFocused = ko.observable(false);
         this.mangas = ko.observableArray([]);
 
-        this.showGuide = ko.observable();
-        this.totalMangaSearched = ko.observable(0);
         //computed variables
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleFavorites = this.toggleFavorites.bind(this);
@@ -41,7 +39,6 @@ export class MangaListViewmodel {
         this.focusSearch = this.focusSearch.bind(this);
 
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
-
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
 
 
@@ -54,7 +51,10 @@ export class MangaListViewmodel {
         this.commands = [
             new Command(this.appCommands().BOOKMARK_FOLDER, this.toggleBookmark),
             new Command(this.appCommands().FOCUS_SEARCH, this.focusSearch)
+
         ];
+
+
         console.log("MangaListViewmodel::constructor - end");
     }
 

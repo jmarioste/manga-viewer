@@ -85,7 +85,7 @@ export class SidebarViewmodel {
     }
 
     showFavorites() {
-        this.currentPage(Pages.MangaList);
+        this.currentPage(Pages.FavortiesList);
         this.selectedDirectory(null);
     }
 
@@ -103,7 +103,6 @@ export class SidebarViewmodel {
     }
 
     isFolderActive(folder) {
-        console.log(folder.folderName, this);
         let isFolderSelected = _.includes([Pages.MangaList, Pages.FavortiesList], this.currentPage());
         let sameDirectory = this.selectDirectoryText() === folder.folderName;
 

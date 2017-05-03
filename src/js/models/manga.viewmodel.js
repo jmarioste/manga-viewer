@@ -29,5 +29,6 @@ export class Manga {
         this.language = language;
         this.circle = circle;
         this.resolution = resolution;
+
     }
 }

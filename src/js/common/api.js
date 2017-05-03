@@ -43,11 +43,7 @@ export default class api {
 
         let deferred = $.Deferred();
 
-        ipc.send('get-pages', {
-            start,
-            end,
-            folderPath
-        });
+        ipc.send('get-pages', { start, end, folderPath });
 
         ipc.once('get-pages-done', function(event, pages) {
             console.log("get-pages-done")

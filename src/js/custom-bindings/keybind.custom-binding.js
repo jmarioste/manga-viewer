@@ -11,6 +11,7 @@ ko.bindingHandlers.keybind = {
 
         function keyPressHandler(event) {
             event.preventDefault();
+            event.stopImmediatePropagation();
             $body.trigger('listen.pause');
             // event.stopImmediatePropagation();
             let combo = "";
