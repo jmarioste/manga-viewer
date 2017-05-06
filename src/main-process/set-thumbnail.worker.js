@@ -1,10 +1,13 @@
+console.log("set-thumbnail.worker.js start");
 const path = require('path');
 const _ = require('lodash');
 const yauzl = require('yauzl');
 const Promise = require('bluebird');
 const sharp = require('sharp');
 const fs = require('fs');
+console.log("set-thumbnail.worker.js");
 module.exports = function(input, done, progress) {
+    console.log("set-thumbnail.worker.js");
     let mangas = input.mangas;
     let appPath = input.appPath;
     let yauzlOptions = {
@@ -12,7 +15,9 @@ module.exports = function(input, done, progress) {
     };
 
     function setThumbnail(manga) {
+        console.log("set-thumbnail.worker.js::setThumbnail")
         let filePath = manga.folderPath;
+
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
             if (manga.thumbnail) {

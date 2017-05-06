@@ -1,13 +1,17 @@
-const ipc = require('electron').ipcMain;
-const dialog = require('electron').dialog;
+import { ipcMain as ipc, dialog } from 'electron';
 
-exports.initializeEvents = function(mainWindow) {
-    ipc.on('select-directory', function(event) {
+export default class SelectDirectory {
+    constructor() {
 
-        dialog.showOpenDialog(mainWindow, {
-            properties: ['openDirectory']
-        }, function(folders) {
-            if (folders) event.sender.send('select-directory-done', folders[0]);
-        });
-    })
+    }
+    initializeEvents(mainWindow) {
+        ipc.on('select-directory', function(event) {
+
+            dialog.showOpenDialog(mainWindow, {
+                properties: ['openDirectory']
+            }, function(folders) {
+                if (folders) event.sender.send('select-directory-done', folders[0]);
+            });
+        })
+    }
 }

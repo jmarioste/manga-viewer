@@ -1,25 +1,19 @@
-const electron = require('electron')
-    // Module to control application life.
-const app = electron.app
-    // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
-
-const path = require('path')
-const url = require('url')
-
-const ipc = require('electron').ipcMain
-const dialog = require('electron').dialog
-const Promise = require('bluebird');
-const getMangaList = require('./src/main-process/get-mangalist.js');
-const selectDirectory = require('./src/main-process/select-directory.js');
-const fs = require('fs');
+import { BrowserWindow, app } from 'electron';
+import path from 'path'
+import url from 'url'
+import fs from 'fs';
+import GetMangaList from 'main-process/get-mangalist';
+import SelectDirectory from 'main-process/select-directory';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, appSettings;
 
+
 function createWindow() {
-    // Create the browser window.
+    let getMangaList = new GetMangaList();
+    let selectDirectory = new SelectDirectory();
+    // Create the browser window.    
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -28,7 +22,8 @@ function createWindow() {
         frame: false,
         minWidth: 960
     })
-    getMangaList.initializeEvents();
+
+    getMangaList.initialize();
     selectDirectory.initializeEvents();
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({

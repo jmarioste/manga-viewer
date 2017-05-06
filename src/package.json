@@ -1,0 +1,6 @@
+{
+    "name": "baiji-manga-viewer",
+    "version": "1.0.0",
+    "description": "A modern manga viewer inspired by Quivi.",
+    "main": "./main.prod.js"
+}

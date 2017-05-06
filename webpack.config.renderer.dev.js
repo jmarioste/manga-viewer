@@ -1,17 +1,18 @@
-var path = require('path');
-var webpack = require('webpack')
-module.exports = {
+import path from "path";
+import webpack from "webpack";
+
+export default {
     entry: './src/renderer-process/app.js',
     output: {
         filename: 'app-bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: './dist/'
+        path: path.resolve(__dirname, 'src/dist'),
+        publicPath: '../dist/'
     },
     devtool: '#inline-source-map',
     module: {
         loaders: [{
             test: /\.js$/,
-            exclude: /(bower_components)/,
+            exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015'],
@@ -66,5 +67,5 @@ module.exports = {
             $: 'jquery'
         })
     ],
-    target: 'node'
+    target: 'electron-renderer'
 };
