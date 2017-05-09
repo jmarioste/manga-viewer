@@ -1,24 +1,25 @@
-import path from 'path';
-import fs from 'fs';
-import _ from 'lodash';
-import DataStore from 'nedb';
-import Promise from 'bluebird';
-import recursive from 'recursive-readdir';
+const path = require ('path');
+const fs = require ('fs');
+const _ = require ('lodash');
+const DataStore = require ('nedb');
+const Promise = require ('bluebird');
+const recursive = require ('recursive-readdir');
 const threads = require('threads');
-import { ipcMain as ipc, app } from 'electron';
+const { ipcMain, app } = require ('electron');
+
+const ipc = ipcMain;
 
 let spawn = threads.spawn;
 threads.config.set({
     basepath: {
-        node: path.join(__dirname, "/main-process")
+        node: __dirname
     }
 });
 
 
-export default class GetMangaList {
-    constructor() {
+module.exports = (function() {
+    function GetMangaList() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
-
 
         this.db = new DataStore({
             filename: path.join(app.getAppPath(), "manga.db"),
@@ -33,14 +34,14 @@ export default class GetMangaList {
         this.parseInfo = this.parseInfo.bind(this);
     }
 
-    initialize() {
+    GetMangaList.prototype.initialize = function() {
         this.initializeGetSubFolder();
         this.initializeGetMangaList();
         this.initializeGetFavoritesList();
         this.initializeGetPages();
     }
 
-    initializeGetSubFolder() {
+    GetMangaList.prototype.initializeGetSubFolder = function() {
         ipc.on('get-subfolders', function(event, rootFolder) {
 
             fs.readdir(rootFolder, {}, function(err, files) {
@@ -68,7 +69,7 @@ export default class GetMangaList {
         });
     }
 
-    initializeGetMangaList() {
+    GetMangaList.prototype.initializeGetMangaList = function() {
         let processing = false;
         let self = this;
         ipc.on('get-manga-list', function(event, data) {
@@ -81,10 +82,7 @@ export default class GetMangaList {
             let searchValue = data.searchValue;
             let isRecursive = data.isRecursive;
             let pagination = data.pagination;
-            let thread = spawn(function(input, done, progress) {
-                process.stdout("inside thread ");
-                done(1);
-            });
+            let thread = spawn('set-thumbnail.worker.js');
             self.getFiles(rootFolder, searchValue, isRecursive)
                 .then(self.getMangas)
                 .then(function(mangas) {
@@ -94,37 +92,40 @@ export default class GetMangaList {
                     let end = Math.min((pagination + 1) * 50, mangas.length);
                     mangas = mangas.slice(start, end);
 
-                    thread.send(1)
+                    thread.send({
+                        mangas:mangas,
+                        appPath: app.getAppPath()
+                    })
                 });
 
 
-            // self.thread.on('progress', function(manga) {
-            //     console.log("self.thread.on::progress");
-            //     if (!manga._id) {
-            //         self.db.insert(manga, function(err, doc) {
-            //             event.sender.send('get-manga-list-progress', doc);
-            //         });
+            thread.on('progress', function(manga) {
+                console.log("self.thread.on::progress");
+                if (!manga._id) {
+                    self.db.insert(manga, function(err, doc) {
+                        event.sender.send('get-manga-list-progress', doc);
+                    });
 
-            //     } else {
-            //         self.db.update({
-            //             _id: manga._id
-            //         }, manga, {}, function(err, doc) {
-            //             event.sender.send('get-manga-list-progress', manga);
-            //         })
-            //     }
+                } else {
+                    self.db.update({
+                        _id: manga._id
+                    }, manga, {}, function(err, doc) {
+                        event.sender.send('get-manga-list-progress', manga);
+                    })
+                }
 
-            // });
+            });
             thread.on('done', function() {
                 // self.thread.disconnect();
                 console.log("done");
                 processing = false;
-                self.thread.kill();
+                thread.kill();
                 event.sender.send('get-manga-list-done');
             });
         });
     }
 
-    initializeGetFavoritesList() {
+    GetMangaList.prototype.initializeGetFavoritesList = function() {
         let processing = false;
         let self = this;
         ipc.on('get-favorites-list', function(event, folderPaths) {
@@ -201,12 +202,13 @@ export default class GetMangaList {
         });
     }
 
-    initializeGetPages() {
+    GetMangaList.prototype.initializeGetPages = function() {
+        var self = this;
         ipc.on('get-pages', function(event, input) {
             console.log('get-pages::starting..');
-            this.getPageThread.send(input)
+            self.getPageThread.send(input)
 
-            this.getPageThread.once('message', function(pages) {
+            self.getPageThread.once('message', function(pages) {
                 console.log("tread::onmessage - get-pages");
                 event.sender.send('get-pages-done', pages);
             });
@@ -214,7 +216,7 @@ export default class GetMangaList {
         });
     }
 
-    getFiles(rootFolder, searchValue, isRecursive) {
+    GetMangaList.prototype.getFiles = function(rootFolder, searchValue, isRecursive) {
         let ignored = [];
         console.log("getFiles", rootFolder, searchValue, isRecursive);
 
@@ -246,7 +248,7 @@ export default class GetMangaList {
         })
     };
 
-    getMangas(files) {
+    GetMangaList.prototype.getMangas = function(files) {
         let self = this;
         return Promise.map(files, function(filePath) {
             return new Promise(function(resolve, reject) {
@@ -272,7 +274,7 @@ export default class GetMangaList {
         });
     }
 
-    parseInfo(manga) {
+    GetMangaList.prototype.parseInfo = function(manga) {
         let title = manga.mangaTitle.trim();
         //parse event
         let event = _.first(title.match(/^\(.*?\)/g));
@@ -303,4 +305,6 @@ export default class GetMangaList {
         //set scanlator
         manga.scanlator = scanlatorAndResolution.replace(resolution, "");
     }
-}
+
+    return GetMangaList;
+})();

@@ -1,9 +1,9 @@
-import { BrowserWindow, app } from 'electron';
-import path from 'path'
-import url from 'url'
-import fs from 'fs';
-import GetMangaList from 'main-process/get-mangalist';
-import SelectDirectory from 'main-process/select-directory';
+const { BrowserWindow, app } = require('electron');
+const path = require('path')
+const url = require('url');
+const fs = require('fs');
+const GetMangaList = require('./main-process/get-mangalist');
+const SelectDirectory = require('./main-process/select-directory');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,7 +22,6 @@ function createWindow() {
         frame: false,
         minWidth: 960
     })
-
     getMangaList.initialize();
     selectDirectory.initializeEvents();
     // and load the index.html of the app.
