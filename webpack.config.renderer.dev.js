@@ -2,11 +2,11 @@ import path from "path";
 import webpack from "webpack";
 
 export default {
-    entry: './src/renderer-process/app.js',
+    entry: './app/renderer-process/app.js',
     output: {
         filename: 'app-bundle.js',
-        path: path.resolve(__dirname, 'src/dist'),
-        publicPath: '../dist/'
+        path: path.resolve(__dirname, 'app/bundle'),
+        publicPath: './bundle/'
     },
     devtool: '#inline-source-map',
     module: {
@@ -57,8 +57,8 @@ export default {
     },
     resolve: {
         modules: [
-            path.resolve("./src"),
-            path.resolve("./node_modules")
+            path.resolve("./app"),
+            path.resolve("./app/node_modules")
         ]
     },
     plugins: [

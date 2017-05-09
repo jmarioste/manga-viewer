@@ -22,7 +22,7 @@ module.exports = (function() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
 
         this.db = new DataStore({
-            filename: path.join(app.getAppPath(), "manga.db"),
+            filename: path.join(app.getPath('appData'), app.getName(), "manga.db"),
             autoload: true
         });
 
@@ -94,7 +94,7 @@ module.exports = (function() {
 
                     thread.send({
                         mangas:mangas,
-                        appPath: app.getAppPath()
+                        appPath: path.join(app.getPath('appData'), app.getName())
                     })
                 });
 

@@ -30,8 +30,8 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }))
-
-    var dir = app.getAppPath() + '/images';
+    console.log(app.getPath('appData'));
+    var dir = path.join(app.getPath('appData'), app.getName(), '/images');
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
     }

@@ -1,5 +1,6 @@
 node_modules
 dist
+app/bundle
 npm-debug.log.*
 save-file.json
 src/js/common/folder.factory.js

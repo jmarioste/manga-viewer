@@ -94,18 +94,22 @@ module.exports = function(input, done, progress) {
             yauzlOpen(manga.folderPath).then(function(zip) {
                 images = _.sortBy(images, 'path');
                 zip.readEntry();
+                console.log(images[0].path);
                 zip.on('entry', function(entry) {
                     if (images[0].path === entry.fileName) {
                         zip.openReadStream(entry, function(err, readStream) {
-                            if (err) throw err;
-
-                            readStream.pipe(resize).pipe(writeStream);
-                            writeStream.on("finish", function() {
-                                manga.thumbnail = dest;
-                                manga.pages = images.length;
-                                resolve(manga);
-                                zip.close()
-                            });
+                            if (err) {
+                                console.log("readstream err", err);
+                                reject(err)
+                            } else {
+                                readStream.pipe(resize).pipe(writeStream);
+                                writeStream.on("finish", function() {
+                                    manga.thumbnail = dest;
+                                    manga.pages = images.length;
+                                    resolve(manga);
+                                    zip.close()
+                                });
+                            }
                         });
                     } else {
                         zip.readEntry();

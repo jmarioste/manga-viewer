@@ -21,8 +21,19 @@
   "build": {
     "appId": "com.baiji-manga-viewer",    
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
-    "win": {        
-        
+    "win": {
+      "target": "nsis"      
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory" : true,
+      "runAfterFinish": false,
+      "installerIcon": "build/icon.ico",
+      "installerHeader": "build/installerHeader.bmp",
+      "license": "LICENSE.md",
+      "deleteAppDataOnUninstall": true
     }
   },
   "author": "Jasser Mark Arioste",
@@ -49,6 +60,7 @@
     "style-loader": "0.16.1",
     "url-loader": "0.5.8",
     "webpack": "2.3.2",
-    "webpack-target-electron-renderer": "0.4.0"
+    "webpack-target-electron-renderer": "0.4.0",
+    "node-sass": "4.5.2"
   }
 }
