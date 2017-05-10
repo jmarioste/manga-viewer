@@ -1,10 +1,13 @@
+console.log("set-thumbnail.worker.js start");
 const path = require('path');
 const _ = require('lodash');
 const yauzl = require('yauzl');
 const Promise = require('bluebird');
 const sharp = require('sharp');
 const fs = require('fs');
+console.log("set-thumbnail.worker.js");
 module.exports = function(input, done, progress) {
+    console.log("set-thumbnail.worker.js");
     let mangas = input.mangas;
     let appPath = input.appPath;
     let yauzlOptions = {
@@ -12,7 +15,9 @@ module.exports = function(input, done, progress) {
     };
 
     function setThumbnail(manga) {
+        console.log("set-thumbnail.worker.js::setThumbnail")
         let filePath = manga.folderPath;
+
         return new Promise(function(resolve, reject) {
             let mangaTitle = path.basename(filePath);
             if (manga.thumbnail) {
@@ -89,18 +94,22 @@ module.exports = function(input, done, progress) {
             yauzlOpen(manga.folderPath).then(function(zip) {
                 images = _.sortBy(images, 'path');
                 zip.readEntry();
+                console.log(images[0].path);
                 zip.on('entry', function(entry) {
                     if (images[0].path === entry.fileName) {
                         zip.openReadStream(entry, function(err, readStream) {
-                            if (err) throw err;
-
-                            readStream.pipe(resize).pipe(writeStream);
-                            writeStream.on("finish", function() {
-                                manga.thumbnail = dest;
-                                manga.pages = images.length;
-                                resolve(manga);
-                                zip.close()
-                            });
+                            if (err) {
+                                console.log("readstream err", err);
+                                reject(err)
+                            } else {
+                                readStream.pipe(resize).pipe(writeStream);
+                                writeStream.on("finish", function() {
+                                    manga.thumbnail = dest;
+                                    manga.pages = images.length;
+                                    resolve(manga);
+                                    zip.close()
+                                });
+                            }
                         });
                     } else {
                         zip.readEntry();

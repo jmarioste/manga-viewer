@@ -1,34 +1,29 @@
-const electron = require('electron')
-    // Module to control application life.
-const app = electron.app
-    // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
-
+const { BrowserWindow, app } = require('electron');
 const path = require('path')
-const url = require('url')
-
-const ipc = require('electron').ipcMain
-const dialog = require('electron').dialog
-const Promise = require('bluebird');
-const getMangaList = require('./src/main-process/get-mangalist.js');
-const selectDirectory = require('./src/main-process/select-directory.js');
+const url = require('url');
 const fs = require('fs');
+const GetMangaList = require('./main-process/get-mangalist');
+const SelectDirectory = require('./main-process/select-directory');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, appSettings;
 
+
 function createWindow() {
-    // Create the browser window.
+    let getMangaList = new GetMangaList();
+    let selectDirectory = new SelectDirectory();
+    // Create the browser window.    
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         show: false,
         titleBarStyle: 'hidden',
         frame: false,
-        minWidth: 960
+        minWidth: 960,
+        icon: path.join(__dirname, "icon.png")
     })
-    getMangaList.initializeEvents();
+    getMangaList.initialize();
     selectDirectory.initializeEvents();
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -36,8 +31,8 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }))
-
-    var dir = app.getAppPath() + '/images';
+    console.log(app.getPath('appData'));
+    var dir = path.join(app.getPath('appData'), app.getName(), '/images');
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
     }

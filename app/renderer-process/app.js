@@ -8,6 +8,7 @@ import "renderer-process/custom-bindings";
 import api from "renderer-process/common/api.js";
 import ViewModel from "renderer-process/models/main.viewmodel.js";
 import "renderer-process/components";
+
 console.log("app");
 $(document).ready(function() {
     console.log("document.ready");
