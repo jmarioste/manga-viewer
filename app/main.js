@@ -20,7 +20,8 @@ function createWindow() {
         show: false,
         titleBarStyle: 'hidden',
         frame: false,
-        minWidth: 960
+        minWidth: 960,
+        icon: path.join(__dirname, "icon.png")
     })
     getMangaList.initialize();
     selectDirectory.initializeEvents();
