@@ -26,12 +26,12 @@
     },
     "nsis": {
       "oneClick": false,
-      "perMachine": false,
+      "perMachine": true,
       "allowElevation": true,
       "allowToChangeInstallationDirectory" : true,
       "runAfterFinish": false,
       "installerIcon": "build/icon.ico",
-      "installerHeader": "build/installerHeader.bmp",
+      "installerHeader": "build/installerHeader.png",
       "license": "LICENSE.md",
       "deleteAppDataOnUninstall": true
     }
