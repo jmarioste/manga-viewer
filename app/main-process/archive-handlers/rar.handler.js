@@ -1,41 +1,40 @@
 const _ = require('lodash');
 const Promise = require('bluebird');
-const rarfile = require('rarfile');
-const app = require('electron').app;
 const path = require('path');
-const sharp = require('sharp');
+// const sharp = require('sharp');
 const myRegex = require('../../common/regex');
 const Errors = require('../../common/errors');
 
-const APP_PATH = app.getAppPath();
-const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
+// const APP_PATH = app.getAppPath();
+// const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
-console.log("rar.handler.js");
 class RarMangaFile {
-    constructor(manga) {
+    constructor(manga, rarfile) {
         this.imagesFiles = [];
         this.manga = manga;
-        console.log("RarMangaFile.contructor");
+        this.rf = rarfile;
     }
 
-    initialize() {
-        return new Promise((resolve, reject) => {
-            try {
-                this.rf = new rarfile.RarFile(manga.folderPath, {
-                    rarTool: RAR_EXE_PATH
-                });
-                setTimeout(() => { throw Errors.TIMEOUT_OPEN_RARFILE_ERR }, 1000);
-            } catch (e) {
-                reject(`RarMangaFile.initialize ${e}`);
-            }
-        });
-    }
+    // initialize(rarToolPath) {
+    //     return new Promise((resolve, reject) => {
+    //         try {
+
+    //             this.rf = new rarfile.RarFile(manga.folderPath, {
+    //                 rarTool: rarToolPath
+    //             });
+    //             setTimeout(() => { throw Errors.TIMEOUT_OPEN_RARFILE_ERR }, 1000);
+    //         } catch (e) {
+    //             reject(`RarMangaFile.initialize ${e}`);
+    //         }
+    //     });
+    // }
 
     getPages(start, end) {
         return this.getAllImageFiles()
-            .then(images => images.filter(file => imageRegex.test(file)).sort())
-            .then(images => _.slice(images, start, end))
-            .map(image => getPagesRar(rf, image))
+            .then(images => images.filter(file => myRegex.SUPPORTED_IMAGES.test(file)).sort())
+            .then(images => images.slice(start, end))
+            .map(image => this.getBuffer(image))
+            .map(buffer => this.getBase64(buffer));
     }
 
     getFilenames() {
@@ -52,13 +51,13 @@ class RarMangaFile {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
-                this.imagesFiles = images;
+                return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
             }
         })
     }
-    
+
     getThumbnailBuffer(file) {
         return this.getAllImageFiles()
             .then((images) => _.first(images))
@@ -67,7 +66,7 @@ class RarMangaFile {
 
     getBuffer(file) {
         return new Promise((resolve, reject) => {
-            this.rf.readFile(first, (err, buffer) => {
+            this.rf.readFile(file, (err, buffer) => {
                 if (err) {
                     reject(`RarMangaFile.setThumbnail - ${err}`);
                 } else {
@@ -75,6 +74,11 @@ class RarMangaFile {
                 }
             });
         });
+    }
+
+    getBase64(buffer) {
+        let str = buffer.toString('base64');
+        return `data:image/bmp;base64,${str}`;    
     }
 
     setThumbnailForManga(buffer, imagePath) {

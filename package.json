@@ -10,7 +10,8 @@
     "pack": "build --dir",
     "dist": "build",
     "build-win32": "build --win --ia32",
-    "build-win64": "build --win --x64"
+    "build-win64": "build --win --x64",
+    "test": "./node_modules/.bin/_mocha ./app/**/*.spec.js --recursive --watch "
   },
   "repository": "https://github.com/shizkun/manga-viewer",
   "keywords": [
@@ -19,16 +20,16 @@
     "Baiji"
   ],
   "build": {
-    "appId": "com.baiji-manga-viewer",    
+    "appId": "com.baiji-manga-viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
     "win": {
-      "target": "nsis"      
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": true,
       "allowElevation": true,
-      "allowToChangeInstallationDirectory" : true,
+      "allowToChangeInstallationDirectory": true,
       "runAfterFinish": false,
       "installerIcon": "build/icon.ico",
       "installerHeader": "build/installerHeader.png",
@@ -46,6 +47,7 @@
     "babel-preset-env": "1.3.2",
     "babel-preset-stage-0": "6.24.1",
     "babel-register": "6.24.1",
+    "chai": "^3.5.0",
     "css-loader": "0.28.0",
     "electron": "1.6.7",
     "electron-builder": "17.3.1",
@@ -54,14 +56,17 @@
     "file-loader": "0.11.1",
     "html-loader": "0.4.5",
     "imports-loader": "0.7.1",
+    "less": "2.7.2",
+    "mocha": "^3.3.0",
+    "node-sass": "4.5.2",
     "resolve-url-loader": "2.0.2",
     "sass-loader": "6.0.3",
+    "sinon": "^2.2.0",
+    "sinon-chai": "^2.10.0",
     "source-map-loader": "0.2.1",
     "style-loader": "0.16.1",
     "url-loader": "0.5.8",
     "webpack": "2.3.2",
-    "webpack-target-electron-renderer": "0.4.0",
-    "node-sass": "4.5.2",
-    "less": "2.7.2"
+    "webpack-target-electron-renderer": "0.4.0"
   }
 }
