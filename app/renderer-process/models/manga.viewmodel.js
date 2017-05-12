@@ -20,7 +20,7 @@ export class Manga {
         this.mangaTitle = mangaTitle || "";
         this.folderPath = folderPath;
         this.isFavorite = ko.observable(isFavorite).toggleable();
-        this.thumbnail = thumbnail || "http://placehold.it/200x288";
+        this.thumbnail = thumbnail //|| "http://placehold.it/200x288";
         this.pages = pages;
         this.pageImages = ko.observableArray([]);
         this.event = event;

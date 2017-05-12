@@ -1,11 +1,11 @@
-const path = require ('path');
-const fs = require ('fs');
-const _ = require ('lodash');
-const DataStore = require ('nedb');
-const Promise = require ('bluebird');
-const recursive = require ('recursive-readdir');
+const path = require('path');
+const fs = require('fs');
+const _ = require('lodash');
+const DataStore = require('nedb');
+const Promise = require('bluebird');
+const recursive = require('recursive-readdir');
 const threads = require('threads');
-const { ipcMain, app } = require ('electron');
+const { ipcMain, app } = require('electron');
 
 const ipc = ipcMain;
 
@@ -91,10 +91,11 @@ module.exports = (function() {
                     let start = pagination * 50;
                     let end = Math.min((pagination + 1) * 50, mangas.length);
                     mangas = mangas.slice(start, end);
-
+                    console.log("appPath", app.getAppPath());
                     thread.send({
-                        mangas:mangas,
-                        appPath: path.join(app.getPath('appData'), app.getName())
+                        mangas: mangas,
+                        dataPath: path.join(app.getPath('appData'), app.getName()),
+                        appPath: app.getAppPath()
                     })
                 });
 
@@ -144,7 +145,9 @@ module.exports = (function() {
             }
             self.getMangas(folderPaths).then(function(mangas) {
                 self.favoritesThread.send({
-                    mangas: mangas
+                    mangas: mangas,
+                    dataPath: path.join(app.getPath('appData'), app.getName()),
+                    appPath: app.getAppPath()
                 })
             });
 
@@ -175,7 +178,9 @@ module.exports = (function() {
 
             self.getMangas([folderPath]).then(function(mangas) {
                 self.favoritesThread.send({
-                    mangas: mangas
+                    mangas: mangas,
+                    dataPath: path.join(app.getPath('appData'), app.getName()),
+                    appPath: app.getAppPath()
                 })
             });
 
@@ -206,6 +211,7 @@ module.exports = (function() {
         var self = this;
         ipc.on('get-pages', function(event, input) {
             console.log('get-pages::starting..');
+            input.appPath = app.getAppPath();
             self.getPageThread.send(input)
 
             self.getPageThread.once('message', function(pages) {
@@ -223,9 +229,9 @@ module.exports = (function() {
         function isNotSearched(file, stats) {
             let filePath = path.basename(file).toLowerCase();
             let isNotSearched = stats.isFile() && filePath.indexOf(searchValue) < 0;
-            let zipRegex = /(\.zip$)/ig;
+            let archiveRegex = /(\.zip$|\.rar$)/ig;
             let isNotSupportedFileFormat = stats.isFile() &&
-                !zipRegex.test(path.extname(file));
+                !archiveRegex.test(path.extname(file));
             return isNotSearched || isNotSupportedFileFormat;
         }
 
