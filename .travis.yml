@@ -38,4 +38,4 @@ script:
 
 branches:
   only:
-    - refactor-with-test-spec
+    - master
