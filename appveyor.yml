@@ -2,13 +2,18 @@
 environment:
   nodejs_version: "7"
 
+
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm install -g node-gyp
+  - npm config set msvs_version 2015
+  - node-gyp --python C:\Python27
   - npm install
+
+platform: x64
 
 # Post-install test scripts.
 test_script:
