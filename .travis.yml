@@ -14,16 +14,23 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
       - g++-4.8
+
+matrix:
+  exclude:
+  - os: osx
+  - env: CXX=g++-4.8
 
 git:
   depth: 5
 
 before_install:
-install:
   - npm install -g node-gyp
+
+install:
   - npm install
+
+  
 script: 
   - npm test
 
