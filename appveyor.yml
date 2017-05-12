@@ -10,7 +10,6 @@ install:
   # install modules
   - npm install -g node-gyp
   - npm config set python C:\Python27
-  - node-gyp configure --msvs_version=2015
   - npm install
 
 
