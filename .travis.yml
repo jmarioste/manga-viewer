@@ -6,9 +6,6 @@ os:
   - linux
   - osx
 
-
-env:
-  - CXX=g++-4.8
 addons:
   apt:
     sources:
@@ -17,20 +14,21 @@ addons:
       - g++-4.8
 
 matrix:
-  exclude:
-  - os: osx
-  - env: CXX=g++-4.8
+  include:
+    - os: osx
+      env: CXX=clang
+    - os: linux
+      evn: CXX=g++-4.8
 
 git:
   depth: 5
 
-before_install:
-  - npm install -g node-gyp
 
 install:
+  - npm install -g node-gyp
   - npm install
 
-  
+
 script: 
   - npm test
 
