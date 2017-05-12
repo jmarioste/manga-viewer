@@ -1,7 +1,12 @@
+build: off
 # Test against the latest version of this Node.js version
 environment:
   nodejs_version: "6"
 
+skip_tags: true
+
+cache:
+  - node_modules -> package.json
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -14,7 +19,7 @@ install:
   - .\node_modules\.bin\electron-rebuild.cmd
 
 # Post-install test scripts.
-test_script:
+test_script: 
   # Output useful info for debugging.
   - node --version
   - npm --version
