@@ -1,6 +1,6 @@
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "7"
+  nodejs_version: "6"
 
 
 # Install scripts. (runs after repo cloning)
@@ -13,7 +13,8 @@ install:
   - node-gyp --python C:\Python27
   - npm install
 
-platform: x64
+platform: 
+  - x64
 
 # Post-install test scripts.
 test_script:
