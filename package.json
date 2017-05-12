@@ -11,7 +11,8 @@
     "dist": "build",
     "build-win32": "build --win --ia32",
     "build-win64": "build --win --x64",
-    "test": "./node_modules/.bin/_mocha ./app/**/*.spec.js --recursive --watch "
+    "test": "./node_modules/.bin/_mocha ./app/**/*.spec.js --recursive",
+    "test-dev": "./node_modules/.bin/_mocha ./app/**/*.spec.js --recursive --watch"
   },
   "repository": "https://github.com/shizkun/manga-viewer",
   "keywords": [
