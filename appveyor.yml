@@ -11,7 +11,7 @@ install:
   - npm install -g node-gyp
   - npm config set python C:\Python27
   - npm install
-
+  - .\node_modules\.bin\electron-rebuild.cmd
 
 # Post-install test scripts.
 test_script:
