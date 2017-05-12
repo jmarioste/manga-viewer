@@ -6,6 +6,7 @@ const Promise = require('bluebird');
 const recursive = require('recursive-readdir');
 const threads = require('threads');
 const { ipcMain, app } = require('electron');
+const RarMangaFile = require('./archive-handlers/rar.handler');
 
 const ipc = ipcMain;
 

@@ -6,7 +6,6 @@ const Promise = require('bluebird');
 const sharp = require('sharp');
 const fs = require('fs');
 const rarfile = require('rarfile');
-
 //console.log("set-thumbnail.worker.js");
 module.exports = function(input, done, progress) {
     //console.log("set-thumbnail.worker.js");
