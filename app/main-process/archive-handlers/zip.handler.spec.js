@@ -30,7 +30,7 @@ describe('Zip Handler', () => {
         let stub;
         beforeEach(() => {
             stub = sinon.stub(yauzl, 'open');
-            stub.callsFake((path, cb) => {
+            stub.callsFake((path, options, cb) => {
                 cb(null, {})
             })
         });
@@ -69,7 +69,7 @@ describe('Zip Handler', () => {
 
         describe('on reject', () => {
             it('should pass an error message to callback', (done) => {
-                stub.callsFake((path, cb) => {
+                stub.callsFake((path, options, cb) => {
                     cb("Error opening file");
                 });
 
@@ -85,5 +85,5 @@ describe('Zip Handler', () => {
         });
     });
 
-    
+
 });
