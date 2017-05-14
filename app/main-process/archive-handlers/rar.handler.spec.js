@@ -15,11 +15,11 @@ describe('RarHandler', () => {
 
         rf = {};
         instance = new RarHandler({}, rf);
-        
+
         getFilenamesStub = sinon.stub(instance, 'getFilenames');
         getFilenamesStub.callsFake(function () {
             return new Promise((resolve) => {
-                resolve([                    
+                resolve([
                     '1.jpg',
                     '2.png',
                     '3.exe',
@@ -45,7 +45,7 @@ describe('RarHandler', () => {
     describe('getImageFiles', () => {
         it('should return .png and .jpg files inside a .rar file', () => {
 
-            instance.getAllImageFiles().then((images) => {
+            instance.getImages().then((images) => {
                 expect(images).to.contain('1.jpg');
                 expect(images).to.contain('2.png')
                 expect(images).to.not.contain('3.exe');
@@ -55,11 +55,13 @@ describe('RarHandler', () => {
     });
 
     describe('getThumbnailBuffer', () => {
-        
+
         it('should call instance.getBuffer with the first image', (done) => {
-                        
-            let stub = sinon.stub(instance, 'getBuffer').callsFake((args) => args);
-            instance.getThumbnailBuffer().then(() => {
+
+            let stub = sinon.stub(instance, 'getBuffer').callsFake((args) => {
+                return new Promise(resolve => resolve());
+            });
+            instance.getThumbnailBuffer(['1.jpg']).then(() => {
                 expect(stub).to.have.been.calledWith('1.jpg');
                 stub.restore();
                 done();
@@ -81,5 +83,5 @@ describe('RarHandler', () => {
             })
 
         })
-    })    
+    })
 })

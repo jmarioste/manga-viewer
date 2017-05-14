@@ -1,4 +1,4 @@
-//console.log("set-thumbnail.worker.js start");
+
 const path = require('path');
 const _ = require('lodash');
 const yauzl = require('yauzl');
@@ -8,82 +8,74 @@ const fs = require('fs');
 const rarfile = require('rarfile');
 const ZipHandler = require('./archive-handlers/zip.handler.js');
 const RarHandler = require('./archive-handlers/rar.handler');
-//console.log("set-thumbnail.worker.js");
-module.exports = function (input, done, progress) {
-    //console.log("set-thumbnail.worker.js");
-    let mangas = input.mangas;
-    let dataPath = input.dataPath;
-    let appPath = input.appPath;
-    let yauzlOptions = {
-        lazyEntries: true
-    };
-    let zipRegex = /zip$/ig;
-    let rarRegex = /rar$/ig;
+const myRegex = require('../common/regex');
+const Errors = require('../common/errors');
 
-    function setThumbnail(manga) {
-        //console.log("set-thumbnail.worker.js::setThumbnail")
-        let filePath = manga.folderPath;
+class SetThumnailWorker {
+    constructor() {
 
-        return new Promise(function (resolve, reject) {
-            let mangaTitle = path.basename(filePath);
-            if (manga.thumbnail) {
-                resolve(manga);
-                progress(manga);
+    }
+
+    getHandler(manga, appPath) {
+        return new Promise((resolve, reject) => {
+            let isZip = myRegex.ZIP_FILE.test(manga.folderPath);
+            if (isZip) {
+                resolve(new ZipHandler(manga, yauzl));
             } else {
-                let ext = path.extname(filePath).toLowerCase();
-                let isZip = ext.indexOf(".zip") >= 0;
-                let isRar = ext.indexOf(".rar") >= 0;
-                let resize = sharp().resize(250, null).png();
-                let dest = path.join(dataPath, "/images", manga._id + ".png");
-                let writeStream = fs.createWriteStream(dest);
-                manga.thumbnail = dest;
-                if (isZip) {
-                    let handler = new ZipHandler(manga, yauzl);
-                    handler.initialize()
-                        .then(handler.getImages)
-                        .then((images) => {
-                            manga.pages = images.length;
-
-                            return handler.getThumbnailImage(images, resize, writeStream)
-                        })
-                        .then(() => {
-                            resolve(manga);
-                            progress(manga);
-                        }).catch(function (err) {
-                            console.log(`setThumnail - ${err}`);
-                            resolve(); //do not include manga
-                        });
-
-                } else if (isRar) {
+                try {
                     let rf = new rarfile.RarFile(manga.folderPath, {
                         rarTool: path.join(appPath, "UnRAR.exe")
                     });
-                    let handler = new RarHandler(manga, rf)
-                    handler.getAllImageFiles()
-                        .then(images => handler.getThumbnailBuffer(images))
-                        .then(buffer => handler.getThumbnailImage(buffer, sharp, writeStream))
-                        .then(() => {
-                            resolve(manga);
-                            progress(manga);
-                        }).catch(function (err) {
-                            console.log(`setThumbnail - ${err}`);
-                            resolve();
-                        });
-                } else {
-                    console.log("inside else", manga.folderPath);
-                    resolve();
+                    setTimeout(function () {
+                        reject(Errors.TIMEOUT_OPEN_RARFILE_ERR);
+                    }, 1000);
+                    if (rf) {
+                        resolve(new RarHandler(manga, rf));
+                    }
+                } catch (e) {
+                    reject(`SetThumbnailWorker.getHandler ${e}`);
                 }
+
+            }
+        });
+
+    }
+    setThumbnail(manga, dataPath, appPath) {
+        console.log("setThumbnail");
+        return new Promise((resolve, reject) => {
+
+            if (manga.thumbnail) {
+                resolve(manga);
+            } else {
+                manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
+                let writeStream = fs.createWriteStream(manga.thumbnail);
+                let handler;
+                this.getHandler(manga, appPath)
+                    .then(_handler => {
+                        handler = _handler
+                        return handler.getImages()
+                    })
+                    .then(images => handler.getThumbnailImage(sharp, writeStream, images))
+                    .then(() => resolve(manga))
+                    .catch(function (err) {
+                        console.log(`setThumbnail - ${err}`);
+                        reject(err);
+                    });
             }
 
         })
     };
 
-    Promise.each(mangas, setThumbnail).then(function (mangas) {
-        console.log("set-thumbnail.worker.js::all promise done");
-        done();
-    }).catch(function (err) {
-        //console.log("set-thumbnail.worker.js - fail");
-        console.log(err);
-        done();
-    });
+    start(input) {
+        let mangas = input.mangas;
+        let dataPath = input.dataPath;
+        let appPath = input.appPath;
+
+        return Promise.each(mangas, this.setThumbnail.bind(this)).then(function (mangas) {
+            console.log("set-thumbnail.worker.js::all promise done");
+            done();
+        })
+    }
 }
+
+module.exports = new SetThumnailWorker();

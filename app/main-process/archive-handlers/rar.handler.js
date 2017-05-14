@@ -16,7 +16,7 @@ class RarHandler {
     }
 
     getPages(start, end) {
-        return this.getAllImageFiles()
+        return this.getImages()
             .then(images => images.filter(file => myRegex.SUPPORTED_IMAGES.test(file)).sort())
             .then(images => images.slice(start, end))
             .map(image => this.getBuffer(image))
@@ -32,7 +32,7 @@ class RarHandler {
         });
     }
 
-    getAllImageFiles() {
+    getImages() {
         return this.getFilenames().then(files => {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
@@ -45,10 +45,9 @@ class RarHandler {
         })
     }
 
-    getThumbnailBuffer(file) {
-        return this.getAllImageFiles()
-            .then(images => _.first(images))
-            .then(image => this.getBuffer(image));
+    getThumbnailBuffer(images) {
+        let image = _.first(images)
+        return this.getBuffer(image);
     }
 
     getBuffer(file) {
@@ -68,12 +67,12 @@ class RarHandler {
         return `data:image/bmp;base64,${str}`;
     }
 
-    getThumbnailImage(buffer, sharp, writeStream) {
-        let resize = sharp(buffer).resize(250, null).png();
-        return new Promise((resolve, reject) => {
-            resize.pipe(writeStream);
-            writeStream.on('finish', () => {
-                resolve();
+    getThumbnailImage(sharp, writeStream, images) {
+        return this.getThumbnailBuffer(images).then((buffer) => {
+            let resize = sharp(buffer).resize(250, null).png();
+            return new Promise((resolve, reject) => {
+                resize.pipe(writeStream);
+                writeStream.on('finish', resolve);
             });
         });
     }
