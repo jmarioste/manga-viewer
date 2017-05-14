@@ -1,4 +1,4 @@
-const RarMangaFile = require('./rar.handler');
+const RarHandler = require('./rar.handler');
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
@@ -8,13 +8,13 @@ const expect = chai.expect;
 chai.should();
 chai.use(sinonChai);
 
-let instance, rf, getFilenamesStub, RarFileStub;
+let instance, rf, getFilenamesStub;
 
-describe('RarMangaFile', () => {
+describe('RarHandler', () => {
     beforeEach(() => {
 
         rf = {};
-        instance = new RarMangaFile({}, rf);
+        instance = new RarHandler({}, rf);
         
         getFilenamesStub = sinon.stub(instance, 'getFilenames');
         getFilenamesStub.callsFake(function () {

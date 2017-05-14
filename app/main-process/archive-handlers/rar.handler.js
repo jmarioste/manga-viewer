@@ -8,26 +8,12 @@ const Errors = require('../../common/errors');
 // const APP_PATH = app.getAppPath();
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
-class RarMangaFile {
+class RarHandler {
     constructor(manga, rarfile) {
         this.imagesFiles = [];
         this.manga = manga;
         this.rf = rarfile;
     }
-
-    // initialize(rarToolPath) {
-    //     return new Promise((resolve, reject) => {
-    //         try {
-
-    //             this.rf = new rarfile.RarFile(manga.folderPath, {
-    //                 rarTool: rarToolPath
-    //             });
-    //             setTimeout(() => { throw Errors.TIMEOUT_OPEN_RARFILE_ERR }, 1000);
-    //         } catch (e) {
-    //             reject(`RarMangaFile.initialize ${e}`);
-    //         }
-    //     });
-    // }
 
     getPages(start, end) {
         return this.getAllImageFiles()
@@ -96,4 +82,4 @@ class RarMangaFile {
     }
 }
 
-module.exports = RarMangaFile;
+module.exports = RarHandler;
