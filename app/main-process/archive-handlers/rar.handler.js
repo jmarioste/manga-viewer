@@ -16,7 +16,7 @@ class RarHandler {
     }
 
     getPages(start, end) {
-        return this.getAllImageFiles()
+        return this.getImages()
             .then(images => images.filter(file => myRegex.SUPPORTED_IMAGES.test(file)).sort())
             .then(images => images.slice(start, end))
             .map(image => this.getBuffer(image))
@@ -32,11 +32,12 @@ class RarHandler {
         });
     }
 
-    getAllImageFiles() {
+    getImages() {
         return this.getFilenames().then(files => {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
+                this.manga.pages = images.length;
                 return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
@@ -44,10 +45,9 @@ class RarHandler {
         })
     }
 
-    getThumbnailBuffer(file) {
-        return this.getAllImageFiles()
-            .then((images) => _.first(images))
-            .then(this.getBuffer);
+    getThumbnailBuffer(images) {
+        let image = _.first(images)
+        return this.getBuffer(image);
     }
 
     getBuffer(file) {
@@ -64,19 +64,15 @@ class RarHandler {
 
     getBase64(buffer) {
         let str = buffer.toString('base64');
-        return `data:image/bmp;base64,${str}`;    
+        return `data:image/bmp;base64,${str}`;
     }
 
-    setThumbnailForManga(buffer, imagePath) {
-        let dest = path.join(imagePath, `${this.manga._id}.png`);
-        let writeStream = fs.createWriteStream(dest);
-        let resize = sharp(buffer).resize(250, null).png();
-        return new Promise((resolve, reject) => {
-            resize.pipe(writeStream);
-            writeStream.on('finish', () => {
-                this.manga.thumbnail = dest;
-                this.manga.pages = images.length;
-                resolve(this.manga);
+    getThumbnailImage(sharp, writeStream, images) {
+        return this.getThumbnailBuffer(images).then((buffer) => {
+            let resize = sharp(buffer).resize(250, null).png();
+            return new Promise((resolve, reject) => {
+                resize.pipe(writeStream);
+                writeStream.on('finish', resolve);
             });
         });
     }
