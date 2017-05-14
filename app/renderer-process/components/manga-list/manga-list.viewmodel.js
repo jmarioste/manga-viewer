@@ -37,12 +37,12 @@ export class MangaListViewmodel {
         this.clearSearch = this.clearSearch.bind(this);
         this.viewManga = this.viewManga.bind(this);
         this.focusSearch = this.focusSearch.bind(this);
-
+        this.afterAdd = this.afterAdd.bind(this);
         this.selectedDirectoryText = ko.pureComputed(this.selectedDirectoryText, this);
         this.isBookmarked = ko.pureComputed(this.isBookmarked, this);
 
 
-        this.isRecursiveText = ko.pureComputed(function() {
+        this.isRecursiveText = ko.pureComputed(function () {
             return this.isRecursive() ? "On" : "Off";
         }, this);
         this.requesting = null;
@@ -80,17 +80,17 @@ export class MangaListViewmodel {
             rateLimit: 500
         });
 
-        let sub = this.selectedDirectory.subscribe(function() {
+        let sub = this.selectedDirectory.subscribe(function () {
             this.searchValue("");
         }, this);
 
-        let sub3 = this.scrollEnd.subscribe(function(scrollEnd) {
+        let sub3 = this.scrollEnd.subscribe(function (scrollEnd) {
             console.log("scrollEnd", scrollEnd);
             if (scrollEnd && !this.requesting) {
                 this.pagination(this.pagination() + 1);
             }
         }, this);
-        let sub2 = this.pagination.subscribe(function(pagination) {
+        let sub2 = this.pagination.subscribe(function (pagination) {
             console.log("pagination updated");
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
@@ -106,7 +106,7 @@ export class MangaListViewmodel {
             }
         }, this);
 
-        ipc.on('get-manga-list-progress', function(event, manga) {
+        ipc.on('get-manga-list-progress', function (event, manga) {
             if (manga) {
                 manga.isFavorite = _.includes(self.favorites(), manga.folderPath);
                 manga = MangaFactory.getManga(manga);
@@ -114,7 +114,7 @@ export class MangaListViewmodel {
             }
         });
 
-        ipc.on('get-manga-list-done', function() {
+        ipc.on('get-manga-list-done', function () {
             self.requesting = false;
             self.searching(false);
             // self.showGuide(self.mangas().length <= 0);
@@ -132,7 +132,13 @@ export class MangaListViewmodel {
         this.subscriptions.forEach(sub => sub.dispose());
         ipc.removeAllListeners(['get-manga-list-progress', 'get-manga-list-done']);
     }
+    afterAdd(elem) {
+        console.log(elem);
+        if ($(elem).hasClass("manga")) {
+            Materialize.fadeInImage($(elem));
+        }
 
+    }
     clearSearch() {
         this.searchValue("");
     }
@@ -154,7 +160,7 @@ export class MangaListViewmodel {
             if (current.isBookmarked() && !_.includes(bookmarkPaths, current.folderPath)) {
                 this.bookmarks.push(current);
             } else {
-                this.bookmarks.remove(function(folder) {
+                this.bookmarks.remove(function (folder) {
                     return folder.folderPath === current.folderPath;
                 });
             }
