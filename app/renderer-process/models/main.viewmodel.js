@@ -6,7 +6,7 @@ import api from "renderer-process/common/api.js";
 import Pages from "renderer-process/common/pages.enum";
 import Folder from "renderer-process/models/folder.viewmodel.js";
 import { DefaultCommandHotkeys } from "renderer-process/models/command.viewmodel";
-const { remote } = window.require('electron');
+import { remote } from "electron";
 export default class ViewModel {
     constructor(params) {
         console.log("MainViewModel::constructor")
@@ -33,7 +33,7 @@ export default class ViewModel {
     }
 
     initialize() {
-        let sub = ko.computed(function() {
+        let sub = ko.computed(function () {
             let currentFolder = this.currentFolder();
             let bookmarks = _.map(this.bookmarks(), 'folderPath');
             let favorites = this.favorites();
@@ -53,7 +53,7 @@ export default class ViewModel {
             rateLimit: 500
         });
 
-        let sub2 = this.selectedManga.subscribe(function(manga) {
+        let sub2 = this.selectedManga.subscribe(function (manga) {
             if (manga) {
                 this.selectedDirectory(null);
             }
@@ -68,7 +68,7 @@ export default class ViewModel {
     }
 
     getBookmarks(params) {
-        return _.map(params.bookmarks, function(folderPath) {
+        return _.map(params.bookmarks, function (folderPath) {
             let folderName = path.basename(folderPath);
             return new Folder({
                 folderName: folderName,
@@ -80,5 +80,19 @@ export default class ViewModel {
     closeWindow() {
         let current = remote.getCurrentWindow();
         current.close();
+    }
+
+    minimize() {
+        let current = remote.getCurrentWindow();
+        current.minimize();
+    }
+    maximize() {
+        let current = remote.getCurrentWindow();
+        if (current.isMaximized()) {
+            current.unmaximize();
+        } else {
+            current.maximize();
+        }
+
     }
 }

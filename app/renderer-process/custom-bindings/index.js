@@ -18,3 +18,4 @@ import "./single-pulse-effect.custom-binding";
 import "./scale.custom-binding";
 import "./remove-focus-on-enter.custom-binding";
 import "./mouse-wheel.custom-binding.js";
+import "./maximized-icon.custom-binding.js";

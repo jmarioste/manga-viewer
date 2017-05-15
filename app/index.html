@@ -13,11 +13,18 @@
 </head>
 
 <body>
-    <div class="title-bar cyan darken-2" style="-webkit-app-region: drag">
-        <span data-bind="text:appTitle"></span>
-        <a class="right close-icon valign-wrapper" href="javascript:void(0);" data-bind="click:closeWindow">
-                <i class="material-icons valign">close</i>
-            </a>
+    <div class="title-bar cyan darken-2 valign-wrapper" style="-webkit-app-region: drag">
+        <img class="product-logo" src="16x16.png" alt="">
+        <span class="valign app-title" data-bind="text:appTitle"></span>
+        <a class="button-icon valign-wrapper" href="javascript:void(0);" data-bind="click:minimize">
+            <i class="material-icons valign">space_bar</i>
+        </a>
+        <a class="button-icon valign-wrapper" href="javascript:void(0);" data-bind="click:maximize">
+            <i class="material-icons valign" data-bind="maximizedIcon"></i>
+        </a>
+        <a class="close-icon valign-wrapper" href="javascript:void(0);" data-bind="click:closeWindow">
+            <i class="material-icons valign">close</i>
+        </a>
     </div>
     <topbar params="selectedManga:selectedManga,
             favorites: favorites,

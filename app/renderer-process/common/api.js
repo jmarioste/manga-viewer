@@ -1,9 +1,8 @@
-const ipc = window.require('electron').ipcRenderer
 
 import $ from "jquery";
 import fs from "fs";
 import _ from "lodash";
-
+import { ipcRenderer as ipc } from "electron";
 import MangaFactory from "./manga.factory";
 
 export default class api {
@@ -15,7 +14,7 @@ export default class api {
         console.log("api::getSubFolders - folderPath", folderPath);
         let deferred = $.Deferred();
         ipc.send('get-subfolders', folderPath);
-        ipc.on('get-subfolders-done', function(event, folders) {
+        ipc.on('get-subfolders-done', function (event, folders) {
             console.log("api::getSubFolders", folders.length);
             deferred.resolve({
                 folders: folders
@@ -45,7 +44,7 @@ export default class api {
 
         ipc.send('get-pages', { start, end, folderPath });
 
-        ipc.once('get-pages-done', function(event, pages) {
+        ipc.once('get-pages-done', function (event, pages) {
             console.log("get-pages-done")
             deferred.resolve(pages);
         });
@@ -59,7 +58,7 @@ export default class api {
     static getManga(folderPath) {
         let deferred = $.Deferred();
         ipc.send('get-manga', folderPath);
-        ipc.once('get-manga-progress', function(event, manga) {
+        ipc.once('get-manga-progress', function (event, manga) {
             console.log("get-manga-done")
             deferred.resolve(manga);
         });
@@ -92,7 +91,7 @@ export default class api {
     static selectDirectory() {
         let deferred = $.Deferred();
         ipc.send('select-directory');
-        ipc.once('select-directory-done', function(event, data) {
+        ipc.once('select-directory-done', function (event, data) {
             console.log("select-directory done", data);
             deferred.resolve(data);
         });

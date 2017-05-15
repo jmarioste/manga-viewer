@@ -20,8 +20,28 @@
 
 .title-bar {
 	color : #fff;
-	padding-left: 16px;
-
+	height: 24px;	
+	.product-logo {
+		margin-left: 8px;
+		margin-right: 8px;
+		
+	}
+	.app-title {
+		flex-grow: 1;
+		font-size:12px;
+	}
+	.button-icon {
+		color : #fff;
+		height: 24dp;		
+		padding: 0px 5px;
+		&:hover {
+			background-color: darken($primary-color, 20%);
+			// color: $primary-color;
+			transition: background-color .2s;
+			
+		}
+		-webkit-app-region: no-drag;	
+	}
 	.close-icon {
 		color : #fff;
 		height: 24dp;		
