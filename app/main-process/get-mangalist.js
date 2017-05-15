@@ -7,19 +7,13 @@ const recursive = require('recursive-readdir');
 const { requireTaskPool } = require('electron-remote');
 
 const { ipcMain, app } = require('electron');
-const threads = require('threads');
 const ZipHandler = require('./archive-handlers/zip.handler');
 const ipc = ipcMain;
 
-let spawn = threads.spawn;
-threads.config.set({
-    basepath: {
-        node: __dirname
-    }
-});
 // const x = require('./get-manga-pages.worker');
 const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'));
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
+// const thread = require('./set-thumbnail.worker');
 module.exports = (function () {
     function GetMangaList() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
@@ -29,9 +23,6 @@ module.exports = (function () {
             autoload: true
         });
 
-        // this.getPageThread = spawn("get-manga-pages.worker.js");
-        this.favoritesThread;
-
         this.getMangas = this.getMangas.bind(this);
         this.getFiles = this.getFiles.bind(this);
         this.parseInfo = this.parseInfo.bind(this);
@@ -40,7 +31,7 @@ module.exports = (function () {
     GetMangaList.prototype.initialize = function () {
         this.initializeGetSubFolder();
         this.initializeGetMangaList();
-        // this.initializeGetFavoritesList();
+        this.initializeGetFavoritesList();
         this.initializeGetPages();
     }
 
@@ -97,35 +88,18 @@ module.exports = (function () {
                 .then(mangas => _.sortBy(mangas, 'titleShort'))
                 .then(mangas => mangas.slice(start, end))
                 .each(manga => {
-
-                    let result = thread.setThumbnail(manga, dataPath, appPath);
-
-                    return result.then(function (manga) {
-                        return new Promise((resolve, reject) => {
-
-                            if (manga) {
-                                console.log(manga.titleShort);
-                                if (!manga._id) {
-                                    self.db.insert(manga, function (err, doc) {
-                                        event.sender.send('get-manga-list-progress', doc);
-                                        resolve();
-                                    });
-
-                                } else {
-                                    self.db.update({ _id: manga._id }, manga, {}, function (err, doc) {
-                                        event.sender.send('get-manga-list-progress', manga);
-                                        resolve();
-                                    })
-                                }
-                            } else {
+                    return thread.setThumbnail(manga, dataPath, appPath)
+                        .then(manga => self.updateManga(manga))
+                        .then(manga => {
+                            console.log("manga", manga);
+                            new Promise((resolve, reject) => {
+                                event.sender.send('get-manga-list-progress', manga)
                                 resolve();
-                            }
-
-                        });
-                    }).catch(function (e) {
-                        console.log("AAA", e)
-                    })
-
+                            });
+                        })
+                        .catch(function (e) {
+                            console.log("Something happened", e)
+                        })
                 }).then(() => {
                     processing = false;
                     event.sender.send('get-manga-list-done');
@@ -135,6 +109,7 @@ module.exports = (function () {
                 });
         });
     }
+
 
     GetMangaList.prototype.initializeGetFavoritesList = function () {
         let processing = false;
@@ -146,74 +121,48 @@ module.exports = (function () {
             processing = true;
 
             console.log('get-favorites-list::starting..');
-            if (self.favoritesThread) {
-                console.log("stopping thead");
-                self.favoritesThread.kill();
-                self.favoritesThread = spawn("set-thumbnail.worker.js");
-            } else {
-                self.favoritesThread = spawn("set-thumbnail.worker.js");
-            }
-            self.getMangas(folderPaths).then(function (mangas) {
-                self.favoritesThread.send({
-                    mangas: mangas,
-                    dataPath: path.join(app.getPath('appData'), app.getName()),
-                    appPath: app.getAppPath()
-                })
-            });
 
-            self.favoritesThread.on('progress', function (manga) {
-                console.log("self.favoritesThread.on::message");
-                self.db.find({
-                    folderPath: manga.folderPath
-                }, function (err, docs) {
-                    // console.log(docs);
-                    if (!docs.length) {
-                        self.db.insert(manga);
-                    }
-                });
-                event.sender.send('get-favorites-list-progress', manga);
-            });
-            self.favoritesThread.on('done', function () {
-                self.favoritesThread.kill();
-                processing = false;
-                console.log("done");
-                event.sender.send('get-favorites-list-done');
-            })
+            let dataPath = path.join(app.getPath('appData'), app.getName());
+            let appPath = app.getAppPath();
+
+            self.getMangas(folderPaths)
+                .each(manga => {
+                    return thread.setThumbnail(manga, dataPath, appPath)
+                        .then(manga => self.updateManga(manga))
+                        .then(manga => {
+                            console.log("manga", manga.titleShort);
+                            new Promise((resolve, reject) => {
+                                event.sender.send('get-favorites-list-progress', manga)
+                                resolve();
+                            });
+                        })
+                        .catch(console.log);
+                }).then(() => {
+                    processing = false;
+                    event.sender.send('get-favorites-list-done');
+                    console.log("done");
+                }).catch((err) => console.log(err));
 
         });
 
         ipc.on('get-manga', function (event, folderPath) {
-            console.log('get-manga::starting..');
-            self.favoritesThread = spawn("set-thumbnail.worker.js");
-
-            self.getMangas([folderPath]).then(function (mangas) {
-                self.favoritesThread.send({
-                    mangas: mangas,
-                    dataPath: path.join(app.getPath('appData'), app.getName()),
-                    appPath: app.getAppPath()
-                })
-            });
-
-            self.favoritesThread.on('progress', function (manga) {
-                console.log("get-manga.on::message");
-                self.db.find({
-                    folderPath: manga.folderPath
-                }, function (err, docs) {
-                    // console.log(docs);
-                    if (!docs.length) {
-                        self.db.insert(manga);
-                    }
-                });
-                event.sender.send('get-manga-progress', manga);
-            });
-
-            self.favoritesThread.on('done', function () {
-                self.favoritesThread.kill();
-                processing = false;
-                console.log("done");
-                event.sender.send('get-manga-done');
-            });
-
+            console.log('get-manga::starting..', folderPath);
+            self.getMangas([folderPath])
+                .each(manga => {
+                    return thread.setThumbnail(manga, dataPath, appPath)
+                        .then(manga => self.updateManga(manga))
+                        .then(manga => {
+                            console.log("manga");
+                            new Promise((resolve, reject) => {
+                                event.sender.send('get-manga-progress', manga)
+                                resolve();
+                            });
+                        })
+                        .catch(console.log);
+                }).then(() => {
+                    processing = false;
+                    console.log("done");
+                }).catch((err) => console.log(err));
         });
     }
 
@@ -230,6 +179,24 @@ module.exports = (function () {
         });
     }
 
+    GetMangaList.prototype.updateManga = function (manga) {
+        let self = this;
+        console.log("updating manga", manga.titleShort);
+        return new Promise((resolve, reject) => {
+            function handler(err, doc) {
+                if (err) return reject(err);
+                let obj = doc._id ? doc : manga;
+                resolve(obj);
+            }
+            if (!manga._id) {
+                console.log("insert")
+                self.db.insert(manga, handler);
+            } else {
+                console.log("update");
+                self.db.update({ _id: manga._id }, manga, {}, handler);
+            }
+        });
+    }
     GetMangaList.prototype.getFiles = function (rootFolder, searchValue, isRecursive) {
         let ignored = [];
         console.log("getFiles", rootFolder, searchValue, isRecursive);
