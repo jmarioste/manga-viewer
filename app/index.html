@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html id="html-top">
-    <head>
-        <meta charset="UTF-8">
-        <title data-bind="text:appTitle"></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <base href="./">
-        <script>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-bind="text:appTitle"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="./">
+    <script>
         // You can also require other files to run in this process
         require("./bundle/app-bundle.js");
-        </script>
-    </head>
-    <body >
-        <div class="title-bar cyan darken-2" style="-webkit-app-region: drag">
-            <!-- <span data-bind="text:appTitle"></span>             -->
-            <a class="right close-icon valign-wrapper" href="javascript:void(0);" data-bind="click:closeWindow">
+    </script>
+</head>
+
+<body>
+    <div class="title-bar cyan darken-2" style="-webkit-app-region: drag">
+        <span data-bind="text:appTitle"></span>
+        <a class="right close-icon valign-wrapper" href="javascript:void(0);" data-bind="click:closeWindow">
                 <i class="material-icons valign">close</i>
             </a>
-        </div>
-        <topbar params="selectedManga:selectedManga,
+    </div>
+    <topbar params="selectedManga:selectedManga,
             favorites: favorites,
             currentPage: currentPage,
             appTitle:appTitle,
             currentViewMangaPage: currentViewMangaPage,
             viewMangaCommand: viewMangaCommand,
             searching: searching,
-            appCommands: appCommands" >
+            appCommands: appCommands">
 
-        </topbar>
-        <div class="wrapper show-nav">
+    </topbar>
+    <div class="wrapper show-nav">
 
-            <div class="canvas ">
+        <div class="canvas ">
 
-                <sidebar params="currentFolder: currentFolder,
+            <sidebar params="currentFolder: currentFolder,
                 selectedDirectory: selectedDirectory,
                 bookmarks:bookmarks,
                 currentPage: currentPage,
                 appCommands: appCommands">
-                </sidebar>
+            </sidebar>
 
-                <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}">
-                </div>
+            <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}">
             </div>
         </div>
+    </div>
 
-    </body>
+</body>
 
-    <template id="manga-list-view">
-        <manga-list params="
+<template id="manga-list-view">
+    <manga-list params="
             currentFolder: currentFolder,
             selectedDirectory: selectedDirectory,
             bookmarks:bookmarks,
@@ -58,15 +60,15 @@
             searching:searching,
             isRecursive:isRecursive,
             appCommands: appCommands">
-        </manga-list>
-    </template>
-    <template id="favorites-list-view">
-        <favorites-list params="favorites:favorites,
+    </manga-list>
+</template>
+<template id="favorites-list-view">
+    <favorites-list params="favorites:favorites,
             selectedManga:selectedManga,
             currentPage: currentPage">
-        </favorites-list>
-    </template>
-    <template id="view-manga-view">
+    </favorites-list>
+</template>
+<template id="view-manga-view">
     <!-- ko component: {name: 'view-manga', params:{
         favorites:favorites,
         selectedManga:selectedManga,
@@ -76,12 +78,13 @@
         appCommands: appCommands
     }} -->
     <!-- /ko -->
-    </template>
+</template>
 
-    <template id="settings-page-view">
-        <settings-page params="
+<template id="settings-page-view">
+    <settings-page params="
             isRecursive: isRecursive, 
             commands:appCommands">
         <settings-page>
-    </template>
+</template>
+
 </html>

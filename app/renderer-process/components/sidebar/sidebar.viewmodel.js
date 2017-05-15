@@ -77,7 +77,7 @@ export class SidebarViewmodel {
 
     openDirectory() {
         var self = this;
-        api.selectDirectory().then(function(folder) {
+        api.selectDirectory().then(function (folder) {
             self.currentFolder(folder);
             self.initialize();
         });
@@ -85,7 +85,7 @@ export class SidebarViewmodel {
     }
 
     showFavorites() {
-        this.currentPage(Pages.FavortiesList);
+        this.currentPage(Pages.FavoritesList);
         this.selectedDirectory(null);
     }
 
@@ -95,7 +95,7 @@ export class SidebarViewmodel {
     }
 
     isFavoritesActive() {
-        return this.currentPage() === Pages.FavortiesList;
+        return this.currentPage() === Pages.FavoritesList;
     }
 
     isSettingsActive() {
@@ -103,7 +103,7 @@ export class SidebarViewmodel {
     }
 
     isFolderActive(folder) {
-        let isFolderSelected = _.includes([Pages.MangaList, Pages.FavortiesList], this.currentPage());
+        let isFolderSelected = _.includes([Pages.MangaList, Pages.FavoritesList], this.currentPage());
         let sameDirectory = this.selectDirectoryText() === folder.folderName;
 
         return sameDirectory && isFolderSelected;

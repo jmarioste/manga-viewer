@@ -3,9 +3,11 @@ import _ from "lodash";
 import $ from "jquery";
 
 import api from "renderer-process/common/api.js";
+import Pages from "renderer-process/common/pages.enum";
 import Command from "renderer-process/models/command.viewmodel";
 import template from "./topbar.template.html";
 import { ViewMangaCommand } from "renderer-process/components";
+
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {
@@ -88,7 +90,15 @@ export class TopBarViewmodel {
         if (this.selectedManga()) {
             return this.selectedManga().mangaTitle;
         } else {
-            return this.appTitle();
+            console.log(this.currentPage(), Pages.MangaList)
+            switch (this.currentPage()) {
+                case Pages.MangaList: return "Manga list";
+                case Pages.FavoritesList: return "Favorites list";
+                case Pages.SettingsPage: return "Settings";
+                case Pages.ViewManga: return "View Manga";
+                default:
+                    throw `There's no page named ${this.currentPage()}`
+            }
         }
     }
     static registerComponent() {
