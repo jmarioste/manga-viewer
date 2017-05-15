@@ -11,9 +11,14 @@ const ZipHandler = require('./archive-handlers/zip.handler');
 const ipc = ipcMain;
 
 // const x = require('./get-manga-pages.worker');
+// const thread = require('./set-thumbnail.worker');
+
 const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'));
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
-// const thread = require('./set-thumbnail.worker');
+
+const dataPath = path.join(app.getPath('appData'), app.getName());
+const appPath = app.getAppPath();
+
 module.exports = (function () {
     function GetMangaList() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
@@ -77,8 +82,7 @@ module.exports = (function () {
             let isRecursive = data.isRecursive;
             let pagination = data.pagination;
 
-            let dataPath = path.join(app.getPath('appData'), app.getName());
-            let appPath = app.getAppPath();
+
 
             let start = pagination * 50;
             let end = Math.min((pagination + 1) * 50);
@@ -121,9 +125,6 @@ module.exports = (function () {
             processing = true;
 
             console.log('get-favorites-list::starting..');
-
-            let dataPath = path.join(app.getPath('appData'), app.getName());
-            let appPath = app.getAppPath();
 
             self.getMangas(folderPaths)
                 .each(manga => {
@@ -170,7 +171,7 @@ module.exports = (function () {
         var self = this;
         ipc.on('get-pages', function (event, input) {
             console.log('get-pages::starting..');
-            input.appPath = app.getAppPath();
+            input.appPath = appPath;
             getPageThread.get(input)
                 .then(pages => event.sender.send('get-pages-done', pages))
                 .catch((e) => {
