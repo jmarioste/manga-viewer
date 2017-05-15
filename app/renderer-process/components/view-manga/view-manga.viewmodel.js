@@ -70,7 +70,7 @@ export class ViewMangaViewmodel {
             selected.pageImages([]);
         }
 
-        let sub = this.command.subscribe(function(command) {
+        let sub = this.command.subscribe(function (command) {
             switch (command) {
                 case ViewMangaCommand.NextPage:
                     this.goNextPage();
@@ -86,8 +86,11 @@ export class ViewMangaViewmodel {
     dispose() {
         console.log("ViewMangaViewModel::dispose")
         this.subscriptions.forEach(sub => sub.dispose());
-        this.selectedManga().pageImages([]);
-        this.selectedManga(null);
+        if (this.selectedManga()) {
+            this.selectedManga().pageImages([]);
+            this.selectedManga(null);
+        }
+
         this.currentPage(0);
     }
 
@@ -166,9 +169,9 @@ export class ViewMangaViewmodel {
             end = end || Math.min(this.currentPage() + 3, selected.pages);
             console.log("pages", this.currentPage(), start, end);
             return api.getPages(start, end, selected.folderPath)
-                .then(function(pages) {
+                .then(function (pages) {
 
-                    pages.forEach(function(page) {
+                    pages.forEach(function (page) {
                         selected.pageImages.push(page);
                     });
                 });

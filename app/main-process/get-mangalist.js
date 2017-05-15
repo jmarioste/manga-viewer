@@ -8,6 +8,7 @@ const { requireTaskPool } = require('electron-remote');
 
 const { ipcMain, app } = require('electron');
 const ZipHandler = require('./archive-handlers/zip.handler');
+const Errors = require('../common/errors');
 const ipc = ipcMain;
 
 // const x = require('./get-manga-pages.worker');
@@ -94,13 +95,7 @@ module.exports = (function () {
                 .each(manga => {
                     return thread.setThumbnail(manga, dataPath, appPath)
                         .then(manga => self.updateManga(manga))
-                        .then(manga => {
-                            console.log("manga", manga);
-                            new Promise((resolve, reject) => {
-                                event.sender.send('get-manga-list-progress', manga)
-                                resolve();
-                            });
-                        })
+                        .then(manga => event.sender.send('get-manga-list-progress', manga))
                         .catch(function (e) {
                             console.log("Something happened", e)
                         })
@@ -119,9 +114,7 @@ module.exports = (function () {
         let processing = false;
         let self = this;
         ipc.on('get-favorites-list', function (event, folderPaths) {
-            if (processing) {
-                return;
-            }
+            if (processing) return;
             processing = true;
 
             console.log('get-favorites-list::starting..');
@@ -130,14 +123,8 @@ module.exports = (function () {
                 .each(manga => {
                     return thread.setThumbnail(manga, dataPath, appPath)
                         .then(manga => self.updateManga(manga))
-                        .then(manga => {
-                            console.log("manga", manga.titleShort);
-                            new Promise((resolve, reject) => {
-                                event.sender.send('get-favorites-list-progress', manga)
-                                resolve();
-                            });
-                        })
-                        .catch(console.log);
+                        .then(manga => event.sender.send('get-favorites-list-progress', manga))
+                        .catch(err => { throw err });
                 }).then(() => {
                     processing = false;
                     event.sender.send('get-favorites-list-done');
@@ -150,20 +137,17 @@ module.exports = (function () {
             console.log('get-manga::starting..', folderPath);
             self.getMangas([folderPath])
                 .each(manga => {
-                    return thread.setThumbnail(manga, dataPath, appPath)
-                        .then(manga => self.updateManga(manga))
-                        .then(manga => {
-                            console.log("manga");
-                            new Promise((resolve, reject) => {
-                                event.sender.send('get-manga-progress', manga)
-                                resolve();
-                            });
-                        })
-                        .catch(console.log);
-                }).then(() => {
-                    processing = false;
-                    console.log("done");
-                }).catch((err) => console.log(err));
+                    if (!fs.existsSync(manga.folderPath)) {
+                        throw `${Errors.FileDoesNotExist} ${manga.folderPath}`;
+                    }
+                    else {
+                        event.sender.send('get-manga-done', manga)
+                    }
+                })
+                .catch((err) => {
+                    console.log("error", err);
+                    event.sender.send('get-manga-error', err)
+                });
         });
     }
 
@@ -174,8 +158,8 @@ module.exports = (function () {
             input.appPath = appPath;
             getPageThread.get(input)
                 .then(pages => event.sender.send('get-pages-done', pages))
-                .catch((e) => {
-                    console.log("something wrong happened", e);
+                .catch((error) => {
+                    event.sender.send('on-error', `Could not open manga error`);
                 });
         });
     }
@@ -189,15 +173,15 @@ module.exports = (function () {
                 let obj = doc._id ? doc : manga;
                 resolve(obj);
             }
+
             if (!manga._id) {
-                console.log("insert")
                 self.db.insert(manga, handler);
             } else {
-                console.log("update");
                 self.db.update({ _id: manga._id }, manga, {}, handler);
             }
         });
     }
+
     GetMangaList.prototype.getFiles = function (rootFolder, searchValue, isRecursive) {
         let ignored = [];
         console.log("getFiles", rootFolder, searchValue, isRecursive);

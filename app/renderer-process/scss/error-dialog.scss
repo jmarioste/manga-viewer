@@ -1,0 +1,11 @@
+#error-modal {
+    // .header {
+        
+    //     color:$primary-color;
+    // }
+    .error-icon {
+        margin-right:8px;
+        @extend .red-text;
+        @extend  .small;
+    }
+}

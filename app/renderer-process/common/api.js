@@ -4,6 +4,8 @@ import fs from "fs";
 import _ from "lodash";
 import { ipcRenderer as ipc } from "electron";
 import MangaFactory from "./manga.factory";
+import { errorDialogInstance, ErrorDialog } from "renderer-process/components";
+
 
 export default class api {
     constructor() {
@@ -61,6 +63,11 @@ export default class api {
         ipc.once('get-manga-progress', function (event, manga) {
             console.log("get-manga-done")
             deferred.resolve(manga);
+        });
+        ipc.on('get-manga-error', function (event, errorMessage) {
+            console.log("api::getSubFolders", errorMessage);
+            errorDialogInstance.showMessage(errorMessage);
+            deferred.reject(errorMessage);
         });
         return deferred.promise();
     }

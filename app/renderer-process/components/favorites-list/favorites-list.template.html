@@ -1,10 +1,10 @@
 <div class="manga-list">
 	<section class="row">
 		<h4 class="col s12 m6 l9">
-		<span>Favorites</span>
+			<span>Favorites</span>
 		</h4>
 		<div class="col s12  m6 l3">
-			<div class="input-field">						
+			<div class="input-field">
 				<input id="search" type="search" data-bind="value:searchValue" placeholder="Search Manga...">
 				<label class="label-icon" for="search"><i class="material-icons">search</i> </label>
 				<i class="material-icons clear" data-bind="click:clearSearch">close</i>
@@ -12,11 +12,11 @@
 		</div>
 	</section>
 	<div id="mangalist">
-		<!-- ko foreach:filteredManga  -->
+		<!-- ko foreach:{data: filteredManga , afterAdd: afterAdd} -->
 		<div class="manga" data-bind="click:$parent.viewManga">
 			<div class="manga-content">
 				<div class="image-container">
-					<img class="manga-image" data-bind="src:thumbnail" >
+					<img class="manga-image" data-bind="src:thumbnail">
 				</div>
 				<div class="info">
 					<span class="title" data-bind="text:titleShort, tooltip:'top'"></span>
@@ -28,7 +28,7 @@
 		</div>
 		<!-- /ko  -->
 		<div class="extra">
-			
+
 		</div>
 	</div>
 </div>
