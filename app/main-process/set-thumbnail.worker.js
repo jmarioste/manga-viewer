@@ -33,13 +33,14 @@ class SetThumnailWorker {
 
                     resolve(new RarHandler(folderPath, rf));
                 } catch (error) {
-                    reject(`SetThumbnailWorker.getHandler ${error}`);
+                    reject(new Error(`SetThumbnailWorker.getHandler ${error}`));
                 }
 
             }
         });
 
     }
+
     setThumbnail(manga, dataPath, appPath) {
 
         return new Promise((resolve, reject) => {
