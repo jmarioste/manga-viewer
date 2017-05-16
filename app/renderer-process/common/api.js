@@ -60,7 +60,7 @@ export default class api {
     static getManga(folderPath) {
         let deferred = $.Deferred();
         ipc.send('get-manga', folderPath);
-        ipc.once('get-manga-progress', function (event, manga) {
+        ipc.once('get-manga-done', function (event, manga) {
             console.log("get-manga-done")
             deferred.resolve(manga);
         });

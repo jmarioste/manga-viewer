@@ -141,6 +141,7 @@ module.exports = (function () {
                         throw `${Errors.FileDoesNotExist} ${manga.folderPath}`;
                     }
                     else {
+                        console.log("get-manga-done", manga);
                         event.sender.send('get-manga-done', manga)
                     }
                 })
@@ -155,10 +156,10 @@ module.exports = (function () {
         var self = this;
         ipc.on('get-pages', function (event, input) {
             console.log('get-pages::starting..');
-            input.appPath = appPath;
-            getPageThread.get(input)
+            thread.getPages(input.folderPath, input.start, input.end, appPath)
                 .then(pages => event.sender.send('get-pages-done', pages))
                 .catch((error) => {
+                    console.log("error", error);
                     event.sender.send('on-error', `Could not open manga error`);
                 });
         });

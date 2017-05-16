@@ -16,22 +16,22 @@ class SetThumnailWorker {
 
     }
 
-    getHandler(manga, appPath) {
+    getHandler(folderPath, appPath) {
         return new Promise((resolve, reject) => {
-            let isZip = myRegex.ZIP_FILE.test(manga.folderPath);
+            let isZip = myRegex.ZIP_FILE.test(folderPath);
             if (isZip) {
-                resolve(new ZipHandler(manga, yauzl));
+                resolve(new ZipHandler(folderPath, yauzl));
             } else {
                 try {
                     setTimeout(function () {
                         reject(Errors.TIMEOUT_OPEN_RARFILE_ERR);
                     }, 1000);
 
-                    let rf = new rarfile.RarFile(manga.folderPath, {
+                    let rf = new rarfile.RarFile(folderPath, {
                         rarTool: path.join(appPath, "UnRAR.exe")
                     });
 
-                    resolve(new RarHandler(manga, rf));
+                    resolve(new RarHandler(folderPath, rf));
                 } catch (error) {
                     reject(`SetThumbnailWorker.getHandler ${error}`);
                 }
@@ -50,12 +50,15 @@ class SetThumnailWorker {
                 manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
                 let handler;
-                this.getHandler(manga, appPath)
+                this.getHandler(manga.folderPath, appPath)
                     .then(_handler => {
                         handler = _handler
                         return handler.getImages()
                     })
-                    .then(images => handler.getThumbnailImage(sharp, writeStream, images))
+                    .then(images => {
+                        manga.pages = images.length;
+                        return handler.getThumbnailImage(sharp, writeStream, images)
+                    })
                     .then(() => resolve(manga))
                     .catch(function (error) {
                         reject(error);
@@ -65,6 +68,10 @@ class SetThumnailWorker {
         })
     };
 
+    getPages(folderPath, start, end, appPath) {
+        return this.getHandler(folderPath, appPath)
+            .then(handler => handler.getPages(start, end))
+    }
 }
 
 module.exports = new SetThumnailWorker();

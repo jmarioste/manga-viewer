@@ -39,10 +39,10 @@ describe('Zip Handler', () => {
 
     describe('constructor', () => {
         it('should initialize properly', () => {
-            instance = new ZipHandler({}, yauzl);
+            instance = new ZipHandler("manga.zip", yauzl);
             expect(instance).to.not.be.null;
             expect(instance.yauzl).to.not.be.undefined;
-            expect(instance.manga).to.not.be.undefined;
+            expect(instance.folderPath).to.not.be.undefined;
         });
     });
 
@@ -56,7 +56,7 @@ describe('Zip Handler', () => {
 
         describe('on resolve', () => {
             it('it should use manga folderPath as path', (done) => {
-                instance = new ZipHandler({ folderPath: "manga.zip" }, yauzl);
+                instance = new ZipHandler("manga.zip", yauzl);
                 let promise = instance.initialize();
                 promise.then((zip) => {
                     expect(stub).to.have.been.calledWith("manga.zip");
@@ -65,7 +65,7 @@ describe('Zip Handler', () => {
             })
 
             it('should pass a zip object from yauzl', (done) => {
-                instance = new ZipHandler({ folderPath: "manga.zip" }, yauzl);
+                instance = new ZipHandler("manga.zip", yauzl);
                 let promise = instance.initialize();
 
                 promise.then((zip) => {
@@ -82,11 +82,12 @@ describe('Zip Handler', () => {
                     cb("Error opening file");
                 });
 
-                instance = new ZipHandler({ folderPath: "manga.zip" }, yauzl);
+                instance = new ZipHandler("manga.zip", yauzl);
                 let promise = instance.initialize();
 
                 promise.catch((err) => {
-                    expect(err).to.contain("Error opening file");
+                    expect(err).to.be.instanceOf(Error);
+                    expect(err.message).to.contain("Error opening file");
                 }).finally((err) => {
                     done();
                 });
@@ -108,15 +109,38 @@ describe('Zip Handler', () => {
     });
 
     describe('getReadStream', () => {
-        it('should return the readStream for the first image', (done) => {
+        it('should return the readStream for the path passed', (done) => {
             instance = new ZipHandler({}, yauzl);
 
             instance.getImages()
-                .then(images => instance.getReadStream(images))
+                .then(images => instance.getReadStream(images[0].path))
                 .then(function (readStream) {
                     expect(readStream).to.not.be.null;
                     done();
                 })
         });
     });
+
+
+    describe('getPages', () => {
+        it('should return base64 image on resolve', (done) => {
+            instance = new ZipHandler({}, yauzl);
+            let bufferStub = sinon.stub(instance, 'getBufferFrom')
+            bufferStub.callsFake((readStream) => {
+                return new Promise((resolve, reject) => {
+                    resolve(new Buffer('test data'))
+                });
+            });
+
+            instance.getPages(0, 2).then(function (images) {
+                expect(images.length).to.equal(2);
+                expect(images[0]).to.equal('data:image/bmp;base64,dGVzdCBkYXRh');
+                instance.getBufferFrom.restore();
+                done();
+            }).catch((err) => {
+                console.log("getPages catch", err);
+            })
+        })
+    });
+
 });

@@ -9,9 +9,9 @@ const Errors = require('../../common/errors');
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
 class RarHandler {
-    constructor(manga, rarfile) {
+    constructor(folderPath, rarfile) {
         this.imagesFiles = [];
-        this.manga = manga;
+        this.folderPath = folderPath;
         this.rf = rarfile;
     }
 
@@ -37,7 +37,6 @@ class RarHandler {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
-                this.manga.pages = images.length;
                 return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
