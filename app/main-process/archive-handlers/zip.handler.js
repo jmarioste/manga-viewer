@@ -31,7 +31,7 @@ class ZipHandler {
 
     getImages() {
         let images = [];
-
+        let folderPath = this.folderPath;
         return this.initialize().then((zip) => {
             return new Promise((resolve, reject) => {
                 zip.readEntry();
@@ -51,7 +51,7 @@ class ZipHandler {
                     if (images.length) {
                         resolve(images);
                     } else {
-                        reject(new Error(`ZipHandler.getImages - ${Errors.NO_IMAGE_FILE}`));
+                        reject(new Error(`ZipHandler.getImages - ${folderPath} ${Errors.NO_IMAGE_FILE}`));
                     }
                 });
 

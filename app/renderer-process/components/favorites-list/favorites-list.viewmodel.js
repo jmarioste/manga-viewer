@@ -38,7 +38,7 @@ export class FavoritesListViewmodel {
         var self = this;
         api.getFavorites(this.favorites());
 
-        ipc.on('get-favorites-list-progress', function(event, manga) {
+        ipc.on('get-favorites-list-progress', function (event, manga) {
             if (manga) {
                 manga.isFavorite = true;
                 manga = MangaFactory.getManga(manga);
@@ -46,7 +46,7 @@ export class FavoritesListViewmodel {
             }
         });
 
-        ipc.on('get-favorites-list-done', function() {
+        ipc.on('get-favorites-list-done', function () {
             console.log("this.favoritesManga.length", self.favoritesManga().length);
         });
     }
@@ -74,10 +74,17 @@ export class FavoritesListViewmodel {
         if (!value) {
             return _.sortBy(this.favoritesManga(), 'mangaTitle');
         } else {
-            return _(this.favoritesManga()).filter(function(manga) {
+            return _(this.favoritesManga()).filter(function (manga) {
                 let title = manga.mangaTitle;
                 return _.includes(title.toLowerCase(), value);
             }).sortBy('mangaTitle').value();
+        }
+    }
+
+    afterAdd(elem) {
+        console.log(elem);
+        if ($(elem).hasClass("manga")) {
+            Materialize.fadeInImage($(elem));
         }
     }
 

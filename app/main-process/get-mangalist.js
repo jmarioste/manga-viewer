@@ -11,7 +11,7 @@ const ZipHandler = require('./archive-handlers/zip.handler');
 const Errors = require('../common/errors');
 const Regex = require('../common/regex');
 const ipc = ipcMain;
-
+const logger = require('electron-log');
 // const x = require('./get-manga-pages.worker');
 // const thread = require('./set-thumbnail.worker');
 
@@ -20,7 +20,9 @@ const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
 
 const dataPath = path.join(app.getPath('appData'), app.getName());
 const appPath = app.getAppPath();
-
+logger.error(dataPath);
+logger.error(appPath);
+logger.transports.file.level = 'info';
 module.exports = (function () {
     function GetMangaList() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
@@ -53,7 +55,7 @@ module.exports = (function () {
                 if (!Regex.SUPPORTED_FILES.test(data)) {
                     data = null;
                 }
-                console.log("process args", process.argv[0], process.argv[1], data);
+                logger.info("process args", process.argv[0], process.argv[1], data);
             }
             event.returnValue = data;
         })
@@ -63,7 +65,7 @@ module.exports = (function () {
 
             fs.readdir(rootFolder, {}, function (err, files) {
                 if (err) {
-                    console.log("get-mangalist::get-subfolders", err);
+                    logger.info("get-mangalist::get-subfolders", err);
                     return;
                 }
 
@@ -94,7 +96,7 @@ module.exports = (function () {
                 return;
             }
             processing = true;
-            console.log("get-mangalist.js::ipc.on::get-manga-list");
+            logger.info("get-mangalist.js::ipc.on::get-manga-list");
             let rootFolder = data.rootFolder;
             let searchValue = data.searchValue;
             let isRecursive = data.isRecursive;
@@ -114,14 +116,16 @@ module.exports = (function () {
                         .then(manga => self.updateManga(manga))
                         .then(manga => event.sender.send('get-manga-list-progress', manga))
                         .catch(function (e) {
-                            console.log("Something happened", e)
-                        })
+                            return logger.error("Something happened", e)
+                        }).then(function () {
+                            return logger.debug("done ", manga.folderPath);
+                        });
                 }).then(() => {
                     processing = false;
                     event.sender.send('get-manga-list-done');
-                    console.log("done");
+                    logger.debug("get-manga-list::done");
                 }).catch((err) => {
-                    console.log(err);
+                    logger.error(err);
                 });
         });
     }
@@ -134,7 +138,7 @@ module.exports = (function () {
             if (processing) return;
             processing = true;
 
-            console.log('get-favorites-list::starting..');
+            logger.info('get-favorites-list::starting..');
 
             self.getMangas(folderPaths)
                 .each(manga => {
@@ -145,8 +149,8 @@ module.exports = (function () {
                 }).then(() => {
                     processing = false;
                     event.sender.send('get-favorites-list-done');
-                    console.log("done");
-                }).catch((err) => console.log(err));
+                    logger.debug("done");
+                }).catch((err) => logger.error(err));
 
         });
 
@@ -191,11 +195,12 @@ module.exports = (function () {
 
     GetMangaList.prototype.updateManga = function (manga) {
         let self = this;
-        console.log("updating manga", manga.titleShort);
+        logger.debug("updating manga", manga.titleShort);
         return new Promise((resolve, reject) => {
             function handler(err, doc) {
                 if (err) return reject(err);
                 let obj = doc._id ? doc : manga;
+                logger.debug("done updating manga", manga.titleShort);
                 resolve(obj);
             }
 

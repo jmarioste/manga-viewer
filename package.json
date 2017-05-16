@@ -23,6 +23,7 @@
   "build": {
     "appId": "com.baiji-manga-viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
+    "asar": false,
     "fileAssociations": [
       {
         "ext": [
