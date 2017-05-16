@@ -9,6 +9,7 @@ const { requireTaskPool } = require('electron-remote');
 const { ipcMain, app } = require('electron');
 const ZipHandler = require('./archive-handlers/zip.handler');
 const Errors = require('../common/errors');
+const Regex = require('../common/regex');
 const ipc = ipcMain;
 
 // const x = require('./get-manga-pages.worker');
@@ -35,12 +36,28 @@ module.exports = (function () {
     }
 
     GetMangaList.prototype.initialize = function () {
+        this.initializeOpenFile();
         this.initializeGetSubFolder();
         this.initializeGetMangaList();
         this.initializeGetFavoritesList();
         this.initializeGetPages();
     }
 
+
+    GetMangaList.prototype.initializeOpenFile = function () {
+        ipc.on('get-file-data', function (event) {
+            let data = null;
+            if (process.platform == 'win32' && process.argv.length >= 2) {
+                data = process.argv[1];
+
+                if (!Regex.SUPPORTED_FILES.test(data)) {
+                    data = null;
+                }
+                console.log("process args", process.argv[0], process.argv[1], data);
+            }
+            event.returnValue = data;
+        })
+    }
     GetMangaList.prototype.initializeGetSubFolder = function () {
         ipc.on('get-subfolders', function (event, rootFolder) {
 
@@ -141,8 +158,15 @@ module.exports = (function () {
                         throw `${Errors.FileDoesNotExist} ${manga.folderPath}`;
                     }
                     else {
-                        console.log("get-manga-done", manga);
-                        event.sender.send('get-manga-done', manga)
+                        // console.log("get-manga-done", manga);
+
+                        if (!manga.pages) {
+                            return thread.getImages(manga, appPath)
+                                .then(self.updateManga(manga))
+                                .then(manga => event.sender.send('get-manga-done', manga))
+                        } else {
+                            return event.sender.send('get-manga-done', manga)
+                        }
                     }
                 })
                 .catch((err) => {

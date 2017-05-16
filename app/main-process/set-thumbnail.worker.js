@@ -41,26 +41,34 @@ class SetThumnailWorker {
 
     }
     setThumbnail(manga, dataPath, appPath) {
-
+        console.log("inside setThumbnail");
         return new Promise((resolve, reject) => {
 
             if (manga.thumbnail) {
+                console.log("manga has thumbnail");
                 resolve(manga);
             } else {
+                console.log("manga has no thumbnail");
                 manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
                 let handler;
                 this.getHandler(manga.folderPath, appPath)
                     .then(_handler => {
                         handler = _handler
+                        console.log("got handler");
                         return handler.getImages()
                     })
                     .then(images => {
                         manga.pages = images.length;
+                        console.log("got images", images.length);
                         return handler.getThumbnailImage(sharp, writeStream, images)
                     })
-                    .then(() => resolve(manga))
+                    .then(() => {
+                        console.log("resolving")
+                        resolve(manga)
+                    })
                     .catch(function (error) {
+                        console.log("error catch", error);
                         reject(error);
                     });
             }
@@ -68,6 +76,27 @@ class SetThumnailWorker {
         })
     };
 
+    getImages(manga, appPath) {
+        console.log("inside setThumbnail");
+        return new Promise((resolve, reject) => {
+
+            if (manga.thumbnail) {
+                console.log("manga has thumbnail");
+                resolve(manga);
+            } else {
+                console.log("manga has no thumbnail");
+                this.getHandler(manga.folderPath, appPath)
+                    .then(handler => handler.getImages())
+                    .then(images => {
+                        manga.pages = images.length
+                        return manga;
+                    })
+                    .then(resolve)
+                    .catch(reject);
+            }
+
+        })
+    };
     getPages(folderPath, start, end, appPath) {
         return this.getHandler(folderPath, appPath)
             .then(handler => handler.getPages(start, end))

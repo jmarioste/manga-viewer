@@ -4,7 +4,7 @@ const url = require('url');
 const fs = require('fs');
 const GetMangaList = require('./main-process/get-mangalist');
 const SelectDirectory = require('./main-process/select-directory');
-const client = require('electron-connect').client;
+// const client = require('electron-connect').client;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, appSettings;
@@ -37,8 +37,8 @@ function createWindow() {
         fs.mkdirSync(dir);
     }
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-    // mainWindow.maximize();
+    mainWindow.webContents.openDevTools()
+    mainWindow.maximize();
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
         // Dereference the window object, usually you would store windows
@@ -50,7 +50,7 @@ function createWindow() {
     mainWindow.once('ready-to-show', function () {
         mainWindow.show()
     });
-    client.create(mainWindow, { sendBounds: true });
+    // client.create(mainWindow, { sendBounds: true });
 }
 
 // This method will be called when Electron has finished

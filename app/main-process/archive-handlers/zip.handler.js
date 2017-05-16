@@ -16,11 +16,13 @@ class ZipHandler {
     initialize() {
         let absolutePath = this.folderPath;
         let options = this.yauzlOptions;
+        console.log("initializing", absolutePath)
         return new Promise((resolve, reject) => {
             this.yauzl.open(absolutePath, options, (err, zip) => {
                 if (err) {
                     reject(new Error(`ZipHandler.initalize ${err}`))
                 } else {
+                    console.log("initializing resolving", absolutePath)
                     resolve(zip);
                 }
             })
@@ -60,16 +62,20 @@ class ZipHandler {
     }
 
     getReadStream(path) {
+        console.log("getReadStream", path)
         return this.initialize().then((zip) => {
+            console.log("getReadStream. initialized")
             return new Promise((resolve, reject) => {
-
+                console.log("getReadStream. finding thumbnail");
                 zip.readEntry();
                 zip.on('entry', function (entry) {
+                    console.log("finding", path, entry.fileName);
                     if (path === entry.fileName) {
                         zip.openReadStream(entry, function (err, readStream) {
                             if (err) {
                                 reject(new Error(`ZipHandler.getReadStream ${err}`))
                             } else {
+                                console.log("getReadStream. got read stream");
                                 resolve(readStream);
                                 zip.close();
                             }
@@ -88,9 +94,12 @@ class ZipHandler {
 
     getThumbnailImage(sharp, writeStream, images) {
         images = _.map(images, 'path').sort();
-        return this.getReadStream([images[0]]).then((readStream) => {
+        console.log("getThumbnailImage", images);
+        return this.getReadStream(images[0]).then((readStream) => {
+            console.log("got read stream");
             return new Promise((resolve, reject) => {
                 let resizeStream = sharp().resize(250, null).png();
+                console.log("resizing and writing...");
                 readStream.pipe(resizeStream).pipe(writeStream);
                 writeStream.on("finish", resolve);
             });
