@@ -19,7 +19,7 @@ class SetThumnailWorker {
     getHandler(folderPath, appPath) {
         let isZip = myRegex.ZIP_FILE.test(folderPath);
         if (isZip) {
-            resolve(new ZipHandler(folderPath, yauzl));
+            return new ZipHandler(folderPath, yauzl);
         } else {
             try {
                 let rf = new rarfile.RarFile(folderPath, {
@@ -47,13 +47,9 @@ class SetThumnailWorker {
                 logger.debug("manga has no thumbnail", manga.folderPath);
                 manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
-                let handler;
-                this.getHandler(manga.folderPath, appPath)
-                    .then(_handler => {
-                        handler = _handler
-                        logger.debug("got handler");
-                        return handler.getImages()
-                    })
+                let handler = this.getHandler(manga.folderPath, appPath);
+
+                handler.getImages()
                     .then(images => {
                         manga.pages = images.length;
                         logger.debug("got images", images.length);
@@ -81,21 +77,21 @@ class SetThumnailWorker {
                 resolve(manga);
             } else {
                 logger.debug("setThumbnail.getImages manga has no thumbnail");
-                this.getHandler(manga.folderPath, appPath)
-                    .then(handler => handler.getImages())
+                let handler = this.getHandler(manga.folderPath, appPath)
+
+                handler.getImages()
                     .then(images => {
                         manga.pages = images.length
-                        return manga;
+                        resolve(manga);
                     })
-                    .then(resolve)
                     .catch(reject);
             }
 
         })
     };
     getPages(folderPath, start, end, appPath) {
-        return this.getHandler(folderPath, appPath)
-            .then(handler => handler.getPages(start, end))
+        let handler = this.getHandler(folderPath, appPath)
+        return handler.getPages(start, end);
     }
 }
 
