@@ -1,7 +1,7 @@
 import ko from "knockout";
 import _ from "lodash";
 import path from "path";
-
+import logger from "electron-log";
 import api from "renderer-process/common/api.js";
 import Pages from "renderer-process/common/pages.enum";
 import Folder from "renderer-process/models/folder.viewmodel.js";
@@ -19,7 +19,7 @@ export default class ViewModel {
         this.selectedDirectory = ko.observable();
         this.favorites = ko.observableArray(params.favorites);
         this.selectedManga = ko.observable();
-        this.selectedMangaPath = ko.observable(params.selectedMangaPath);
+        this.selectedMangaPath = ko.observable(params.selectedMangaPath).extend({ notify: 'always' });
         this.currentViewMangaPage = ko.observable(0);
         this.viewMangaCommand = ko.observable(null).extend({ notify: 'always' });
         this.pagination = ko.observable(0);
@@ -56,6 +56,14 @@ export default class ViewModel {
         let sub2 = this.selectedManga.subscribe(function (manga) {
             if (manga) {
                 this.selectedDirectory(null);
+            }
+        }, this);
+        let sub3 = this.selectedMangaPath.subscribe(function (path) {
+            logger.debug("selectedMangaPath changed", path);
+            if (path) {
+                this.selectedDirectory(null);
+                this.currentPage(Pages.MangaList);
+                this.currentPage(Pages.ViewManga);
             }
         }, this);
 

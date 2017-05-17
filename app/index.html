@@ -47,7 +47,7 @@
                 appCommands: appCommands">
             </sidebar>
 
-            <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}">
+            <div class="content" data-bind="template:currentPage(), scrollEnd:scrollEnd, scroll:{suppressScrollX: true}, dragAndDrop:selectedMangaPath">
             </div>
         </div>
     </div>
@@ -68,12 +68,14 @@
             isRecursive:isRecursive,
             appCommands: appCommands">
     </manga-list>
+    <file-drag-overlay></file-drag-overlay>
 </template>
 <template id="favorites-list-view">
     <favorites-list params="favorites:favorites,
             selectedManga:selectedManga,
             currentPage: currentPage">
     </favorites-list>
+    <file-drag-overlay></file-drag-overlay>
 </template>
 <template id="view-manga-view">
     <!-- ko component: {name: 'view-manga', params:{
@@ -85,13 +87,16 @@
         appCommands: appCommands
     }} -->
     <!-- /ko -->
+    <file-drag-overlay></file-drag-overlay>
 </template>
 
 <template id="settings-page-view">
     <settings-page params="
             isRecursive: isRecursive, 
             commands:appCommands">
+
         <settings-page>
+            <file-drag-overlay></file-drag-overlay>
 </template>
 
 </html>

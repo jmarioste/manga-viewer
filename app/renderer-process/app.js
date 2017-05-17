@@ -11,26 +11,26 @@ import "renderer-process/components";
 import api from "renderer-process/common/api.js";
 import ViewModel from "renderer-process/models/main.viewmodel.js";
 import Pages from "renderer-process/common/pages.enum";
+import logger from "electron-log";
 
 
 
 
-
-console.log("app");
+logger.info("app");
 $(document).ready(function () {
     console.log("document.ready");
 
     api.getSavedSettings().then(function (settings) {
-        console.log("Check if app is initialized from associated files");
+        logger.info("Check if app is initialized from associated files");
         let folderPath = ipcRenderer.sendSync('get-file-data');
         if (folderPath) {
             settings.selectedMangaPath = folderPath;
             settings.currentPage = Pages.ViewManga
         }
 
-        console.log("applyBindings.ready");
+        logger.info("applyBindings.ready");
         ko.applyBindings(new ViewModel(settings));
-        console.log("applyBindings.done");
+        logger.info("applyBindings.done");
 
 
 
