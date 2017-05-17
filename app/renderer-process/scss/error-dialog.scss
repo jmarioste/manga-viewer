@@ -1,8 +1,9 @@
 #error-modal {
-    // .header {
-        
-    //     color:$primary-color;
-    // }
+    width: 300px;
+    .error-message {
+        font-size: 12px;
+        word-wrap: break-word;
+    }
     .error-icon {
         margin-right:8px;
         @extend .red-text;
