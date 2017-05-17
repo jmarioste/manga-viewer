@@ -21,3 +21,4 @@ import "./mouse-wheel.custom-binding.js";
 import "./maximized-icon.custom-binding.js";
 import "./drag-and-drop.custom-binding.js";
 import "./modal.custom-binding.js";
+import "./href.custom-binding.js";

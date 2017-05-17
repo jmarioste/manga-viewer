@@ -9,4 +9,8 @@
         margin-right:8px;        
         @extend  .small;
     }
+    .modal-footer {
+        display: flex;
+        justify-content: center;
+    }
 }
