@@ -124,9 +124,7 @@ module.exports = (function () {
                     processing = false;
                     event.sender.send('get-manga-list-done');
                     logger.debug("get-manga-list::done");
-                }).catch((err) => {
-                    logger.error(err);
-                });
+                }).catch((err) => logger.info(err));
         });
     }
 
@@ -150,7 +148,7 @@ module.exports = (function () {
                     processing = false;
                     event.sender.send('get-favorites-list-done');
                     logger.debug("done");
-                }).catch((err) => logger.error(err));
+                }).catch((err) => logger.info(err));
 
         });
 
@@ -174,8 +172,8 @@ module.exports = (function () {
                     }
                 })
                 .catch((err) => {
-                    console.log("error", err);
-                    event.sender.send('get-manga-error', err)
+                    logger.info(err);
+                    event.sender.send('get-manga-error', `${err.message}`);
                 });
         });
     }
@@ -188,7 +186,7 @@ module.exports = (function () {
                 .then(pages => event.sender.send('get-pages-done', pages))
                 .catch((error) => {
                     console.log("error", error);
-                    event.sender.send('on-error', `Could not open manga error`);
+                    event.sender.send('on-error', `${error.message}`);
                 });
         });
     }

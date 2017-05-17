@@ -51,7 +51,7 @@ class ZipHandler {
                     if (images.length) {
                         resolve(images);
                     } else {
-                        reject(new Error(`ZipHandler.getImages - ${folderPath} ${Errors.NO_IMAGE_FILE}`));
+                        reject(new Error(`${Errors.NO_IMAGE_FILE} - ${folderPath} `));
                     }
                 });
 
