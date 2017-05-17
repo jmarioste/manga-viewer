@@ -1,9 +1,12 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
-const Regex = require('../../common/regex');
-const Errors = require('../../common/errors');
 const toArray = require('stream-to-array');
 const util = require('util');
+const logger = require('electron-log');
+
+const Regex = require('../../common/regex');
+const Errors = require('../../common/errors');
+
 class ZipHandler {
     constructor(folderPath, yauzl) {
         this.folderPath = folderPath;
@@ -16,13 +19,12 @@ class ZipHandler {
     initialize() {
         let absolutePath = this.folderPath;
         let options = this.yauzlOptions;
-        console.log("initializing", absolutePath)
         return new Promise((resolve, reject) => {
             this.yauzl.open(absolutePath, options, (err, zip) => {
                 if (err) {
                     reject(new Error(`ZipHandler.initalize ${err}`))
                 } else {
-                    console.log("initializing resolving", absolutePath)
+                    logger.debug(`ZipHandler.initialize - resolving`);
                     resolve(zip);
                 }
             })
@@ -32,6 +34,7 @@ class ZipHandler {
     getImages() {
         let images = [];
         let folderPath = this.folderPath;
+        logger.debug(`ZipHandler.getImages starting...`);
         return this.initialize().then((zip) => {
             return new Promise((resolve, reject) => {
                 zip.readEntry();
@@ -49,6 +52,7 @@ class ZipHandler {
                 zip.on("end", function () {
                     zip.close();
                     if (images.length) {
+                        logger.debug(`ZipHandler.getImages resolving`);
                         resolve(images);
                     } else {
                         reject(new Error(`${Errors.NO_IMAGE_FILE} - ${folderPath} `));
@@ -62,20 +66,17 @@ class ZipHandler {
     }
 
     getReadStream(path) {
-        console.log("getReadStream", path)
+        logger.debug(`ZipHandler.getReadStream`);
         return this.initialize().then((zip) => {
-            console.log("getReadStream. initialized")
             return new Promise((resolve, reject) => {
-                console.log("getReadStream. finding thumbnail");
                 zip.readEntry();
                 zip.on('entry', function (entry) {
-                    console.log("finding", path, entry.fileName);
                     if (path === entry.fileName) {
                         zip.openReadStream(entry, function (err, readStream) {
                             if (err) {
                                 reject(new Error(`ZipHandler.getReadStream ${err}`))
                             } else {
-                                console.log("getReadStream. got read stream");
+                                logger.debug(`ZipHandler.getReadStream - resolving`);
                                 resolve(readStream);
                                 zip.close();
                             }
@@ -94,12 +95,11 @@ class ZipHandler {
 
     getThumbnailImage(sharp, writeStream, images) {
         images = _.map(images, 'path').sort();
-        console.log("getThumbnailImage", images);
+        logger.debug(`ZipHandler.getThumbnailImage - starting`);
         return this.getReadStream(images[0]).then((readStream) => {
-            console.log("got read stream");
             return new Promise((resolve, reject) => {
                 let resizeStream = sharp().resize(250, null).png();
-                console.log("resizing and writing...");
+                logger.debug("ZipHandler.getThumbnailImage - resizing and writing to file");
                 readStream.pipe(resizeStream).pipe(writeStream);
                 writeStream.on("finish", resolve);
             });
@@ -110,11 +110,8 @@ class ZipHandler {
         return toArray(readStream)
             .then(parts => parts.map(part => util.isBuffer(part) ? part : Buffer.from(part)))
             .then(buffers => Buffer.concat(buffers))
-        // .then(function (parts) {
-        //     const buffers = parts);
-        //     return ;
-        // })
     }
+
     getPages(start, end) {
         return this.getImages()
             .then(images => _.map(images, 'path').sort())
@@ -123,7 +120,6 @@ class ZipHandler {
             .map(readStream => this.getBufferFrom(readStream))
             .map(buffer => buffer.toString('base64'))
             .map(str => `data:image/bmp;base64,${str}`)
-
     }
 }
 
