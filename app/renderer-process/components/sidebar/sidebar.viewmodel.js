@@ -6,6 +6,7 @@ import Pages from "renderer-process/common/pages.enum";
 import Folder from "renderer-process/models/folder.viewmodel";
 import template from "./sidebar.template.html";
 import Command from "renderer-process/models/command.viewmodel";
+import { aboutDialogInstance } from "renderer-process/components";
 import path from "path";
 
 export class SidebarViewmodel {
@@ -113,6 +114,9 @@ export class SidebarViewmodel {
         console.log("SidebarViewmodel:executing dispose");
     };
 
+    showAboutDialog() {
+        aboutDialogInstance.shown(true);
+    }
     static registerComponent() {
         ko.components.register("sidebar", {
             viewModel: SidebarViewmodel,

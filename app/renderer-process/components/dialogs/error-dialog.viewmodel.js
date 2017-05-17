@@ -5,6 +5,7 @@ export class ErrorDialog {
     constructor() {
         this.shown = ko.observable();
         this.errorMessage = ko.observable();
+        this.onComplete = this.onComplete.bind(this);
     }
 
     showMessage(message) {
@@ -12,6 +13,9 @@ export class ErrorDialog {
         this.shown(true);
     }
 
+    onComplete() {
+        this.shown(false);
+    }
     static registerComponent() {
         ko.components.register("error-dialog", {
             viewModel: {

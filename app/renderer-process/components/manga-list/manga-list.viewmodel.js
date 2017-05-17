@@ -133,7 +133,6 @@ export class MangaListViewmodel {
         ipc.removeAllListeners(['get-manga-list-progress', 'get-manga-list-done']);
     }
     afterAdd(elem) {
-        console.log(elem);
         if ($(elem).hasClass("manga")) {
             Materialize.fadeInImage($(elem));
         }

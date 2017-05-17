@@ -37,10 +37,10 @@
         </li>
     </ul>
     <div class="collection sidebar-settings">
-        <a href="javascript:void(0);" class="collection-item waves-effect waves-light"
-        data-bind="active:isSettingsActive, click: showSettings">
+        <a href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="active:isSettingsActive, click: showSettings">
             <i class="left material-icons">settings</i>
             <strong class="">Settings</strong>
+            <i class="right material-icons" data-bind="tooltip:'right', tooltipText: 'About', click: $component.showAboutDialog, clickBubble:false">help</i>
         </a>
     </div>
 </div>

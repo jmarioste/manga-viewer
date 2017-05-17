@@ -7,6 +7,7 @@ export * from "./view-manga/view-manga.viewmodel";
 export * from "./topbar/topbar.viewmodel";
 export * from "./settings-page/settings-page.viewmodel";
 export * from "./dialogs/error-dialog.viewmodel";
+export * from "./dialogs/about-dialog.viewmodel";
 export * from "./view-manga/view-options";
 export * from "./common/file-drag-overlay.viewmodel";
 

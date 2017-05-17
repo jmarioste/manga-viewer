@@ -1,0 +1,12 @@
+#about-modal {
+    width: 40%;
+    .header {
+        
+        color:$primary-color;
+    }
+    .help-icon {
+        color:$primary-color;
+        margin-right:8px;        
+        @extend  .small;
+    }
+}

@@ -6,11 +6,10 @@ ko.bindingHandlers.dragAndDrop = {
     init: function (element, valueAccessor) {
         let selectedFile = valueAccessor();
         let $element = $(element);
-        let $filedragOverlay = $filedragOverlay;
         $(element).on('dragover', function () {
             logger.debug("dragging inside element");
             $element.addClass("file-dragging");
-            $filedragOverlay.addClass("file-dragging");
+            $("#file-drag-overlay").addClass("file-dragging");
             $element.scrollTop(0);
             return false;
         });
@@ -18,7 +17,7 @@ ko.bindingHandlers.dragAndDrop = {
         $element.on('dragleave', function () {
             logger.debug("dragging outside element");
             $element.addClass("file-dragging");
-            $filedragOverlay.removeClass("file-dragging");
+            $("#file-drag-overlay").removeClass("file-dragging");
             return false;
         });
 
@@ -33,7 +32,7 @@ ko.bindingHandlers.dragAndDrop = {
             }
 
             $element.removeClass("file-dragging");
-            $filedragOverlay.removeClass("file-dragging");
+            $("#file-drag-overlay").removeClass("file-dragging");
             Ps.update(element);
             return false;
         })

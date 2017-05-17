@@ -4,10 +4,10 @@ let onDispose = ko.utils.domNodeDisposal.addDisposeCallback;
 
 
 ko.bindingHandlers.tooltip = {
-    init: function(element, valueAccessor, allBindings) {
+    init: function (element, valueAccessor, allBindings) {
         let position = ko.unwrap(valueAccessor());
-        let text = allBindings.get('text');
-        $(element).on('mouseenter', function() {
+        let text = allBindings.get('tooltipText') || allBindings.get('text');
+        $(element).on('mouseenter', function () {
             $(element).attr('data-tooltip', text);
             $(element).tooltip({
                 delay: 50,
@@ -16,11 +16,11 @@ ko.bindingHandlers.tooltip = {
             $(element).trigger('mouseenter.tooltip')
         });
 
-        $(element).on('mouseout', function() {
+        $(element).on('mouseout', function () {
             $(element).tooltip('remove');
         });
 
-        onDispose(element, function(element) {
+        onDispose(element, function (element) {
             $(element).tooltip('remove');
         })
     }
