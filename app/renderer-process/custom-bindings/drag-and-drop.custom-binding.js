@@ -5,8 +5,8 @@ let onDispose = ko.utils.domNodeDisposal.addDisposeCallback;
 ko.bindingHandlers.dragAndDrop = {
     init: function (element, valueAccessor) {
         let selectedFile = valueAccessor();
-        $element = $(element);
-        $filedragOverlay = $filedragOverlay;
+        let $element = $(element);
+        let $filedragOverlay = $filedragOverlay;
         $(element).on('dragover', function () {
             logger.debug("dragging inside element");
             $element.addClass("file-dragging");
