@@ -22,7 +22,8 @@ const dataPath = path.join(app.getPath('appData'), app.getName());
 const appPath = app.getAppPath();
 logger.error(dataPath);
 logger.error(appPath);
-logger.transports.file.level = 'info';
+logger.transports.file.level = 'debug';
+logger.transports.console.level = 'debug';
 module.exports = (function () {
     function GetMangaList() {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
@@ -154,14 +155,17 @@ module.exports = (function () {
 
         ipc.on('get-manga', function (event, folderPath) {
             console.log('get-manga::starting..', folderPath);
+            let isSupported = Regex.SUPPORTED_FILES.test(folderPath);
+
             self.getMangas([folderPath])
                 .each(manga => {
                     if (!fs.existsSync(manga.folderPath)) {
-                        throw `${Errors.FileDoesNotExist} ${manga.folderPath}`;
+                        throw new Error(`${Errors.FileDoesNotExist} ${manga.folderPath}`);
+                    } else if (!isSupported) {
+                        logger.debug(`${manga.folderPath} not supported`)
+                        throw new Error(`${Errors.NotSupported} ${manga.folderPath}`);
                     }
                     else {
-                        // console.log("get-manga-done", manga);
-
                         if (!manga.pages) {
                             return thread.getImages(manga, appPath)
                                 .then(self.updateManga(manga))

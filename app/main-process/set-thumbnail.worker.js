@@ -25,10 +25,7 @@ class SetThumnailWorker {
                 let rf = new rarfile.RarFile(folderPath, {
                     rarTool: path.join(appPath, "UnRAR.exe")
                 });
-                setTimeout(function () {
-                    throw new Error('Errors.TIMEOUT_OPEN_RARFILE_ERR');
-                }, 1000);
-                logger.debug("rf", rf);
+
                 return new RarHandler(folderPath, rf);
             } catch (error) {
                 return new Error(`SetThumbnailWorker.getHandler ${error}`);
@@ -48,11 +45,13 @@ class SetThumnailWorker {
                 manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
                 let handler = this.getHandler(manga.folderPath, appPath);
-
+                setTimeout(function () {
+                    logger.warn(`RarFile has password ${manga.folderPath}`);
+                    reject(new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR));
+                }, 1000);
                 handler.getImages()
                     .then(images => {
                         manga.pages = images.length;
-                        logger.debug("got images", images.length);
                         return handler.getThumbnailImage(sharp, writeStream, images)
                     })
                     .then(() => {
@@ -60,7 +59,7 @@ class SetThumnailWorker {
                         resolve(manga)
                     })
                     .catch(function (error) {
-                        logger.error("error catch", error);
+                        logger.error(`SetThumbnailWorker.setThumbnail ${error.message}`);
                         reject(error);
                     });
             }
@@ -69,16 +68,17 @@ class SetThumnailWorker {
     };
 
     getImages(manga, appPath) {
-        console.log("inside setThumbnail");
+        logger.debug("inside setThumbnail");
         return new Promise((resolve, reject) => {
 
-            if (manga.thumbnail) {
-                logger.debug("setThumbnail.getImages manga has thumbnail");
+            if (manga.pages) {
                 resolve(manga);
             } else {
-                logger.debug("setThumbnail.getImages manga has no thumbnail");
                 let handler = this.getHandler(manga.folderPath, appPath)
-
+                setTimeout(function () {
+                    logger.warn(`RarFile has password ${manga.folderPath}`);
+                    reject(new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR));
+                }, 1000);
                 handler.getImages()
                     .then(images => {
                         manga.pages = images.length

@@ -4,12 +4,14 @@ const url = require('url');
 const fs = require('fs');
 const GetMangaList = require('./main-process/get-mangalist');
 const SelectDirectory = require('./main-process/select-directory');
+const logger = require('electron-log');
 // const client = require('electron-connect').client;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, appSettings;
 
-
+logger.info(`process.defaultApp ${process.defaultApp}`);
+logger.info(`process.resourcesPath ${process.resourcesPath}`)
 function createWindow() {
     let getMangaList = new GetMangaList();
     let selectDirectory = new SelectDirectory();

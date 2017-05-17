@@ -4,7 +4,7 @@ const path = require('path');
 // const sharp = require('sharp');
 const myRegex = require('../../common/regex');
 const Errors = require('../../common/errors');
-
+const logger = require('electron-log');
 // const APP_PATH = app.getAppPath();
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
@@ -27,6 +27,7 @@ class RarHandler {
         return new Promise((resolve, reject) => {
             this.rf._loadNames().then((filesStr) => {
                 let files = filesStr.split(myRegex.NEXT_LINE);
+                logger.debug(`RarHandler.getFilenames resolving`);
                 resolve(files);
             });
         });
@@ -37,6 +38,7 @@ class RarHandler {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
+                logger.debug(`RarHandler.getImages resolving`);
                 return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
@@ -53,8 +55,10 @@ class RarHandler {
         return new Promise((resolve, reject) => {
             this.rf.readFile(file, (err, buffer) => {
                 if (err) {
-                    reject(`RarMangaFile.setThumbnail - ${err}`);
+                    logger.debug(`RarHandler.getBuffer error ${err.message}`);
+                    reject(err);
                 } else {
+                    logger.debug(`RarHandler.getBuffer resolving`);
                     resolve(buffer);
                 }
             });
@@ -63,6 +67,7 @@ class RarHandler {
 
     getBase64(buffer) {
         let str = buffer.toString('base64');
+        logger.debug(`RarHandler.getBase64 returning`);
         return `data:image/bmp;base64,${str}`;
     }
 
@@ -71,7 +76,10 @@ class RarHandler {
             let resize = sharp(buffer).resize(250, null).png();
             return new Promise((resolve, reject) => {
                 resize.pipe(writeStream);
-                writeStream.on('finish', resolve);
+                writeStream.on('finish', () => {
+                    logger.debug(`RarHandler.getThumbnailImage  resolving`);
+                    resolve();
+                });
             });
         });
     }
