@@ -5,7 +5,7 @@ import _ from "lodash";
 import { ipcRenderer as ipc } from "electron";
 import MangaFactory from "./manga.factory";
 import { errorDialogInstance, ErrorDialog } from "renderer-process/components";
-
+import logger from "electron-log";
 
 export default class api {
     constructor() {
@@ -47,8 +47,13 @@ export default class api {
         ipc.send('get-pages', { start, end, folderPath });
 
         ipc.once('get-pages-done', function (event, pages) {
-            console.log("get-pages-done")
+            logger.debug(`get-pages-done ${pages.length}`);
             deferred.resolve(pages);
+        });
+        ipc.once('get-pages-error', function (event, errorMessage) {
+            logger.debug(`get-pages-error ${errorMessage}`);
+            errorDialogInstance.showMessage(errorMessage);
+            deferred.reject(errorMessage);
         });
         return deferred.promise();
     }
@@ -64,7 +69,7 @@ export default class api {
             console.log("get-manga-done")
             deferred.resolve(manga);
         });
-        ipc.on('get-manga-error', function (event, errorMessage) {
+        ipc.once('get-manga-error', function (event, errorMessage) {
             console.log("api::getSubFolders", errorMessage);
             errorDialogInstance.showMessage(errorMessage);
             deferred.reject(errorMessage);

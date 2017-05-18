@@ -20,7 +20,8 @@ class RarHandler {
             .then(images => images.filter(file => myRegex.SUPPORTED_IMAGES.test(file)).sort())
             .then(images => images.slice(start, end))
             .map(image => this.getBuffer(image))
-            .map(buffer => this.getBase64(buffer));
+            .map(buffer => this.getBase64(buffer))
+
     }
 
     getFilenames() {
@@ -34,11 +35,11 @@ class RarHandler {
     }
 
     getImages() {
-        return this.getFilenames().then(files => {
+        return this.getFilenames().timeout(1000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then(files => {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
-                logger.debug(`RarHandler.getImages resolving`);
+                logger.debug(`RarHandler.getImages resolving ${this.folderPath} ${images}`);
                 return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
@@ -72,7 +73,7 @@ class RarHandler {
     }
 
     getThumbnailImage(sharp, writeStream, images) {
-        return this.getThumbnailBuffer(images).then((buffer) => {
+        return this.getThumbnailBuffer(images).timeout(1000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then((buffer) => {
             let resize = sharp(buffer).resize(250, null).png();
             return new Promise((resolve, reject) => {
                 resize.pipe(writeStream);

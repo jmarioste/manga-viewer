@@ -185,12 +185,15 @@ module.exports = (function () {
     GetMangaList.prototype.initializeGetPages = function () {
         var self = this;
         ipc.on('get-pages', function (event, input) {
-            console.log('get-pages::starting..');
+            logger.debug('get-pages::starting..');
             thread.getPages(input.folderPath, input.start, input.end, appPath)
-                .then(pages => event.sender.send('get-pages-done', pages))
+                .then(pages => {
+                    logger.debug(`initializeGetPages ${pages}`)
+                    event.sender.send('get-pages-done', pages);
+                })
                 .catch((error) => {
-                    console.log("error", error);
-                    event.sender.send('on-error', `${error.message}`);
+                    logger.debug(`GetMangaList - ${error.message}`);
+                    event.sender.send('get-pages-error', `${error.message}`);
                 });
         });
     }

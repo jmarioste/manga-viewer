@@ -45,10 +45,7 @@ class SetThumnailWorker {
                 manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
                 let handler = this.getHandler(manga.folderPath, appPath);
-                setTimeout(function () {
-                    logger.warn(`RarFile has password ${manga.folderPath}`);
-                    reject(new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR));
-                }, 1000);
+
                 handler.getImages()
                     .then(images => {
                         manga.pages = images.length;
@@ -57,6 +54,10 @@ class SetThumnailWorker {
                     .then(() => {
                         logger.debug("resolving")
                         resolve(manga)
+                    })
+                    .catch(Promise.TimeoutError, (error) => {
+                        logger.info(e);
+                        reject(error);
                     })
                     .catch(function (error) {
                         logger.error(`SetThumbnailWorker.setThumbnail ${error.message}`);
@@ -75,23 +76,30 @@ class SetThumnailWorker {
                 resolve(manga);
             } else {
                 let handler = this.getHandler(manga.folderPath, appPath)
-                setTimeout(function () {
-                    logger.warn(`RarFile has password ${manga.folderPath}`);
-                    reject(new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR));
-                }, 1000);
                 handler.getImages()
                     .then(images => {
+                        logger.debug(images);
                         manga.pages = images.length
                         resolve(manga);
+                    })
+                    .catch(Promise.TimeoutError, (error) => {
+                        logger.info(e);
+                        reject(error);
                     })
                     .catch(reject);
             }
 
         })
     };
+
     getPages(folderPath, start, end, appPath) {
         let handler = this.getHandler(folderPath, appPath)
-        return handler.getPages(start, end);
+        return new Promise((resolve, reject) => {
+            handler.getPages(start, end)
+                .timeout(1000, new Error(Errors.CannotReadContents))
+                .then(resolve)
+                .catch(reject)
+        });
     }
 }
 
