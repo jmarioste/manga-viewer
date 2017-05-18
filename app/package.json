@@ -10,6 +10,7 @@
     "bluebird": "3.5.0",
     "electron-log": "2.2.6",
     "electron-remote": "1.1.2",
+    "image-clipper": "^0.4.3",
     "jquery": "3.2.1",
     "knockout": "3.4.2",
     "lodash": "^4.17.4",
