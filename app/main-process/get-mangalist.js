@@ -188,7 +188,7 @@ module.exports = (function () {
             logger.debug('get-pages::starting..');
             thread.getPages(input.folderPath, input.start, input.end, appPath)
                 .then(pages => {
-                    logger.debug(`initializeGetPages ${pages}`)
+                    logger.debug(`initializeGetPages`)
                     event.sender.send('get-pages-done', pages);
                 })
                 .catch((error) => {

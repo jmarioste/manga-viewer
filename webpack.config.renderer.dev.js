@@ -3,8 +3,7 @@ import webpack from "webpack";
 
 export default {
     entry: {
-        'app': './app/renderer-process/app.js',
-        'image-resizer': './app/renderer-process/worker/image-resizer.js'
+        'app': './app/renderer-process/app.js'
     },
     output: {
         filename: '[name]-bundle.js',

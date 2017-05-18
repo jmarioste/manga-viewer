@@ -3,7 +3,6 @@ const path = require('path');
 const _ = require('lodash');
 const yauzl = require('yauzl');
 const Promise = require('bluebird');
-const sharp = require('sharp');
 const fs = require('fs');
 const rarfile = require('rarfile');
 const ZipHandler = require('./archive-handlers/zip.handler.js');
@@ -11,6 +10,7 @@ const RarHandler = require('./archive-handlers/rar.handler');
 const myRegex = require('../common/regex');
 const Errors = require('../common/errors');
 const logger = require('electron-log');
+
 class SetThumnailWorker {
     constructor() {
 
@@ -49,7 +49,7 @@ class SetThumnailWorker {
                 handler.getImages()
                     .then(images => {
                         manga.pages = images.length;
-                        return handler.getThumbnailImage(sharp, writeStream, images)
+                        return handler.getThumbnailImage(manga.thumbnail, writeStream, images)
                     })
                     .then(() => {
                         logger.debug("resolving")
