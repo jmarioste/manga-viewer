@@ -59,6 +59,7 @@ function createWindow() {
 
     mainWindow.once('ready-to-show', function () {
         mainWindow.show();
+        logger.info("Intiating check for updates...");
         autoUpdater.checkForUpdates();
     });
 
@@ -66,7 +67,7 @@ function createWindow() {
     // client.create(mainWindow, { sendBounds: true });
 }
 
-app.on('ready', createWindow)
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -125,3 +126,5 @@ autoUpdater.on('update-downloaded', (ev, info) => {
         autoUpdater.quitAndInstall();
     }, 5000)
 })
+
+app.on('ready', createWindow)
