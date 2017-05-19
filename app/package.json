@@ -1,6 +1,6 @@
 {
   "name": "BaijiMangaViewer",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A modern manga viewer inspired by Quivi that uses Material Design",
   "main": "./main.js",
   "author": "Jasser Mark Arioste",
