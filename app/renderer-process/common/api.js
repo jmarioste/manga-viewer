@@ -15,7 +15,9 @@ export default class api {
     constructor() {
 
     }
-
+    static checkForUpdates() {
+        ipc.send('check-for-updates');
+    }
     static getSubFolders(folderPath) {
         console.log("api::getSubFolders - folderPath", folderPath);
         let deferred = $.Deferred();

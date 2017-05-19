@@ -59,8 +59,7 @@ function createWindow() {
 
     mainWindow.once('ready-to-show', function () {
         mainWindow.show();
-        logger.info("Intiating check for updates...");
-        autoUpdater.checkForUpdates();
+
     });
 
 
@@ -86,6 +85,10 @@ app.on('activate', function () {
     }
 })
 
+ipcMain.on('check-for-updates', function (event) {
+    logger.info('checking for updates manually');
+    autoUpdater.checkForUpdates();
+});
 
 function sendStatusToWindow(text) {
     logger.info(text);

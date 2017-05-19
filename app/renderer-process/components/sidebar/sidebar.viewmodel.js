@@ -117,6 +117,9 @@ export class SidebarViewmodel {
     showAboutDialog() {
         aboutDialogInstance.shown(true);
     }
+    checkForUpdates() {
+        api.checkForUpdates();
+    }
     static registerComponent() {
         ko.components.register("sidebar", {
             viewModel: SidebarViewmodel,
