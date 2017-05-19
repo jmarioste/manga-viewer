@@ -7,6 +7,10 @@ import MangaFactory from "./manga.factory";
 import { errorDialogInstance, ErrorDialog } from "renderer-process/components";
 import logger from "electron-log";
 
+ipc.on("auto-update-message", function (event, message) {
+    Materialize.toast(message, 2000);
+})
+
 export default class api {
     constructor() {
 

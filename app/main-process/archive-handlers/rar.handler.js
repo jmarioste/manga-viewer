@@ -5,6 +5,8 @@ const path = require('path');
 const myRegex = require('../../common/regex');
 const Errors = require('../../common/errors');
 const logger = require('electron-log');
+const stream = require('stream');
+const { imageResizerInstance } = require('../image-resizer');
 // const APP_PATH = app.getAppPath();
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
@@ -39,7 +41,7 @@ class RarHandler {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {
-                logger.debug(`RarHandler.getImages resolving ${this.folderPath} ${images}`);
+                logger.debug(`RarHandler.getImages resolving ${this.folderPath}`);
                 return this.imagesFiles = images;
             } else {
                 throw `RarMangaFile.getImageFiles ${Errors.NO_IMAGE_FILE}`;
@@ -72,14 +74,17 @@ class RarHandler {
         return `data:image/bmp;base64,${str}`;
     }
 
-    getThumbnailImage(sharp, writeStream, images) {
+    getThumbnailImage(dest, writeStream, images) {
         return this.getThumbnailBuffer(images).timeout(1000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then((buffer) => {
-            let resize = sharp(buffer).resize(250, null).png();
+            let bufferStream = new stream.PassThrough();
+            bufferStream.end(buffer);
             return new Promise((resolve, reject) => {
-                resize.pipe(writeStream);
-                writeStream.on('finish', () => {
-                    logger.debug(`RarHandler.getThumbnailImage  resolving`);
-                    resolve();
+                bufferStream.pipe(writeStream);
+                logger.debug(`bufferSteam pipe to writeStream`)
+                writeStream.on("finish", function () {
+                    imageResizerInstance.resize(dest).then(function () {
+                        resolve();
+                    })
                 });
             });
         });

@@ -3,7 +3,7 @@ const _ = require('lodash');
 const toArray = require('stream-to-array');
 const util = require('util');
 const logger = require('electron-log');
-
+const { imageResizerInstance } = require('../image-resizer');
 const Regex = require('../../common/regex');
 const Errors = require('../../common/errors');
 
@@ -93,15 +93,18 @@ class ZipHandler {
         })
     }
 
-    getThumbnailImage(sharp, writeStream, images) {
+    getThumbnailImage(dest, writeStream, images) {
         images = _.map(images, 'path').sort();
         logger.debug(`ZipHandler.getThumbnailImage - starting`);
         return this.getReadStream(images[0]).then((readStream) => {
             return new Promise((resolve, reject) => {
-                let resizeStream = sharp().resize(250, null).png();
                 logger.debug("ZipHandler.getThumbnailImage - resizing and writing to file");
-                readStream.pipe(resizeStream).pipe(writeStream);
-                writeStream.on("finish", resolve);
+                readStream.pipe(writeStream);
+                writeStream.on("finish", function () {
+                    imageResizerInstance.resize(dest).then(function () {
+                        resolve();
+                    })
+                });
             });
         })
     }
