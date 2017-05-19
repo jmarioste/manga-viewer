@@ -23,13 +23,6 @@
     "appId": "com.baiji-manga-viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
     "asar": false,
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "shizkun",
-        "repo": "manga-viewer"
-      }
-    ],
     "fileAssociations": [
       {
         "ext": [
