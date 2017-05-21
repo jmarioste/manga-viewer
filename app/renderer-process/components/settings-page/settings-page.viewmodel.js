@@ -16,6 +16,7 @@ export class SettingsPageViewmodel {
         this.subscriptions = [];
         this.isRecursive = params.isRecursive;
         this.commands = params.commands;
+        this.isDetectUpdatesOnStart = params.isDetectUpdatesOnStart;
         this.viewOption = ko.observable(ViewOptions.Default)
         this.viewOptions = ko.observableArray([
             new SelectItem("Normal size", ViewOptions.Default),
@@ -23,7 +24,9 @@ export class SettingsPageViewmodel {
             new SelectItem("Fit to height", ViewOptions.FitToHeight),
         ]);
 
-        this.isRecursiveText = ko.pureComputed(function() {
+        this.isDetectUpdatesOnStartText = ko.pureComputed(() => this.isDetectUpdatesOnStart() ? "On" : "Off");
+        this.isDetectUpdatesOnStartTooltip = ko.observable("Upon starting the application, automatically check the new updates.")
+        this.isRecursiveText = ko.pureComputed(function () {
             return this.isRecursive() ? "On" : "Off";
         }, this);
 
@@ -34,8 +37,8 @@ export class SettingsPageViewmodel {
     // methods
     initialize() {
         let commands = this.commands();
-        let sub = ko.computed(function() {
-            let newCommands = _.reduce(this.commandsList, function(acc, next) {
+        let sub = ko.computed(function () {
+            let newCommands = _.reduce(this.commandsList, function (acc, next) {
                 acc[next.commandName] = next.hotkey();
                 return acc;
             }, {});
@@ -70,8 +73,8 @@ export class SettingsPageViewmodel {
             let label = this.getLabelFor(key);
             let item = new CommandsListItem(key, hotkey, label);
 
-            item.sub = item.hotkey.subscribe(function(value) {
-                let duplicate = _.find(this.commandsList, function(dup) {
+            item.sub = item.hotkey.subscribe(function (value) {
+                let duplicate = _.find(this.commandsList, function (dup) {
                     return dup.hotkey() == value && dup != item;
                 });
                 if (duplicate) {

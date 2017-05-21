@@ -9,14 +9,16 @@ import "renderer-process/custom-bindings";
 import "renderer-process/components";
 
 import api from "renderer-process/common/api.js";
+import { autoUpdater } from "renderer-process/common/auto-updater";
+
 import ViewModel from "renderer-process/models/main.viewmodel.js";
 import Pages from "renderer-process/common/pages.enum";
 import logger from "electron-log";
 
 
 
-
 logger.info("app");
+
 $(document).ready(function () {
     console.log("document.ready");
 
@@ -28,10 +30,9 @@ $(document).ready(function () {
             settings.currentPage = Pages.ViewManga
         }
 
-        logger.info("applyBindings.ready");
+        logger.info("initializing ko.applyBindings");
         ko.applyBindings(new ViewModel(settings));
-        logger.info("applyBindings.done");
-
+        logger.info("ko.applyBindings - done");
 
 
     });

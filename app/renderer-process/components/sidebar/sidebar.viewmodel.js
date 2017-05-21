@@ -52,6 +52,7 @@ export class SidebarViewmodel {
             self.selectedDirectory(root);
         }
     };
+
     recursive(folder, array) {
         array.push(folder);
         if (folder.isOpen()) {
@@ -59,6 +60,7 @@ export class SidebarViewmodel {
         }
         return array;
     }
+
     getFolderTree() {
         console.log("SidebarViewmodel::getFolderTree");
         let array = [];
@@ -117,8 +119,9 @@ export class SidebarViewmodel {
     showAboutDialog() {
         aboutDialogInstance.shown(true);
     }
+
     checkForUpdates() {
-        api.checkForUpdates();
+        // api.checkForUpdates();
     }
     static registerComponent() {
         ko.components.register("sidebar", {

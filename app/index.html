@@ -53,6 +53,8 @@
     </div>
     <error-dialog></error-dialog>
     <about-dialog></about-dialog>
+    <update-confirmation-dialog></update-confirmation-dialog>
+    <install-confirm-dialog></install-confirm-dialog>
 </body>
 
 <template id="manga-list-view">
@@ -94,7 +96,8 @@
 <template id="settings-page-view">
     <settings-page params="
             isRecursive: isRecursive, 
-            commands:appCommands">
+            commands:appCommands,
+            isDetectUpdatesOnStart:isDetectUpdatesOnStart">
     </settings-page>
     <file-drag-overlay></file-drag-overlay>
 </template>

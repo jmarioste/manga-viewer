@@ -1,0 +1,14 @@
+<div id="update-dialog-modal" class="modal" data-bind="modal:shown, onComplete:onComplete">
+    <div class="modal-content">
+        <h5 class="valign-wrapper">
+            <i class="material-icons info-icon">info</i>
+            <span class="header" data-bind="text:headerMessage"> </span>
+        </h5>
+        <hr>
+        <p data-bind="text:confirmMessage" class="confirm-message"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="modal-action modal-close waves-effect btn-flat ">No</a>
+        <a href="javascript:void(0);" class="modal-action modal-close waves-effect btn" data-bind="click:clickConfirm">Yes</a>
+    </div>
+</div>

@@ -2,11 +2,9 @@ import path from "path";
 import webpack from "webpack";
 
 export default {
-    entry: {
-        'app': './app/renderer-process/app.js'
-    },
+    entry: './app/renderer-process/app.js',
     output: {
-        filename: '[name]-bundle.js',
+        filename: 'app-bundle.js',
         path: path.resolve(__dirname, 'app/bundle'),
         publicPath: './bundle/'
     },

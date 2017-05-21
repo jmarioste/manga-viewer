@@ -9,13 +9,13 @@ export class Settings {
         this.favorites = ko.observableArray();
         this.selectedMangaPath = ko.observable();
         this.appCommands = ko.observableArray();
-
+        this.isDetectUpdatesOnStart = ko.observable(params.isDetectUpdatesOnStart);
 
         this.onSettingsChanged = ko.pureComputed(this.onSettingsChanged, this);
         this.initialize();
     }
 
-    initialize() {}
+    initialize() { }
 
     onSettingsChanged() {
 
@@ -26,7 +26,8 @@ export class Settings {
             favorites: this.favorites(),
             selectedMangaPath: selectedMangaPath,
             appCommands: _.extend({}, DefaultCommandHotkeys, this.appCommands()),
-            isRecursive: this.isRecursive()
+            isRecursive: this.isRecursive(),
+            isDetectUpdatesOnStart: this.isDetectUpdatesOnStart()
         }
     }
 }

@@ -1,13 +1,13 @@
 <section class="row">
 	<h4 class="col s12">
-	General Settings
+		General Settings
 	</h4>
 </section>
 <section class="row">
 	<div class=" col s12">
 		<div class="col s12 l3">
 			<div class="switch col s12">
-				<label >
+				<label>
 					Include subfolders
 					<input type="checkbox" data-bind="switch:isRecursive">
 					<span class="lever"></span>
@@ -19,8 +19,22 @@
 </section>
 <section class="row">
 	<div class=" col s12">
+		<div class="col s12 l3">
+			<div class="switch col s12">
+				<label data-bind="tooltip:'right',tooltipText:isDetectUpdatesOnStartTooltip()">
+					Automatically detect updates
+					<input type="checkbox" data-bind="switch:isDetectUpdatesOnStart">
+					<span class="lever"></span>
+					<span data-bind="text:isDetectUpdatesOnStartText"></span>
+				</label>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="row">
+	<div class=" col s12">
 		<div class="col s12 m12 l3">
-			<div class="input-field col s12" >
+			<div class="input-field col s12">
 				<select data-bind="
 					options:viewOptions,
 					optionsText: 'text',
@@ -33,9 +47,10 @@
 		</div>
 	</div>
 </section>
+
 <section class="row">
 	<h4 class="col s12">
-	Hotkey Shortcuts
+		Hotkey Shortcuts
 	</h4>
 </section>
 <section class="row" data-bind="foreach:commandsList">

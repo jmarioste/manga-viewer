@@ -1,0 +1,24 @@
+#update-dialog-modal {
+    width: 480px;
+    .header {        
+        color:$primary-color;
+    }
+
+    .info-icon {
+        color:$primary-color;
+        margin-right:8px;        
+        @extend  .small;
+    }
+    .modal-action {
+        margin-left: 8px;
+    }
+    // .modal-footer {
+    //     display: flex;
+    //     justify-content: space-between;
+    // }
+
+    .message {
+        font-size: 12px;
+        word-wrap: break-word;
+    }
+}

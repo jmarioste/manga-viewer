@@ -1,11 +1,12 @@
 import ko from "knockout";
 import _ from "lodash";
 import path from "path";
-import logger from "electron-log";
 import api from "renderer-process/common/api.js";
 import Pages from "renderer-process/common/pages.enum";
 import Folder from "renderer-process/models/folder.viewmodel.js";
 import { DefaultCommandHotkeys } from "renderer-process/models/command.viewmodel";
+import { autoUpdater } from "renderer-process/common/auto-updater";
+import logger from "electron-log";
 import { remote } from "electron";
 export default class ViewModel {
     constructor(params) {
@@ -28,7 +29,7 @@ export default class ViewModel {
         this.bookmarks = ko.observableArray(this.getBookmarks(params));
         this.searching = ko.observable(false);
         this.isRecursive = ko.observable(params.isRecursive);
-
+        this.isDetectUpdatesOnStart = ko.observable(params.isDetectUpdatesOnStart);
         this.initialize();
     }
 
@@ -46,8 +47,8 @@ export default class ViewModel {
                 isRecursive: this.isRecursive(),
                 currentPage: this.currentPage(),
                 appCommands: appCommands,
-                selectedMangaPath: selectedMangaPath
-
+                selectedMangaPath: selectedMangaPath,
+                isDetectUpdatesOnStart: this.isDetectUpdatesOnStart()
             });
         }, this).extend({
             rateLimit: 500
@@ -69,6 +70,11 @@ export default class ViewModel {
 
         this.subscriptions.push(sub);
         this.subscriptions.push(sub2);
+
+        if (this.isDetectUpdatesOnStart()) {
+            logger.info("checking for updates..");
+            autoUpdater.checkForUpdates();
+        }
     }
 
     dispose() {
