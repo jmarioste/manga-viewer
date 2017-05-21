@@ -9,7 +9,7 @@ const isDev = require('electron-is-dev');
 const AppUpdater = require('./main-process/common/auto-updater');
 
 let client;
-if (isDev) {
+if (isDev && process.env.NODE_ENV === "development") {
     client = require('electron-connect').client;
 }
 // Keep a global reference of the window object, if you don't, the window will
