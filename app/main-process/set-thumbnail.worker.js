@@ -4,6 +4,7 @@ const _ = require('lodash');
 const yauzl = require('yauzl');
 const Promise = require('bluebird');
 const fs = require('fs');
+const sharp = require('sharp');
 const rarfile = require('rarfile');
 const ZipHandler = require('./archive-handlers/zip.handler.js');
 const RarHandler = require('./archive-handlers/rar.handler');
@@ -42,14 +43,14 @@ class SetThumnailWorker {
                 resolve(manga);
             } else {
                 logger.debug("manga has no thumbnail", manga.folderPath);
-                manga.thumbnail = path.join(dataPath, "/images", manga._id + ".png");
+                manga.thumbnail = path.join(dataPath, "/images", manga._id + ".jpg");
                 let writeStream = fs.createWriteStream(manga.thumbnail);
                 let handler = this.getHandler(manga.folderPath, appPath);
 
                 handler.getImages()
                     .then(images => {
                         manga.pages = images.length;
-                        return handler.getThumbnailImage(manga.thumbnail, writeStream, images)
+                        return handler.getThumbnailImage(sharp, writeStream, images)
                     })
                     .then(() => {
                         logger.debug("resolving")
@@ -79,7 +80,7 @@ class SetThumnailWorker {
                 handler.getImages()
                     .then(images => {
                         logger.debug(images);
-                        manga.pages = images.length
+                        manga.pages = images.length;
                         resolve(manga);
                     })
                     .catch(Promise.TimeoutError, (error) => {

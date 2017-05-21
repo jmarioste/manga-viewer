@@ -5,7 +5,7 @@ const path = require('path');
 const myRegex = require('../../common/regex');
 const Errors = require('../../common/errors');
 const logger = require('electron-log');
-const stream = require('stream');
+// const stream = require('stream');
 const { imageResizerInstance } = require('../image-resizer');
 // const APP_PATH = app.getAppPath();
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
@@ -74,17 +74,20 @@ class RarHandler {
         return `data:image/bmp;base64,${str}`;
     }
 
-    getThumbnailImage(dest, writeStream, images) {
+    getThumbnailImage(sharp, writeStream, images) {
         return this.getThumbnailBuffer(images).timeout(1000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then((buffer) => {
-            let bufferStream = new stream.PassThrough();
-            bufferStream.end(buffer);
+            // let bufferStream = new stream.PassThrough();
+
+            // bufferStream.end(buffer);
+            let resizeStream = sharp(buffer).resize(250).jpeg();
             return new Promise((resolve, reject) => {
-                bufferStream.pipe(writeStream);
-                logger.debug(`bufferSteam pipe to writeStream`)
+                resizeStream.pipe(writeStream);
+                logger.debug(`resizeStream pipe to writeStream`);
+
                 writeStream.on("finish", function () {
-                    imageResizerInstance.resize(dest).then(function () {
-                        resolve();
-                    })
+                    // imageResizerInstance.resize(dest).then(function () {
+                    resolve();
+                    // })
                 });
             });
         });
