@@ -12,3 +12,4 @@ manga-db.json
 *.gypi
 *.db
 images
+e2e/data

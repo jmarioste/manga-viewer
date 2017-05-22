@@ -1,4 +1,4 @@
-const { BrowserWindow, app, protocol, ipcMain } = require('electron');
+const { BrowserWindow, app, protocol, ipcMain, dialog } = require('electron');
 const path = require('path')
 const url = require('url');
 const fs = require('fs');
@@ -7,10 +7,15 @@ const SelectDirectory = require('./main-process/select-directory');
 const logger = require('electron-log');
 const isDev = require('electron-is-dev');
 const AppUpdater = require('./main-process/common/auto-updater');
-
+const mock = require('../e2e/mocks');
 let client;
 if (isDev && process.env.NODE_ENV === "development") {
     client = require('electron-connect').client;
+}
+
+if (process.env.SPECTRON) {
+    app.setPath('userData', path.resolve(__dirname, "..", "e2e/data"))
+    mock(dialog)
 }
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -44,8 +49,8 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }));
-
-    var dir = path.join(app.getPath('appData'), app.getName(), '/images');
+    logger.debug("mainWindow.id", mainWindow.id);
+    var dir = path.join(app.getPath('userData'), '/images');
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
     }
@@ -62,7 +67,7 @@ function createWindow() {
 
     mainWindow.once('ready-to-show', function () {
         mainWindow.show();
-
+        mainWindow.focus();
     });
 
     let appUpdater = new AppUpdater(mainWindow);

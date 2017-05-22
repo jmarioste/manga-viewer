@@ -18,7 +18,7 @@ const logger = require('electron-log');
 const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'));
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
 
-const dataPath = path.join(app.getPath('appData'), app.getName());
+const dataPath = app.getPath('userData');
 const appPath = app.getAppPath();
 logger.error(dataPath);
 logger.error(appPath);
@@ -29,7 +29,7 @@ module.exports = (function () {
         console.log("--dirname", path.join(__dirname, "/main-process/"));
 
         this.db = new DataStore({
-            filename: path.join(app.getPath('appData'), app.getName(), "manga.db"),
+            filename: path.join(app.getPath('userData'), "manga.db"),
             autoload: true
         });
 

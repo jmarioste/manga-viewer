@@ -11,7 +11,7 @@
     "build-win64": "build --win --x64",
     "test": ".mocha ./app/**/*.spec.js --recursive",
     "test-dev": "mocha ./app/**/*.spec.js --recursive --watch",
-    "e2e": "cross-env NODE_ENV=test ./node_modules/.bin/mocha e2e",
+    "e2e": "mocha e2e",
     "publish": "build --win --x64 -p always"
   },
   "repository": "https://github.com/shizkun/manga-viewer",
@@ -82,6 +82,7 @@
     "mocha": "^3.3.0",
     "node-sass": "4.5.2",
     "resolve-url-loader": "2.0.2",
+    "rimraf": "2.6.1",
     "sass-loader": "6.0.3",
     "sinon": "^2.2.0",
     "sinon-chai": "^2.10.0",
