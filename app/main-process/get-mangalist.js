@@ -18,6 +18,9 @@ const logger = require('electron-log');
 const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'));
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
 
+if (process.env.SPECTRON) {
+}
+
 const dataPath = app.getPath('userData');
 const appPath = app.getAppPath();
 logger.error(dataPath);
