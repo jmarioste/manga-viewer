@@ -12,8 +12,10 @@ describe('application launch', function () {
     afterEach(setup.stopApp)
 
     it('Should start 1 main window and 2 threads', function () {
-        return setup.app.client.getWindowCount().then(function (count) {
-            expect(count).to.equal(2);
-        });
+        return setup.app.client
+            .waitUntilWindowLoaded(10000)
+            .getWindowCount().then(function (count) {
+                expect(count).to.equal(3);
+            });
     });
 })
