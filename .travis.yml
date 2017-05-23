@@ -31,6 +31,7 @@ git:
 install:
   - npm install -g node-gyp
   - npm install
+  - chmod a+x ./travis-build.sh
 
   
 script: ./travis-build.sh
