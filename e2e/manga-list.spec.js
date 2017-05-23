@@ -46,11 +46,12 @@ describe('Manga List', function () {
                 return setup.app.client
                     .waitUntilWindowLoaded(10000)
                     .windowByIndex(1)
-                    .waitForVisible("#mangalist > .manga", 1000)
+                    .waitForVisible("#mangalist > .manga", 10000)
                     .click("#search")
                     .setValue("#search", "this-manga-does-not-exist.zip")
                     .click("#selected-directory-text")
-                    .waitForVisible("#mangalist > .manga", 1000, true)
+                    .pause(1000)
+                    .waitForVisible(".progress", 1000, true)
                     .isVisible("#mangalist > .manga").should.eventually.be.false
             });
         });
@@ -59,12 +60,12 @@ describe('Manga List', function () {
         describe('When searching mangas that exists', () => {
             it('the list should display the correct mangas', () => {
                 return setup.app.client
-                    .waitUntilWindowLoaded(10000)
+                    .waitUntilWindowLoaded(1000)
                     .windowByIndex(1)
                     .click("#search")
                     .setValue("#search", "sample")
                     .click("#selected-directory-text")
-                    .waitForExist("#mangalist > .manga")
+                    .waitForExist("#mangalist > .manga", 3000)
                     .isExisting("#mangalist > .manga").should.eventually.be.true
             });
         });
