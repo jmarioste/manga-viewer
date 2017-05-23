@@ -246,6 +246,7 @@ module.exports = (function () {
         return new Promise(function (resolve, reject) {
             recursive(rootFolder, ignored, function (err, files) {
                 if (err) {
+                    logger.error(err);
                 }
                 resolve(files);
             });
