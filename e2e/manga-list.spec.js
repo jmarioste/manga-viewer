@@ -64,6 +64,7 @@ describe('Manga List', function () {
                     .windowByIndex(1)
                     .click("#search")
                     .setValue("#search", "sample")
+                    .waitForVisible(".progress", 1000, true)
                     .click("#selected-directory-text")
                     .pause(1000)
                     .waitForVisible(".progress", 1000, true)
@@ -78,6 +79,7 @@ describe('Manga List', function () {
             return setup.app.client
                 .waitUntilWindowLoaded(10000)
                 .windowByIndex(1)
+                .waitForVisible(".progress", 1000, true)
                 .click(".include-subfolders > label.right")
                 .pause(1000)
                 .waitForVisible(".progress", 1000, true)
