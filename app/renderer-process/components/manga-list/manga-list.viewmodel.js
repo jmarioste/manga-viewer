@@ -6,11 +6,12 @@ import api from "renderer-process/common/api.js";
 import MangaFactory from "renderer-process/common/manga.factory.js";
 import template from "./manga-list.template.html";
 import Command from "renderer-process/models/command.viewmodel";
+import logger from "electron-log";
 const ipc = window.require('electron').ipcRenderer;
 
 export class MangaListViewmodel {
     constructor(params) {
-        console.log("MangaListViewmodel::constructor - end");
+        logger.info("MangaListViewmodel::constructor - end");
         var self = this;
         this.subscriptions = [];
 
@@ -55,19 +56,19 @@ export class MangaListViewmodel {
         ];
 
 
-        console.log("MangaListViewmodel::constructor - end");
+        logger.info("MangaListViewmodel::constructor - end");
     }
 
     // methods
     initialize() {
         var self = this;
-        console.log("MangaListViewmodel::initialize - ");
+        logger.info("MangaListViewmodel::initialize - ");
         let computed = ko.computed(function function_name(argument) {
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
             let isRecursive = this.isRecursive();
             if (!this.requesting && selected) {
-                console.log("MangaListViewmodel::computed");
+                logger.info("MangaListViewmodel::computed");
                 let path = selected.folderPath;
                 api.getMangaList(path, isRecursive, value, 0);
                 this.requesting = true;
@@ -85,19 +86,19 @@ export class MangaListViewmodel {
         }, this);
 
         let sub3 = this.scrollEnd.subscribe(function (scrollEnd) {
-            console.log("scrollEnd", scrollEnd);
+            logger.info("scrollEnd", scrollEnd);
             if (scrollEnd && !this.requesting) {
                 this.pagination(this.pagination() + 1);
             }
         }, this);
         let sub2 = this.pagination.subscribe(function (pagination) {
-            console.log("pagination updated");
+            logger.info("pagination updated");
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
             let isRecursive = this.isRecursive();
 
             if (!this.requesting && selected) {
-                console.log("MangaListViewmodel::pagination changed", pagination);
+                logger.info("MangaListViewmodel::pagination changed", pagination);
                 let path = selected.folderPath;
                 api.getMangaList(path, isRecursive, value, pagination);
                 this.requesting = true;
@@ -118,7 +119,7 @@ export class MangaListViewmodel {
             self.requesting = false;
             self.searching(false);
             // self.showGuide(self.mangas().length <= 0);
-            console.log("this.mangas.length", self.mangas().length);
+            logger.info(`this.mangas.length ${self.mangas().length}`);
         });
 
         this.subscriptions.push(computed);
@@ -128,7 +129,7 @@ export class MangaListViewmodel {
     }
 
     dispose() {
-        console.log("MangaListViewmodel::dispose")
+        logger.info("MangaListViewmodel::dispose")
         this.subscriptions.forEach(sub => sub.dispose());
         ipc.removeAllListeners(['get-manga-list-progress', 'get-manga-list-done']);
     }

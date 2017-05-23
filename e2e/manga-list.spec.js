@@ -46,6 +46,7 @@ describe('Manga List', function () {
                 return setup.app.client
                     .waitUntilWindowLoaded(10000)
                     .windowByIndex(1)
+                    .waitForVisible("#mangalist > .manga", 1000)
                     .click("#search")
                     .setValue("#search", "this-manga-does-not-exist.zip")
                     .click("#selected-directory-text")
