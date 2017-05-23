@@ -3,7 +3,7 @@ const chaiAsPromised = require('chai-as-promised')
 const chai = require('chai');
 const path = require('path');
 const rimraf = require('rimraf');
-
+const customCommands = require('./commands/custom-commands.js');
 chai.should();
 
 const expect = chai.expect;
@@ -42,7 +42,11 @@ module.exports = (function () {
             waitTimeout: 10000
         });
 
-        return setup.app.start()
+        chaiAsPromised.transferPromiseness = setup.app.transferPromiseness
+        return setup.app.start().then(function () {
+            customCommands(setup.app.client)
+            return setup.app.client.initWindow();
+        });
     }
 
     setup.stopApp = function () {

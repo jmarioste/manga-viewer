@@ -7,6 +7,7 @@ const expect = chai.expect;
 describe('Manga List', function () {
     this.timeout(30000)
     before(function () {
+        // console.log(browser);
         return setup.removeAppData();
     });
 
@@ -17,33 +18,23 @@ describe('Manga List', function () {
     describe(`if there's no selected directory`, function () {
         it('the label for page should be Manga list', function () {
             return setup.app.client
-                .waitUntilWindowLoaded(10000)
-                .windowByIndex(1)
-                .getText("#selected-directory-text").then(function (text) {
-                    expect(text).to.equal("Manga list");
-                })
+                .getSelectedFolderText().should.eventually.equal("Manga list");
         });
     });
 
     describe(`if user select's Sample Manga as directory`, function () {
         it('the label should change to Sample Mangas', function () {
             return setup.app.client
-                .waitUntilWindowLoaded(10000)
-                .windowByIndex(1)
-                .click("#select-directory-btn")
-                .pause(500)
-                .getText("#selected-directory-text").then(function (text) {
-                    expect(text).to.equal("Sample Mangas")
-                })
+                .selectDirectorySampleManga()
+                .getText("#selected-directory-text").should.eventually.equal("Sample Mangas");
         });
     });
 
     describe(`When bookmarking a folder`, function () {
         it('it should be added under bookmarked folders in sidebar', function () {
             return setup.app.client
-                .waitUntilWindowLoaded(10000)
-                .windowByIndex(1)
-                .click(".bookmark-btn")
+                .bookmarkFolder()
+                .pause(500)
                 .elements(".sidebar-favorites-items .collection-item")
                 .then(function (results) {
                     expect(results.value.length).to.equal(1);
@@ -54,9 +45,8 @@ describe('Manga List', function () {
     describe(`When unbookmarking a folder`, function () {
         it('it should be removed from bookmarked folders', function () {
             return setup.app.client
-                .waitUntilWindowLoaded(10000)
-                .windowByIndex(1)
-                .click(".bookmark-btn")
+                .bookmarkFolder()
+                .pause(500)
                 .elements(".sidebar-favorites-items .collection-item")
                 .then(function (results) {
                     expect(results.value.length).to.equal(0);
@@ -69,8 +59,6 @@ describe('Manga List', function () {
 
             it('the list should be empty', () => {
                 return setup.app.client
-                    .waitUntilWindowLoaded(10000)
-                    .windowByIndex(1)
                     .waitForVisible("#mangalist > .manga", 10000)
                     .click("#search")
                     .setValue("#search", "this-manga-does-not-exist.zip")
@@ -85,8 +73,6 @@ describe('Manga List', function () {
         describe('When searching mangas that exists', () => {
             it('the list should display the correct mangas', () => {
                 return setup.app.client
-                    .waitUntilWindowLoaded(1000)
-                    .windowByIndex(1)
                     .click("#search")
                     .setValue("#search", "sample")
                     .waitForVisible(".progress", 10000, true)
@@ -102,8 +88,6 @@ describe('Manga List', function () {
 
         it('Should display all the mangas recursively', () => {
             return setup.app.client
-                .waitUntilWindowLoaded(10000)
-                .windowByIndex(1)
                 .waitForVisible(".progress", 10000, true)
                 .click(".include-subfolders > label.right")
                 .pause(1000)
