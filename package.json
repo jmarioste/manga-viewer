@@ -9,7 +9,7 @@
     "build-all": "build --win --x64 --ia32",
     "build-win32": "build --win --ia32",
     "build-win64": "build --win --x64",
-    "test": ".mocha ./app/**/*.spec.js --recursive",
+    "test": "mocha ./app/**/*.spec.js --recursive",
     "test-dev": "mocha ./app/**/*.spec.js --recursive --watch",
     "e2e": "mocha e2e",
     "publish": "build --win --x64 -p always"
