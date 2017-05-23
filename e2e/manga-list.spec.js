@@ -38,6 +38,31 @@ describe('Manga List', function () {
         });
     });
 
+    describe(`When bookmarking a folder`, function () {
+        it('it should be added under bookmarked folders in sidebar', function () {
+            return setup.app.client
+                .waitUntilWindowLoaded(10000)
+                .windowByIndex(1)
+                .click(".bookmark-btn")
+                .elements(".sidebar-favorites-items .collection-item")
+                .then(function (results) {
+                    expect(results.value.length).to.equal(1);
+                })
+        });
+    });
+
+    describe(`When unbookmarking a folder`, function () {
+        it('it should be removed from bookmarked folders', function () {
+            return setup.app.client
+                .waitUntilWindowLoaded(10000)
+                .windowByIndex(1)
+                .click(".bookmark-btn")
+                .elements(".sidebar-favorites-items .collection-item")
+                .then(function (results) {
+                    expect(results.value.length).to.equal(0);
+                })
+        });
+    });
     describe(`When searching manga`, () => {
 
         describe('When searching a manga the does not exists', () => {
