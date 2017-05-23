@@ -30,7 +30,7 @@ logger.transports.file.level = 'debug';
 logger.transports.console.level = 'debug';
 module.exports = (function () {
     function GetMangaList() {
-        console.log("--dirname", path.join(__dirname, "/main-process/"));
+        logger.debug("--dirname", path.join(__dirname, "/main-process/"));
 
         this.db = new DataStore({
             filename: path.join(app.getPath('userData'), "manga.db"),
@@ -158,7 +158,7 @@ module.exports = (function () {
         });
 
         ipc.on('get-manga', function (event, folderPath) {
-            console.log('get-manga::starting..', folderPath);
+            logger.debug('get-manga::starting..', folderPath);
             let isSupported = Regex.SUPPORTED_FILES.test(folderPath);
 
             self.getMangas([folderPath])
@@ -223,7 +223,7 @@ module.exports = (function () {
 
     GetMangaList.prototype.getFiles = function (rootFolder, searchValue, isRecursive) {
         let ignored = [];
-        console.log("getFiles", rootFolder, searchValue, isRecursive);
+        logger.debug(`getFiles ${rootFolder}, ${searchValue}, ${isRecursive}`);
 
         function isNotSearched(file, stats) {
             let filePath = path.basename(file).toLowerCase();
@@ -246,7 +246,6 @@ module.exports = (function () {
         return new Promise(function (resolve, reject) {
             recursive(rootFolder, ignored, function (err, files) {
                 if (err) {
-                    console.log(err);
                 }
                 resolve(files);
             });
