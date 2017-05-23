@@ -49,8 +49,8 @@ describe('Manga List', function () {
                     .click("#search")
                     .setValue("#search", "this-manga-does-not-exist.zip")
                     .click("#selected-directory-text")
-                    .pause(1000)
-                    .isExisting("#mangalist > .manga").should.eventually.be.false
+                    .waitForVisible("#mangalist > .manga", 1000, true)
+                    .isVisible("#mangalist > .manga").should.eventually.be.false
             });
         });
 
@@ -63,7 +63,7 @@ describe('Manga List', function () {
                     .click("#search")
                     .setValue("#search", "sample")
                     .click("#selected-directory-text")
-                    .pause(1000)
+                    .waitForExist("#mangalist > .manga", 1000)
                     .isExisting("#mangalist > .manga").should.eventually.be.true
             });
         });
@@ -77,6 +77,7 @@ describe('Manga List', function () {
                 .windowByIndex(1)
                 .click(".include-subfolders > label.right")
                 .pause(1000)
+                .waitForVisible(".progress", 1000, true)
                 .elements("#mangalist > .manga").then(function (result) {
                     expect(result.value.length).to.equal(2);
                 })
