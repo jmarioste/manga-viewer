@@ -42,9 +42,7 @@ module.exports = (function () {
             waitTimeout: 10000
         });
 
-        return setup.removeAppData().then(function () {
-            return setup.app.start();
-        })
+        return setup.app.start()
     }
 
     setup.stopApp = function () {

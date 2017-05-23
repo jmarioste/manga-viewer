@@ -5,7 +5,10 @@ const expect = chai.expect;
 
 
 describe('Manga List', function () {
-    this.timeout(10000)
+    this.timeout(30000)
+    before(function () {
+        return setup.removeAppData();
+    });
 
     beforeEach(setup.initApp);
 
@@ -34,4 +37,50 @@ describe('Manga List', function () {
                 })
         });
     });
+
+    describe(`When searching manga`, () => {
+
+        describe('When searching a manga the does not exists', () => {
+
+            it('the list should be empty', () => {
+                return setup.app.client
+                    .waitUntilWindowLoaded(10000)
+                    .windowByIndex(1)
+                    .click("#search")
+                    .setValue("#search", "this-manga-does-not-exist.zip")
+                    .click("#selected-directory-text")
+                    .pause(1000)
+                    .isExisting("#mangalist > .manga").should.eventually.be.false
+            });
+        });
+
+
+        describe('When searching mangas that exists', () => {
+            it('the list should display the correct mangas', () => {
+                return setup.app.client
+                    .waitUntilWindowLoaded(10000)
+                    .windowByIndex(1)
+                    .click("#search")
+                    .setValue("#search", "sample")
+                    .click("#selected-directory-text")
+                    .pause(1000)
+                    .isExisting("#mangalist > .manga").should.eventually.be.true
+            });
+        });
+    })
+
+    describe('When include subfolders is clicked', () => {
+
+        it('Should display all the mangas recursively', () => {
+            return setup.app.client
+                .waitUntilWindowLoaded(10000)
+                .windowByIndex(1)
+                .click(".include-subfolders > label.right")
+                .pause(1000)
+                .elements("#mangalist > .manga").then(function (result) {
+                    expect(result.value.length).to.equal(2);
+                })
+        });
+
+    })
 })
