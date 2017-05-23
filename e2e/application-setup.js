@@ -47,6 +47,12 @@ module.exports = (function () {
 
     setup.stopApp = function () {
         if (setup.app && setup.app.isRunning()) {
+            setup.app.client.getMainProcessLogs().then(function (logs) {
+                logs.forEach(function (log) {
+                    console.log(log)
+                })
+            })
+
             return setup.app.stop()
         }
     }

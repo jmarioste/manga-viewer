@@ -11,11 +11,10 @@ describe('application launch', function () {
 
     afterEach(setup.stopApp)
 
-    it('Should start 1 main window and 2 threads', function () {
+    it('Title bar should contain Baiji Manga Viewer', function () {
         return setup.app.client
             .waitUntilWindowLoaded(10000)
-            .getWindowCount().then(function (count) {
-                expect(count).to.equal(3);
-            });
+            .windowByIndex(1)
+            .getText(".title-bar .app-title").should.eventually.equal("Baiji Manga Viewer")
     });
 })

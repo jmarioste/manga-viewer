@@ -14,6 +14,7 @@ if (isDev && process.env.NODE_ENV === "development") {
 }
 
 if (process.env.SPECTRON) {
+    logger.debug('Changing paths for Spectron');
     app.setPath('userData', path.resolve(__dirname, "..", "e2e/data"))
     mock(dialog)
 }
