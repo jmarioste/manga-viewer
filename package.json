@@ -2,16 +2,16 @@
   "scripts": {
     "start": "electron ./app",
     "build-renderer": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js  --progress --profile --colors --watch",
-    "build-main": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.main.prod.js  --progress --profile --colors",
+    "build-renderer-prod": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js  --progress",
     "postinstall": "install-app-deps",
-    "pack": "build --dir",
-    "dist": "build",
+    "pack": "build .",
+    "dist": "build --publish onTagOrDraft",
     "build-all": "build --win --x64 --ia32",
     "build-win32": "build --win --ia32",
     "build-win64": "build --win --x64",
     "test": "mocha ./app/**/*.spec.js --recursive",
     "test-dev": "mocha ./app/**/*.spec.js --recursive --watch",
-    "e2e": "mocha e2e",
+    "e2e": "npm run build-renderer-prod  && mocha e2e",
     "publish": "build --win --x64 -p always"
   },
   "repository": "https://github.com/shizkun/manga-viewer",
@@ -24,6 +24,17 @@
     "appId": "com.baiji-manga-viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
     "asar": false,
+    "files": [
+      "bundle/",
+      "node_modules/",
+      "main-process/",
+      "common/",
+      "main.js",
+      "index.html",
+      "package.json",
+      "icon.png",
+      "UnRAR.exe"
+    ],
     "fileAssociations": [
       {
         "ext": [
@@ -35,12 +46,35 @@
         "icon": "./build/icon.ico"
       }
     ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
     "mac": {
-      "category": "your.app.category.type",
+      "category": "public.app-category.entertainment",
       "target": [
         "zip",
         "dmg"
       ]
+    },
+    "win": {
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
@@ -89,6 +123,7 @@
     "source-map-loader": "0.2.1",
     "spectron": "3.6.4",
     "style-loader": "0.16.1",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "url-loader": "0.5.8",
     "webpack": "2.3.2",
     "webpack-target-electron-renderer": "0.4.0"
