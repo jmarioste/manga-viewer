@@ -1,3 +1,4 @@
+os: unstable
 build: off
 # Test against the latest version of this Node.js version
 environment:
@@ -17,6 +18,7 @@ install:
   - npm config set python C:\Python27
   - npm install
   - .\node_modules\.bin\electron-rebuild.cmd
+
 
 # Post-install test scripts.
 test_script: 
