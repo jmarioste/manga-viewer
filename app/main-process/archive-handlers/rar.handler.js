@@ -6,7 +6,7 @@ const myRegex = require('../../common/regex');
 const Errors = require('../../common/errors');
 const logger = require('electron-log');
 // const stream = require('stream');
-const { imageResizerInstance } = require('../image-resizer');
+// const { imageResizerInstance } = require('../image-resizer');
 // const APP_PATH = app.getAppPath();
 // const RAR_EXE_PATH = path.join(APP_PATH, 'UnRAR.exe');
 
