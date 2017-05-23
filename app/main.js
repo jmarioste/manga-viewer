@@ -15,7 +15,6 @@ if (isDev && process.env.NODE_ENV === "development") {
 
 if (process.env.SPECTRON) {
     logger.debug('Changing paths for Spectron');
-    app.setPath('userData', path.resolve(app.getAppPath(), "e2e/data"))
     mock(dialog)
 }
 // Keep a global reference of the window object, if you don't, the window will

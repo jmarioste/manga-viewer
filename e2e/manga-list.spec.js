@@ -63,7 +63,7 @@ describe('Manga List', function () {
                     .click("#search")
                     .setValue("#search", "sample")
                     .click("#selected-directory-text")
-                    .waitForExist("#mangalist > .manga", 1000)
+                    .waitForExist("#mangalist > .manga")
                     .isExisting("#mangalist > .manga").should.eventually.be.true
             });
         });

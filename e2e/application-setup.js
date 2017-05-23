@@ -17,7 +17,7 @@ module.exports = (function () {
 
     setup.removeAppData = function () {
         return new Promise((resolve) => {
-            rimraf(path.resolve(setup.getAppPath(), "e2e/data"), resolve);
+            rimraf(path.resolve(setup.getAppPath(), ".data"), resolve);
         });
     }
 

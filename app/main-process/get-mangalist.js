@@ -19,7 +19,7 @@ const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
 
 if (process.env.SPECTRON) {
-    app.setPath('userData', path.resolve(app.getAppPath(), "e2e/data"))
+    app.setPath('userData', path.resolve(app.getAppPath(), ".data"))
 }
 
 const dataPath = app.getPath('userData');
