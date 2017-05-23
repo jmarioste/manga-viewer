@@ -8,13 +8,14 @@ import path from "path";
 import api from "renderer-process/common/api.js";
 import MangaFactory from "renderer-process/common/manga.factory.js";
 
+import logger from "electron-log";
 
 const ipc = window.require('electron').ipcRenderer;
 
 export class FavoritesListViewmodel {
     constructor(params) {
         this.subscriptions = [];
-        console.log("FavoritesListViewmodel", params.favorites());
+        logger.info("FavoritesListViewmodel", params.favorites());
         this.favorites = params.favorites;
         this.selectedManga = params.selectedManga;
         this.currentPage = params.currentPage;
@@ -47,7 +48,7 @@ export class FavoritesListViewmodel {
         });
 
         ipc.on('get-favorites-list-done', function () {
-            console.log("this.favoritesManga.length", self.favoritesManga().length);
+            logger.info("this.favoritesManga.length", self.favoritesManga().length);
         });
     }
 
@@ -82,7 +83,7 @@ export class FavoritesListViewmodel {
     }
 
     afterAdd(elem) {
-        console.log(elem);
+        logger.info(elem);
         if ($(elem).hasClass("manga")) {
             Materialize.fadeInImage($(elem));
         }

@@ -10,7 +10,7 @@ import logger from "electron-log";
 import { remote } from "electron";
 export default class ViewModel {
     constructor(params) {
-        console.log("MainViewModel::constructor")
+        logger.info("MainViewModel::constructor")
         params.bookmarks = _.without(params.bookmarks, null);
         let self = this;
         this.subscriptions = [];

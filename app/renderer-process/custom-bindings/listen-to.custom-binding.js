@@ -8,12 +8,11 @@ let KeyMap = {
     ArrowDown: "DOWN ARROW"
 };
 ko.bindingHandlers.listenTo = {
-    init: function(element, valueAccessor, allBindings) {
+    init: function (element, valueAccessor, allBindings) {
         let context = allBindings.get('context') || "";
         let preventPropagation = allBindings.get('preventPropagation');
         let commands = ko.unwrap(valueAccessor());
         let $body = $("body");
-        console.log("custom-bindings::listenTo::init");
 
         function keyPressHandler(event) {
             event.preventDefault();
@@ -26,7 +25,7 @@ ko.bindingHandlers.listenTo = {
             let ctrlKey = event.ctrlKey ? "CTRL" : null;
             let hasModfiers = !ctrlKey || !alt || !shiftKey;
             let letter = "";
-            console.log(event.key);
+
             if (!_.includes([16, 17, 18, 91], event.keyCode)) {
                 letter = String.fromCharCode(event.keyCode);
             }
@@ -38,7 +37,6 @@ ko.bindingHandlers.listenTo = {
                 let input = _.without([ctrlKey, alt, shiftKey, letter], null).join(" + ");
                 $body.trigger("command." + context, input);
             }
-            console.log("on key up")
             return false;
         }
 
@@ -47,26 +45,25 @@ ko.bindingHandlers.listenTo = {
         }
 
         $body.on("keyup." + context, keyPressHandler);
-        $body.on("listen.pause", function() {
+        $body.on("listen.pause", function () {
             $body.off("keyup." + context, keyPressHandler);
         });
 
-        $body.on("listen.unpause", function() {
+        $body.on("listen.unpause", function () {
             $body.on("keyup." + context, keyPressHandler);
         });
 
-        $body.on("command." + context, function(event, input) {
+        $body.on("command." + context, function (event, input) {
             let command = _.find(commands, {
                 hotkey: input
             });
             if (command) {
 
                 command.execute()
-                console.log("should execute command");
             }
         })
 
-        onDispose(element, function() {
+        onDispose(element, function () {
             $body.off("listen.pause");
             $body.off("listen.unpause");
             $body.off("command." + context);

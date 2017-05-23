@@ -8,7 +8,7 @@ import path from "path";
 import api from "renderer-process/common/api.js";
 import { ViewOptions } from "renderer-process/components";
 import { SelectItem } from "renderer-process/models";
-
+import logger from "electron-log";
 const ipc = window.require('electron').ipcRenderer;
 
 export class SettingsPageViewmodel {
@@ -101,7 +101,7 @@ export class CommandsListItem {
         this.hotkey = ko.observable(hotkey);
         this.commandName = commandName;
 
-        console.log("CommandsListItem::constructor", commandName, hotkey, label);
+        logger.info("CommandsListItem::constructor", commandName, hotkey, label);
     }
 
     dispose() {

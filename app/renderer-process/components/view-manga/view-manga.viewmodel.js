@@ -12,10 +12,10 @@ import template from "./view-manga.template.html";
 import { viewOptions, ViewOptions } from "./view-options.js";
 import Command from "renderer-process/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
-
+import logger from "electron-log";
 export class ViewMangaViewmodel {
     constructor(params) {
-        console.log("ViewMangaViewModel::constructor - end");
+        logger.info("ViewMangaViewModel::constructor - end");
         let self = this;
         //params
         this.subscriptions = [];
@@ -45,7 +45,7 @@ export class ViewMangaViewmodel {
             new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage)
         ];
 
-        console.log("ViewMangaViewModel::constructor - end", this.selectedManga());
+        logger.info("ViewMangaViewModel::constructor - end", this.selectedManga());
         this.initialize();
     }
 
@@ -84,7 +84,7 @@ export class ViewMangaViewmodel {
     }
 
     dispose() {
-        console.log("ViewMangaViewModel::dispose")
+        logger.info("ViewMangaViewModel::dispose")
         this.subscriptions.forEach(sub => sub.dispose());
         if (this.selectedManga()) {
             this.selectedManga().pageImages([]);
@@ -114,7 +114,7 @@ export class ViewMangaViewmodel {
                 break;
             case ViewOptions.ZoomOut:
                 let zoomOutScale = Math.max(this.transformScale() - .20, 0.5);
-                console.log(zoomOutScale);
+                logger.info(zoomOutScale);
                 this.transformScale(zoomOutScale);
                 break;
             default:
@@ -124,7 +124,7 @@ export class ViewMangaViewmodel {
     }
 
     goNextPage() {
-        console.log("ViewMangaViewmodel::goNextPage");
+        logger.info("ViewMangaViewmodel::goNextPage");
         //TODO: Return Logic for execeeding last page.
         let index = this.currentPage();
         let selected = this.selectedManga();
@@ -156,7 +156,7 @@ export class ViewMangaViewmodel {
         let selected = this.selectedManga();
 
         if (selected) {
-            console.log("changing currentImage");
+            logger.info("changing currentImage");
             return selected.pageImages()[this.currentPage()];
         }
     }
@@ -167,7 +167,7 @@ export class ViewMangaViewmodel {
         if (selected) {
             start = start || selected.pageImages().length;
             end = end || Math.min(this.currentPage() + 3, selected.pages);
-            console.log("pages", this.currentPage(), start, end);
+            logger.info("pages", this.currentPage(), start, end);
             return api.getPages(start, end, selected.folderPath)
                 .then(function (pages) {
 

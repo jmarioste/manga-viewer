@@ -25,7 +25,6 @@ ko.bindingHandlers.modal = {
     },
     update: function (element, valueAccessor) {
         let isOpen = ko.unwrap(valueAccessor());
-        console.log("update", true)
         if (isOpen && !$(element).hasClass("open")) {
             $(element).modal('open');
         }

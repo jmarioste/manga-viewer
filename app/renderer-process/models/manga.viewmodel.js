@@ -16,7 +16,6 @@ export class Manga {
         circle,
         resolution
     }) {
-        // console.log("Manga::constructor", pages);
         this.mangaTitle = mangaTitle || "";
         this.folderPath = folderPath;
         this.isFavorite = ko.observable(isFavorite).toggleable();

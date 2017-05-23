@@ -19,11 +19,11 @@ export default class api {
         ipc.send('check-for-updates');
     }
     static getSubFolders(folderPath) {
-        console.log("api::getSubFolders - folderPath", folderPath);
+        logger.info("api::getSubFolders - folderPath", folderPath);
         let deferred = $.Deferred();
         ipc.send('get-subfolders', folderPath);
         ipc.on('get-subfolders-done', function (event, folders) {
-            console.log("api::getSubFolders", folders.length);
+            logger.info("api::getSubFolders", folders.length);
             deferred.resolve({
                 folders: folders
             });
@@ -33,7 +33,7 @@ export default class api {
     }
 
     static getMangaList(rootFolder, isRecursive, searchValue, pagination) {
-        console.log("api::getMangaList - rootFolder", rootFolder,
+        logger.info("api::getMangaList - rootFolder", rootFolder,
             "isRecursive", isRecursive,
             "searchValue:", searchValue);
 
@@ -46,7 +46,7 @@ export default class api {
     }
 
     static getPages(start, end, folderPath) {
-        console.log("api::getPages - rootFolder", start, end, folderPath);
+        logger.info("api::getPages - rootFolder", start, end, folderPath);
 
         let deferred = $.Deferred();
 
@@ -72,18 +72,18 @@ export default class api {
         let deferred = $.Deferred();
         ipc.send('get-manga', folderPath);
         ipc.once('get-manga-done', function (event, manga) {
-            console.log("get-manga-done")
+            logger.info("get-manga-done")
             deferred.resolve(manga);
         });
         ipc.once('get-manga-error', function (event, errorMessage) {
-            console.log("api::getSubFolders", errorMessage);
+            logger.info("api::getSubFolders", errorMessage);
             errorDialogInstance.showMessage(errorMessage);
             deferred.reject(errorMessage);
         });
         return deferred.promise();
     }
     static getSavedSettings() {
-        console.log("api.getSavedSettings");
+        logger.info("api.getSavedSettings");
         let deferred = $.Deferred();
 
         if (!api.getSavedSettings.called) {
@@ -110,7 +110,7 @@ export default class api {
         let deferred = $.Deferred();
         ipc.send('select-directory');
         ipc.once('select-directory-done', function (event, data) {
-            console.log("select-directory done", data);
+            logger.info("select-directory done", data);
             deferred.resolve(data);
         });
 

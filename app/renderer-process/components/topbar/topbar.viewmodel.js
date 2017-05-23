@@ -7,12 +7,12 @@ import Pages from "renderer-process/common/pages.enum";
 import Command from "renderer-process/models/command.viewmodel";
 import template from "./topbar.template.html";
 import { ViewMangaCommand } from "renderer-process/components";
-
+import logger from "electron-log";
 const ipc = window.require('electron').ipcRenderer;
 
 export class TopBarViewmodel {
     constructor(params) {
-        console.log("TopBarViewmodel::constructor - end");
+        logger.info("TopBarViewmodel::constructor - end");
         let self = this;
         this.subscriptions = [];
         this.selectedManga = params.selectedManga;
@@ -37,7 +37,7 @@ export class TopBarViewmodel {
             new Command(this.appCommands().BOOKMARK_MANGA, this.toggleFavorite),
         ];
 
-        console.log("TopBarViewmodel::constructor - end", this.currentPage());
+        logger.info("TopBarViewmodel::constructor - end", this.currentPage());
     }
 
     // methods
@@ -46,7 +46,7 @@ export class TopBarViewmodel {
     }
 
     dispose() {
-        console.log("TopBarViewmodel::dispose")
+        logger.info("TopBarViewmodel::dispose")
         this.subscriptions.forEach(sub => sub.dispose());
     }
 
@@ -60,7 +60,7 @@ export class TopBarViewmodel {
     }
 
     toggleFavorite() {
-        console.log("toggleFavorite");
+        logger.info("toggleFavorite");
         let manga = this.selectedManga();
         manga.isFavorite(!manga.isFavorite());
         if (manga.isFavorite()) {
@@ -90,7 +90,7 @@ export class TopBarViewmodel {
         if (this.selectedManga()) {
             return this.selectedManga().mangaTitle;
         } else {
-            console.log(this.currentPage(), Pages.MangaList)
+            logger.info(this.currentPage(), Pages.MangaList)
             switch (this.currentPage()) {
                 case Pages.MangaList: return "Manga list";
                 case Pages.FavoritesList: return "Favorites list";

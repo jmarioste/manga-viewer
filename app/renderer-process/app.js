@@ -20,7 +20,7 @@ import logger from "electron-log";
 logger.info("app");
 
 $(document).ready(function () {
-    console.log("document.ready");
+    logger.info("document.ready");
 
     api.getSavedSettings().then(function (settings) {
         logger.info("Check if app is initialized from associated files");

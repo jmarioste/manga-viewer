@@ -8,11 +8,11 @@ import template from "./sidebar.template.html";
 import Command from "renderer-process/models/command.viewmodel";
 import { aboutDialogInstance } from "renderer-process/components";
 import path from "path";
-
+import logger from "electron-log";
 export class SidebarViewmodel {
 
     constructor(params) {
-        console.log("SidebarViewmodel::constructor");
+        logger.info("SidebarViewmodel::constructor");
         var self = this;
         this.subs = [];
         this.bookmarks = params.bookmarks;
@@ -39,7 +39,7 @@ export class SidebarViewmodel {
         let self = this;
         let currentFolder = this.currentFolder();
         let isBookmarked = _(this.bookmarks()).map('folderPath').includes(this.currentFolder());
-        console.log("SidebarViewmodel::initialize- currentFolder:", currentFolder);
+        logger.info("SidebarViewmodel::initialize- currentFolder:", currentFolder);
         if (currentFolder) {
             let baseName = path.basename(currentFolder);
             var root = new Folder({
@@ -62,7 +62,7 @@ export class SidebarViewmodel {
     }
 
     getFolderTree() {
-        console.log("SidebarViewmodel::getFolderTree");
+        logger.info("SidebarViewmodel::getFolderTree");
         let array = [];
         this.folders().forEach((child) => this.recursive(child, array));
         return array;
@@ -74,7 +74,7 @@ export class SidebarViewmodel {
     }
 
     selectDirectoryText() {
-        // console.log(this.selectedDirectory().folderName);
+        // logger.info(this.selectedDirectory().folderName);
         return this.selectedDirectory() ? this.selectedDirectory().folderName : "";
     }
 
@@ -113,7 +113,7 @@ export class SidebarViewmodel {
     }
 
     dispose() {
-        console.log("SidebarViewmodel:executing dispose");
+        logger.info("SidebarViewmodel:executing dispose");
     };
 
     showAboutDialog() {
