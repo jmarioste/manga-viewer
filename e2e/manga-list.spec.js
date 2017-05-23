@@ -11,9 +11,10 @@ describe('Manga List', function () {
 
     afterEach(setup.stopApp)
 
-    describe(`when there's no selected directory`, function () {
+    describe(`if there's no selected directory`, function () {
         it('the label for page should be Manga list', function () {
             return setup.app.client
+                .waitUntilWindowLoaded(10000)
                 .windowByIndex(1)
                 .getText("#selected-directory-text").then(function (text) {
                     expect(text).to.equal("Manga list");
@@ -21,9 +22,10 @@ describe('Manga List', function () {
         });
     });
 
-    describe(`when user select's Sample Manga as directory`, function () {
+    describe(`if user select's Sample Manga as directory`, function () {
         it('the label should change to Sample Mangas', function () {
             return setup.app.client
+                .waitUntilWindowLoaded(10000)
                 .windowByIndex(1)
                 .click("#select-directory-btn")
                 .pause(500)
