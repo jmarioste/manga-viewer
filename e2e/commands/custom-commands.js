@@ -28,8 +28,8 @@ module.exports = function (client) {
         let search = this.element("#search");
         return this.click('#search')
             .setValue('#search', searchValue)
-            .click("#selected-directory-text") //remove focus from search
-            .pause(500);
+            .click(".content") //remove focus from search
+            .pause(1000);
     });
 
     client.addCommand('waitForFinishLoading', function () {
