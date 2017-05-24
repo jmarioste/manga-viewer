@@ -9,6 +9,7 @@ chai.should();
 const expect = chai.expect;
 chai.use(chaiAsPromised);
 
+//not really setup. more like a helper class;
 module.exports = (function () {
     var setup = {};
     setup.getAppPath = function () {
@@ -49,14 +50,17 @@ module.exports = (function () {
         });
     }
 
+    setup.showLogsIfTestFailed = function (_this) {
+        if (_this.currentTest.state === 'failed') {
+            setup.app.client.getMainProcessLogs().then(function (logs) {
+                logs.forEach(console.log);
+            })
+        }
+    }
+
     setup.stopApp = function () {
         if (setup.app && setup.app.isRunning()) {
-            setup.app.client.getMainProcessLogs().then(function (logs) {
-                logs.forEach(function (log) {
-                    console.log(log)
-                })
-            })
-
+            setup.showLogsIfTestFailed(this);
             return setup.app.stop()
         }
     }
