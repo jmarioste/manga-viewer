@@ -140,9 +140,10 @@ describe('Manga List', function () {
                 return setup.app.client
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
+                    .pause(500)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
-                    .pause(1000)
+                    .pause(500)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
                     .isExisting(toastContainer).should.eventually.be.true
