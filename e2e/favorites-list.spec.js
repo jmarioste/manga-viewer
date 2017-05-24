@@ -27,6 +27,8 @@ describe('Favorites List', function () {
                     .click(".sidebar #favorites-btn")
                     .pause(500)
                     .getElementCount("#mangalist > .manga").should.eventually.equal(2);
+            }).catch(function () {
+                return setup.stopApp()
             })
     });
 
