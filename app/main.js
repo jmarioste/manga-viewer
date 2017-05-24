@@ -48,6 +48,7 @@ function createWindow() {
         height: height,
         show: false,
         minWidth: 960,
+        title: "Baiji Manga Viewer",
         icon: iconPath
     });
 
