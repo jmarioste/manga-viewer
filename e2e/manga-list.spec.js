@@ -90,6 +90,7 @@ describe('Manga List', function () {
             return setup.app.client
                 .selectDirectorySampleManga()
                 .waitForFinishLoading()
+                .pause(1000)
                 .click(".include-subfolders > label.right")
                 .pause(500)
                 .waitForFinishLoading()
@@ -105,8 +106,7 @@ describe('Manga List', function () {
                 .selectDirectorySampleManga()
                 .waitForFinishLoading()
                 .waitForExist("#mangalist .manga", 10000)
-                .element("#mangalist .manga")
-                .click()
+                .click("#mangalist .manga")
                 .waitForExist("#mangalist", 10000, true)
                 .isExisting("#mangalist").should.eventually.be.false
                 .isExisting(".view-manga").should.eventually.be.true
@@ -122,8 +122,8 @@ describe('Manga List', function () {
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
                     .waitForExist("#mangalist .manga", 10000)
-                    .element("#mangalist .manga .toggle-as-favorite")
-                    .click()
+                    .click("#mangalist .manga .toggle-as-favorite")
+                    .pause(500)
                     .isExisting(toastContainer).should.eventually.be.true
                     .getText(toastContainer).should.eventually.equal("Added to favorites!")
                     .waitForExist(toastContainer, 10000, true)
@@ -138,12 +138,10 @@ describe('Manga List', function () {
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
                     .waitForExist("#mangalist .manga", 10000)
-                    .element("#mangalist .manga .toggle-as-favorite")
-                    .click()
+                    .click("#mangalist .manga .toggle-as-favorite")
                     .waitForExist(toastContainer, 10000, true)
                     .pause(500)
-                    .element("#mangalist .manga .toggle-as-favorite")
-                    .click()
+                    .click("#mangalist .manga .toggle-as-favorite")
                     .isExisting(toastContainer).should.eventually.be.true
                     .getText(toastContainer).should.eventually.equal("Removed from favorites!")
                     .waitForExist(toastContainer, 10000, true)

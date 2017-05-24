@@ -19,7 +19,7 @@ describe('Favorites List', function () {
                     .click(".include-subfolders > label.right")
                     .pause(500)
                     .waitForFinishLoading()
-                    .waitForExist("#mangalist .manga", 10000)
+                    .pause(500)
                     .click("#mangalist > div:nth-child(1) .toggle-as-favorite")
                     .pause(1000)
                     .click("#mangalist > div:nth-child(2) .toggle-as-favorite")
@@ -47,8 +47,9 @@ describe('Favorites List', function () {
                 it(`should return ${test.expected} manga(s)`, () => {
                     return setup.app.client
                         .waitForFinishLoading()
+                        .pause(500)
                         .searchManga(test.searchValue)
-                        .waitForFinishLoading()
+                        .pause(500)
                         .getElementCount(mangaList).should.eventually.equal(test.expected);
                 });
             });
@@ -67,8 +68,8 @@ describe('Favorites List', function () {
     });
 
 
-    describe('When clicking favorite button in manga', () => {
-        it('Should remove manga from favorites', () => {
+    describe('When clicking manga in favorites', () => {
+        it('Go to view manga page', () => {
             return setup.app.client
                 .click("#mangalist > div:nth-child(1)")
                 .waitForExist("#mangalist", 10000, true)

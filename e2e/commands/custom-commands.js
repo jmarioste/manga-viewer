@@ -6,16 +6,16 @@ module.exports = function (client) {
     });
 
     client.addCommand('getSelectedFolderText', function () {
-        return this.getText("#selected-directory-text")
+        return this.getText("#selected-directory-text");
     });
 
     client.addCommand('selectDirectorySampleManga', function () {
         return this.click("#select-directory-btn")
-            .pause(500)
+            .pause(500);
     })
 
     client.addCommand('bookmarkFolder', function () {
-        return this.click(".bookmark-btn")
+        return this.click(".bookmark-btn");
     });
 
     client.addCommand('getElementCount', function (selector) {
