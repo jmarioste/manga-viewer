@@ -32,70 +32,92 @@ describe('Manga List', function () {
 
     describe(`When bookmarking a folder`, function () {
         it('it should be added under bookmarked folders in sidebar', function () {
+            let bookmarkedFolders = ".sidebar-favorites-items .collection-item";
             return setup.app.client
                 .bookmarkFolder()
                 .pause(500)
-                .elements(".sidebar-favorites-items .collection-item")
-                .then(function (results) {
-                    expect(results.value.length).to.equal(1);
-                })
+                .getElementCount(bookmarkedFolders).should.eventually.equal(1);
         });
     });
 
     describe(`When unbookmarking a folder`, function () {
         it('it should be removed from bookmarked folders', function () {
+            let bookmarkedFolders = ".sidebar-favorites-items .collection-item";
             return setup.app.client
                 .bookmarkFolder()
                 .pause(500)
-                .elements(".sidebar-favorites-items .collection-item")
-                .then(function (results) {
-                    expect(results.value.length).to.equal(0);
-                })
+                .getElementCount(bookmarkedFolders).should.eventually.equal(0);
         });
     });
+
     describe(`When searching manga`, () => {
+        let mangaList = "#mangalist > .manga";
+        let tests = [
+            { searchValue: "this-manga-does-not-exist.zip", expected: 0 },
+            { searchValue: "sample", expected: 1 },
+            { searchValue: ".zip", expected: 1 },
+        ];
 
-        describe('When searching a manga the does not exists', () => {
+        tests.forEach(function (test) {
+            describe(`When search value is "${test.searchValue}"`, () => {
 
-            it('the list should be empty', () => {
-                return setup.app.client
-                    .waitForVisible("#mangalist > .manga", 10000)
-                    .click("#search")
-                    .setValue("#search", "this-manga-does-not-exist.zip")
-                    .click("#selected-directory-text")
-                    .pause(1000)
-                    .waitForVisible(".progress", 1000, true)
-                    .isVisible("#mangalist > .manga").should.eventually.be.false
+                it(`should return ${test.expected} manga(s)`, () => {
+                    return setup.app.client
+                        .waitForFinishLoading()
+                        .searchManga(test.searchValue)
+                        .waitForFinishLoading()
+                        .getElementCount(mangaList).should.eventually.equal(test.expected);
+                });
             });
-        });
 
+        })
 
-        describe('When searching mangas that exists', () => {
-            it('the list should display the correct mangas', () => {
-                return setup.app.client
-                    .click("#search")
-                    .setValue("#search", "sample")
-                    .waitForVisible(".progress", 10000, true)
-                    .click("#selected-directory-text")
-                    .pause(1000)
-                    .waitForVisible(".progress", 10000, true)
-                    .isExisting("#mangalist > .manga").should.eventually.be.true
-            });
-        });
     })
 
     describe('When include subfolders is clicked', () => {
 
         it('Should display all the mangas recursively', () => {
             return setup.app.client
-                .waitForVisible(".progress", 10000, true)
+                .waitForFinishLoading()
                 .click(".include-subfolders > label.right")
-                .pause(1000)
-                .waitForVisible(".progress", 10000, true)
-                .elements("#mangalist > .manga").then(function (result) {
-                    expect(result.value.length).to.equal(2);
-                })
+                .pause(500)
+                .waitForFinishLoading()
+                .getElementCount("#mangalist > .manga").should.eventually.equal(2);
         });
+    });
 
-    })
+
+    describe('When clicking a manga from manga list,', () => {
+
+        it('it should transfer to view manga page', () => {
+            return setup.app.client
+                .waitForFinishLoading()
+                .element("#mangalist .manga")
+                .click()
+                .waitForExist("#mangalist", 10000, true)
+                .isExisting("#mangalist").should.eventually.be.false
+                .isExisting(".view-manga").should.eventually.be.true
+        });
+    });
+
+
+    describe('Adding/Removing manga to/from favorites', () => {
+        let expectedTexts = ["Added to favorites!", "Removed from favorites!"];
+
+        expectedTexts.forEach(function (expectedText) {
+            it(`it should show a toast with "${expectedText}" as feedback`, () => {
+                let toastContainer = "#toast-container div";
+                return setup.app.client
+                    .waitForFinishLoading()
+                    .element("#mangalist .manga .toggle-as-favorite")
+                    .click()
+                    .isExisting(toastContainer).should.eventually.be.true
+                    .getText(toastContainer).should.eventually.equal(expectedText)
+                    .waitForExist(toastContainer, 10000, true)
+                    .isExisting(toastContainer).should.eventually.be.false
+            })
+        })
+
+    });
+
 })
