@@ -12,5 +12,6 @@ describe('application launch', function () {
     afterEach(setup.stopApp)
 
     it('Title bar should contain Baiji Manga Viewer', function () {
+        return setup.app.browserWindow.getTitle().should.eventually.equal("Baiji Manga Viewer")
     });
 })
