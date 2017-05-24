@@ -28,7 +28,11 @@ describe('Favorites List', function () {
                     .pause(500)
                     .getElementCount("#mangalist > .manga").should.eventually.equal(2);
             }).catch(function () {
-                return setup.stopApp()
+                return setup.app.client.getMainProcessLogs().then(function (logs) {
+                    logs.forEach(function (log) {
+                        console.log(log);
+                    });
+                })
             })
     });
 
