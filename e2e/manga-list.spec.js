@@ -104,6 +104,7 @@ describe('Manga List', function () {
             return setup.app.client
                 .selectDirectorySampleManga()
                 .waitForFinishLoading()
+                .pause(500)
                 .element("#mangalist .manga")
                 .click()
                 .waitForExist("#mangalist", 10000, true)
