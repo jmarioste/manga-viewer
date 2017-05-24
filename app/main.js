@@ -29,16 +29,14 @@ logger.info('version', app.getVersion());
 function createWindow() {
     let getMangaList = new GetMangaList();
     let selectDirectory = new SelectDirectory();
-
+    let iconPath = process.platform == "darwin" ? path.join(__dirname, "icon.incs") : path.join(__dirname, "icon.ico");
     // Create the browser window.    
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         show: false,
-        titleBarStyle: 'hidden',
-        frame: false,
         minWidth: 960,
-        icon: path.join(__dirname, "icon.png")
+        icon: iconPath
     });
 
 
@@ -59,8 +57,9 @@ function createWindow() {
     if (isDev) {
         mainWindow.webContents.openDevTools()
     }
+    mainWindow.setMenu(null);
 
-    mainWindow.maximize();
+    // mainWindow.maximize();
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
         // Dereference the window object, usually you would store windows
