@@ -2,12 +2,15 @@ const { BrowserWindow, app, protocol, ipcMain, dialog } = require('electron');
 const path = require('path')
 const url = require('url');
 const fs = require('fs');
-const GetMangaList = require('./main-process/get-mangalist');
-const SelectDirectory = require('./main-process/select-directory');
 const logger = require('electron-log');
 const isDev = require('electron-is-dev');
+const windowStateKeeper = require('electron-window-state');
+
+const GetMangaList = require('./main-process/get-mangalist');
+const SelectDirectory = require('./main-process/select-directory');
 const AppUpdater = require('./main-process/common/auto-updater');
 const mock = require('../e2e/mocks');
+
 let client;
 if (isDev && process.env.NODE_ENV === "development") {
     client = require('electron-connect').client;
@@ -30,10 +33,19 @@ function createWindow() {
     let getMangaList = new GetMangaList();
     let selectDirectory = new SelectDirectory();
     let iconPath = process.platform == "darwin" ? path.join(__dirname, "icon.incs") : path.join(__dirname, "icon.ico");
+    // Load the previous state with fallback to defaults
+    let mainWindowState = windowStateKeeper({
+        defaultWidth: 1024,
+        defaultHeight: 768
+    });
+
+    let { x, y, width, height } = mainWindowState;
     // Create the browser window.    
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        x: x,
+        y: y,
+        width: width,
+        height: height,
         show: false,
         minWidth: 960,
         icon: iconPath
@@ -57,7 +69,7 @@ function createWindow() {
     if (isDev) {
         mainWindow.webContents.openDevTools()
     }
-    mainWindow.setMenu(null);
+    // mainWindow.setMenu(null);
 
     // mainWindow.maximize();
     // Emitted when the window is closed.
@@ -71,6 +83,7 @@ function createWindow() {
     mainWindow.once('ready-to-show', function () {
         mainWindow.show();
         mainWindow.focus();
+        mainWindowState.manage(mainWindow);
     });
 
     let appUpdater = new AppUpdater(mainWindow);

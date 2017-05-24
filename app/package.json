@@ -12,6 +12,7 @@
     "electron-log": "2.2.6",
     "electron-remote": "1.1.2",
     "electron-updater": "1.15.0",
+    "electron-window-state": "^4.1.1",
     "jquery": "3.2.1",
     "knockout": "3.4.2",
     "lodash": "^4.17.4",
