@@ -143,6 +143,7 @@ describe('Manga List', function () {
                     .pause(500)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
+                    .waitForExist(toastContainer, 10000, true)
                     .pause(500)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
