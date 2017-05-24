@@ -104,7 +104,7 @@ describe('Manga List', function () {
             return setup.app.client
                 .selectDirectorySampleManga()
                 .waitForFinishLoading()
-                .pause(500)
+                .waitForExist("#mangalist .manga", 10000)
                 .element("#mangalist .manga")
                 .click()
                 .waitForExist("#mangalist", 10000, true)
@@ -115,16 +115,13 @@ describe('Manga List', function () {
 
 
     describe('Adding/Removing manga to/from favorites', () => {
-        let expectedTexts = ["Added to favorites!", "Removed from favorites!"];
-
-
         describe('When manga is not yet a favorite', () => {
             it(`it should show a toast with "Added to favorites!" as feedback`, () => {
                 let toastContainer = "#toast-container div";
                 return setup.app.client
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
-                    .pause(500)
+                    .waitForExist("#mangalist .manga", 10000)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
                     .isExisting(toastContainer).should.eventually.be.true
@@ -140,7 +137,7 @@ describe('Manga List', function () {
                 return setup.app.client
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
-                    .pause(500)
+                    .waitForExist("#mangalist .manga", 10000)
                     .element("#mangalist .manga .toggle-as-favorite")
                     .click()
                     .waitForExist(toastContainer, 10000, true)

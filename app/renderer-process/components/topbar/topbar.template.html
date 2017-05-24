@@ -7,7 +7,7 @@
 		</a>
 		<ul class="left">
 			<li>
-				<a href="javascript:void(0);" class="left" data-bind="toggleNav:'.wrapper'">
+				<a href="javascript:void(0);" class="left" data-bind="toggleNav:'.wrapper'" id="menu-btn">
 					<i class="material-icons">menu</i>
 				</a>
 			</li>
@@ -31,7 +31,7 @@
 		</ul>
 		<ul class="right" data-bind="visibility:!!selectedManga()">
 			<li>
-				<a  data-bind="click:toggleFavorite, singlePulseEffect">
+				<a data-bind="click:toggleFavorite, singlePulseEffect">
 					<i class="material-icons" data-bind="isFavorite:isFavorite">star_border</i>
 				</a>
 			</li>

@@ -1,6 +1,6 @@
 <div class="sidebar " data-bind="listenTo:commands, context: 'sidebar'">
     <div class="sidebar-favorites-manga collection with-header ">
-        <a href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="click:showFavorites, active: isFavoritesActive">
+        <a id="favorites-btn" href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="click:showFavorites, active: isFavoritesActive">
             <i class="material-icons left">star</i>
             <strong class=""> Favorites</strong>
         </a>
@@ -12,7 +12,7 @@
         </a>
     </div>
     <ul class="sidebar-favorites-items collection" data-bind="foreach:bookmarks">
-        <li class="item collection-item truncate" data-bind="
+        <li class="item collection-item truncate bookmarked-folder" data-bind="
             click:$component.selectDirectory,
             active: $component.isFolderActive($data)">
             <span data-bind="text:folderName"></span>
@@ -29,7 +29,7 @@
         <li class="item collection-item truncate" data-bind="
             style: { paddingLeft: paddingLeft() }, click:$component.selectDirectory,
             active: $component.isFolderActive($data)">
-            <i class="material-icons left" data-bind="
+            <i class="material-icons left folder-toggle" data-bind="
             isOpenFolder:isOpen,
             click: toggleFolderOpen, clickBubble:false">
             </i>
@@ -37,10 +37,10 @@
         </li>
     </ul>
     <div class="collection sidebar-settings">
-        <a href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="active:isSettingsActive, click: showSettings">
+        <a id="settings-btn" href="javascript:void(0);" class="collection-item waves-effect waves-light" data-bind="active:isSettingsActive, click: showSettings">
             <i class="left material-icons">settings</i>
             <strong class="">Settings</strong>
-            <i class="right material-icons" data-bind="tooltip:'right', tooltipText: 'About', click: $component.showAboutDialog, clickBubble:false">help</i>
+            <i id="about-btn" class="right material-icons" data-bind="tooltip:'right', tooltipText: 'About', click: $component.showAboutDialog, clickBubble:false">help</i>
         </a>
     </div>
 </div>
