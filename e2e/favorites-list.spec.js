@@ -16,7 +16,7 @@ describe('Favorites List', function () {
                 return setup.app.client
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
-                    .pause(1000)
+                    .pause(2000)
                     .click(".include-subfolders > label.right")
                     .waitForFinishLoading()
                     .pause(1000)
@@ -30,7 +30,9 @@ describe('Favorites List', function () {
             }).catch(function () {
                 return setup.app.client.getMainProcessLogs().then(function (logs) {
                     logs.forEach(function (log) {
-                        console.log(log);
+                        if (log.indexOf("CONSOLE") < 0) {
+                            console.log(log);
+                        }
                     });
                 })
             })
