@@ -140,7 +140,7 @@ describe('Manga List', function () {
                     .waitForExist("#mangalist .manga", 10000)
                     .click("#mangalist .manga .toggle-as-favorite")
                     .waitForExist(toastContainer, 10000, true)
-                    .pause(500)
+                    .pause(1000)
                     .click("#mangalist .manga .toggle-as-favorite")
                     .isExisting(toastContainer).should.eventually.be.true
                     .getText(toastContainer).should.eventually.equal("Removed from favorites!")
