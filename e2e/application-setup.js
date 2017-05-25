@@ -54,7 +54,9 @@ module.exports = (function () {
         if (_this.currentTest.state === 'failed') {
             setup.app.client.getMainProcessLogs().then(function (logs) {
                 logs.forEach(function (log) {
-                    console.log(log);
+                    if (log.indexOf("CONSOLE") < 0) {
+                        console.log(log);
+                    }
                 });
             })
         }

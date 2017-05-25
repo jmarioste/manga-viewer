@@ -74,6 +74,7 @@ describe('Manga List', function () {
                     return setup.app.client
                         .selectDirectorySampleManga()
                         .waitForFinishLoading()
+                        .pause(2000)
                         .searchManga(test.searchValue)
                         .waitForFinishLoading()
                         .getElementCount(mangaList).should.eventually.equal(test.expected);
