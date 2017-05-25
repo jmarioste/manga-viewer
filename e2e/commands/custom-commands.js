@@ -36,4 +36,10 @@ module.exports = function (client) {
         //if progress is hidden meaning it has done loading;
         return this.waitForVisible(".progress", 10000, true);
     })
+
+    client.addCommand('clickPage', function (expected) {
+        return this.click(".manga-page")
+            .pause(300)
+            .getText(".current-manga-page").should.eventually.equal(expected)
+    })
 }

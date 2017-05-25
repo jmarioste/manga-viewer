@@ -20,6 +20,14 @@ describe('Manga List', function () {
 
     afterEach(setup.stopApp)
 
+
+    describe('app bar when in mangalist page', () => {
+        it('title should be Manga list', () => {
+            return setup.app.client
+                .getText("topbar .topbar-text > span > span").should.eventually.equal("Manga list")
+        });
+    });
+
     describe(`if there's no selected directory`, function () {
         it('the label for page should be Manga list', function () {
             return setup.app.client
@@ -64,7 +72,7 @@ describe('Manga List', function () {
         let tests = [
             { searchValue: "this-manga-does-not-exist.zip", expected: 0 },
             { searchValue: "sample", expected: 1 },
-            { searchValue: ".zip", expected: 1 },
+            { searchValue: ".zip", expected: 2 },
         ];
 
         tests.forEach(function (test) {
@@ -95,7 +103,7 @@ describe('Manga List', function () {
                 .click(".include-subfolders > label.right")
                 .pause(500)
                 .waitForFinishLoading()
-                .getElementCount("#mangalist > .manga").should.eventually.equal(2);
+                .getElementCount("#mangalist > .manga").should.eventually.equal(3);
         });
     });
 

@@ -3,9 +3,16 @@ const chai = require('chai');
 
 const expect = chai.expect;
 
+describe('App bar when in Favorites List page', () => {
+    it('title should be Favorites list', () => {
+        return setup.app.client
+            .getText("topbar .topbar-text > span > span").should.eventually.equal("Favorites list")
+    });
+});
 
 describe('Favorites List', function () {
     this.timeout(30000)
+
 
     beforeEach(function () {
         return setup.removeAppData()

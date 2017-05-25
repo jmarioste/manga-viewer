@@ -14,22 +14,22 @@
 		</ul>
 		<!-- ko if:selectedManga -->
 		<ul class="center page-controls">
-			<li>
+			<li class="to-previous">
 				<a class="" href="javascript:void(0);" data-bind="click: goPrevPage,singlePulseEffect">
 					<i class="material-icons cbutton__icon">navigate_before</i>
 				</a>
 			</li>
 			<li>
-				<span data-bind="text:currentViewMangaPage() + 1"></span> /
-				<span data-bind="text:selectedManga().pages"></span>
+				<span class="current-manga-page" data-bind="text:currentViewMangaPage() + 1"></span> /
+				<span class="total-manga-page" data-bind="text:selectedManga().pages"></span>
 			</li>
-			<li>
+			<li class="to-next">
 				<a href="javascript:void(0);" data-bind="click: goNextPage, singlePulseEffect">
 					<i class="material-icons cbutton__icon">navigate_next</i>
 				</a>
 			</li>
 		</ul>
-		<ul class="right" data-bind="visibility:!!selectedManga()">
+		<ul class="right add-to-favorites" data-bind="visibility:!!selectedManga()">
 			<li>
 				<a data-bind="click:toggleFavorite, singlePulseEffect">
 					<i class="material-icons" data-bind="isFavorite:isFavorite">star_border</i>

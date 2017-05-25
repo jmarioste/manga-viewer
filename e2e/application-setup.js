@@ -51,21 +51,28 @@ module.exports = (function () {
     }
 
     setup.showLogsIfTestFailed = function (_this) {
-        if (_this.currentTest.state === 'failed') {
-            setup.app.client.getMainProcessLogs().then(function (logs) {
-                logs.forEach(function (log) {
-                    if (log.indexOf("CONSOLE") < 0) {
-                        console.log(log);
-                    }
-                });
-            })
-        }
+        return new Promise((resolve, reject) => {
+            if (_this.currentTest.state === 'failed') {
+                setup.app.client.getMainProcessLogs().then(function (logs) {
+                    logs.forEach(function (log) {
+                        if (log.indexOf("CONSOLE") < 0) {
+                            console.log(log);
+                        }
+                    });
+                    resolve();
+                })
+            }
+
+            resolve();
+        });
+
     }
 
     setup.stopApp = function () {
         if (setup.app && setup.app.isRunning()) {
-            setup.showLogsIfTestFailed(this);
-            return setup.app.stop()
+            return setup.showLogsIfTestFailed(this).then(function () {
+                return setup.app.stop()
+            });
         }
     }
     return setup;
