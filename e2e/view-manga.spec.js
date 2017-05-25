@@ -111,7 +111,7 @@ describe('View Manga', function () {
                         .click("topbar .add-to-favorites")
                         .click("#favorites-btn")
                         .pause(1000)
-                        .getText("#mangalist .manga .title").should.eventually.equal("z5Pages");
+                        .getText("#mangalist .manga .title").should.eventually.equal("z5pages");
                 });
             });
         });

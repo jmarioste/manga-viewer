@@ -7,11 +7,11 @@
 	<div class=" col s12">
 		<div class="col s12 l3">
 			<div class="switch col s12">
-				<label>
+				<label id="include-subfolders">
 					Include subfolders
 					<input type="checkbox" data-bind="switch:isRecursive">
 					<span class="lever"></span>
-					<span data-bind="text:isRecursiveText"></span>
+					<span id="include-label" data-bind="text:isRecursiveText"></span>
 				</label>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 		Hotkey Shortcuts
 	</h4>
 </section>
-<section class="row" data-bind="foreach:commandsList">
+<section id="shortcut-list" class="row " data-bind="foreach:commandsList">
 	<div class=" col s12">
 		<div class="col s12 m12 l5 valign-wrapper">
 			<label class="settings-label valign col s6" data-bind="text:label"></label>

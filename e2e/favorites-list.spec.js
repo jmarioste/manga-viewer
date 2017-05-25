@@ -3,12 +3,7 @@ const chai = require('chai');
 
 const expect = chai.expect;
 
-describe('App bar when in Favorites List page', () => {
-    it('title should be Favorites list', () => {
-        return setup.app.client
-            .getText("topbar .topbar-text > span > span").should.eventually.equal("Favorites list")
-    });
-});
+
 
 describe('Favorites List', function () {
     this.timeout(30000)
@@ -47,7 +42,14 @@ describe('Favorites List', function () {
 
     afterEach(setup.stopApp)
 
-    describe(`When searching manga frmo favorites`, () => {
+    describe('App bar when in Favorites List page', () => {
+        it('title should be Favorites list', () => {
+            return setup.app.client
+                .getText("topbar .topbar-text > span > span").should.eventually.equal("Favorites list")
+        });
+    });
+
+    describe(`When searching manga from favorites`, () => {
         let mangaList = "#mangalist > .manga";
         let tests = [
             { searchValue: "this-manga-does-not-exist.zip", expected: 0 },
