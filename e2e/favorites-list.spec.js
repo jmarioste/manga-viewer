@@ -16,10 +16,10 @@ describe('Favorites List', function () {
                 return setup.app.client
                     .selectDirectorySampleManga()
                     .waitForFinishLoading()
+                    .pause(1000)
                     .click(".include-subfolders > label.right")
-                    .pause(500)
                     .waitForFinishLoading()
-                    .pause(500)
+                    .pause(1000)
                     .click("#mangalist > div:nth-child(1) .toggle-as-favorite")
                     .pause(1000)
                     .click("#mangalist > div:nth-child(2) .toggle-as-favorite")
