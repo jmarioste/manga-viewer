@@ -101,8 +101,9 @@ describe('Manga List', function () {
                 .waitForFinishLoading()
                 .pause(1000)
                 .click(".include-subfolders > label.right")
-                .pause(500)
+                .pause(1000)
                 .waitForFinishLoading()
+                .pause(2000)
                 .getElementCount("#mangalist > .manga").should.eventually.equal(3);
         });
     });
