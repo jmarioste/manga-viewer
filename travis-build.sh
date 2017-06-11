@@ -4,5 +4,6 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   sleep 3
 fi
 
-npm test
+npm testy
 npm run e2e
+npm run dist

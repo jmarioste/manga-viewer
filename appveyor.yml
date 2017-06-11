@@ -29,3 +29,4 @@ test_script:
   # run tests
   - npm test
   - npm run e2e
+  - npm run dist
