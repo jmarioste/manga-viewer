@@ -5,7 +5,7 @@
     "build-renderer-prod": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js",
     "postinstall": "install-app-deps",
     "pack": "build .",
-    "dist": "build --publish onTagOrDraft",
+    "dist": "build",
     "build-all": "build --win --x64 --ia32",
     "build-win32": "build --win --ia32",
     "build-win64": "build --win --x64",
