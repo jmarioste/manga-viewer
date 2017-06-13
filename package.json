@@ -64,7 +64,8 @@
       "target": [
         "AppImage",
         "deb"
-      ]
+      ],
+      "icon": "./icons/"
     },
     "mac": {
       "category": "public.app-category.entertainment",
