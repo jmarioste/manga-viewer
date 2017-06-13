@@ -9,7 +9,7 @@ const windowStateKeeper = require('electron-window-state');
 const GetMangaList = require('./main-process/get-mangalist');
 const SelectDirectory = require('./main-process/select-directory');
 const AppUpdater = require('./main-process/common/auto-updater');
-const mock = require('../e2e/mocks');
+
 
 let client;
 if (isDev && process.env.NODE_ENV === "development") {
@@ -18,6 +18,7 @@ if (isDev && process.env.NODE_ENV === "development") {
 
 if (process.env.SPECTRON) {
     logger.debug('Changing paths for Spectron');
+    const mock = require('../e2e/mocks');
     app.setPath('userData', path.resolve(app.getAppPath(), ".data"))
     mock(dialog)
 }
