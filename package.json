@@ -89,7 +89,7 @@
       "deleteAppDataOnUninstall": true
     }
   },
-  "author": "Jasser Mark Arioste",
+  "author": "Jasser Mark Arioste <knightjaz83@gmail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
     "babel-core": "6.24.0",
@@ -104,7 +104,7 @@
     "cross-env": "5.0.0",
     "css-loader": "0.28.0",
     "electron": "1.6.7",
-    "electron-builder": "17.3.1",
+    "electron-builder": "latest",
     "electron-connect": "0.6.1",
     "electron-rebuild": "1.5.7",
     "extract-zip": "=1.6.0",

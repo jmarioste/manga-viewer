@@ -3,7 +3,7 @@
   "version": "0.5.2",
   "description": "A modern manga viewer inspired by Quivi that uses Material Design",
   "main": "./main.js",
-  "author": "Jasser Mark Arioste",
+  "author": "Jasser Mark Arioste <knightjaz83@gmail.com>",
   "license": "GPL-3.0",
   "dependencies": {
     "adm-zip": "0.4.7",
