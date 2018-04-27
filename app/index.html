@@ -33,7 +33,8 @@
             currentViewMangaPage: currentViewMangaPage,
             viewMangaCommand: viewMangaCommand,
             searching: searching,
-            appCommands: appCommands">
+            appCommands: appCommands,
+            previousPage:previousPage">
 
     </topbar>
     <div class="wrapper show-nav">
@@ -68,15 +69,19 @@
             pagination: pagination,
             scrollEnd: scrollEnd,
             searching:searching,
+            searchValue:searchValue,
             isRecursive:isRecursive,
-            appCommands: appCommands">
+            appCommands: appCommands,
+            previousPage: previousPage">
     </manga-list>
     <file-drag-overlay></file-drag-overlay>
 </template>
 <template id="favorites-list-view">
     <favorites-list params="favorites:favorites,
             selectedManga:selectedManga,
-            currentPage: currentPage">
+            currentPage: currentPage,
+             searchValue:searchValue,
+             previousPage: previousPage">
     </favorites-list>
     <file-drag-overlay></file-drag-overlay>
 </template>

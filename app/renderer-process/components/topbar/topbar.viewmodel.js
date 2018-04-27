@@ -18,6 +18,7 @@ export class TopBarViewmodel {
         this.selectedManga = params.selectedManga;
         this.favorites = params.favorites;
         this.currentPage = params.currentPage;
+        this.previousPage = params.previousPage;
         this.appTitle = params.appTitle;
         this.appCommands = params.appCommands;
 
@@ -27,6 +28,8 @@ export class TopBarViewmodel {
         this.mangaTitle = ko.pureComputed(this.mangaTitle, this);
         this.isFavorite = ko.pureComputed(this.isFavorite, this);
         this.topBarText = ko.pureComputed(this.topBarText, this);
+        // this.isShowMenu = ko.pureComputed(this.isShowMenu, this);
+        this.isShowBackToListButton = ko.pureComputed(this.isShowBackToListButton, this);
         this.showSidebar = ko.observable();
 
         this.goNextPage = this.goNextPage.bind(this);
@@ -100,6 +103,19 @@ export class TopBarViewmodel {
                     throw `There's no page named ${this.currentPage()}`
             }
         }
+    }
+    isShowBackToListButton() {
+        if (this.currentPage() === Pages.ViewManga) {
+            $('.wrapper').toggleClass('show-nav');
+            return true;
+        };
+        return false;
+    }
+    backToList() {
+        logger.info("TopBarViewmodel::backToList")
+        this.currentPage(this.previousPage())
+        this.previousPage('');
+        $('.wrapper').toggleClass('show-nav');
     }
     static registerComponent() {
         ko.components.register("topbar", {

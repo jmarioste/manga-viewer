@@ -28,8 +28,10 @@ export default class ViewModel {
         this.appCommands = ko.observable(_.extend({}, DefaultCommandHotkeys, params.appCommands));
         this.bookmarks = ko.observableArray(this.getBookmarks(params));
         this.searching = ko.observable(false);
+        this.searchValue = ko.observable("");
         this.isRecursive = ko.observable(params.isRecursive);
         this.isDetectUpdatesOnStart = ko.observable(params.isDetectUpdatesOnStart);
+        this.previousPage = ko.observable(params.previousPage || Pages.MangaList)
         this.initialize();
     }
 
@@ -46,6 +48,7 @@ export default class ViewModel {
                 favorites,
                 isRecursive: this.isRecursive(),
                 currentPage: this.currentPage(),
+                previousPage: this.previousPage(),
                 appCommands: appCommands,
                 selectedMangaPath: selectedMangaPath,
                 isDetectUpdatesOnStart: this.isDetectUpdatesOnStart()
@@ -54,22 +57,22 @@ export default class ViewModel {
             rateLimit: 500
         });
 
-        let sub2 = this.selectedManga.subscribe(function (manga) {
-            if (manga) {
-                this.selectedDirectory(null);
-            }
-        }, this);
+        // let sub2 = this.selectedManga.subscribe(function (manga) {
+        //     if (manga) {
+        //         this.selectedDirectory(null);
+        //     }
+        // }, this);
         let sub3 = this.selectedMangaPath.subscribe(function (path) {
             logger.debug("selectedMangaPath changed", path);
             if (path) {
-                this.selectedDirectory(null);
+                // this.selectedDirectory(null);
                 this.currentPage(Pages.MangaList);
                 this.currentPage(Pages.ViewManga);
             }
         }, this);
 
         this.subscriptions.push(sub);
-        this.subscriptions.push(sub2);
+        // this.subscriptions.push(sub2);
 
         if (this.isDetectUpdatesOnStart()) {
             logger.info("checking for updates..");

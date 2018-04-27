@@ -7,7 +7,7 @@ import path from "path";
 
 import api from "renderer-process/common/api.js";
 import MangaFactory from "renderer-process/common/manga.factory.js";
-
+import Pages from "renderer-process/common/pages.enum";
 import logger from "electron-log";
 
 const ipc = window.require('electron').ipcRenderer;
@@ -19,11 +19,10 @@ export class FavoritesListViewmodel {
         this.favorites = params.favorites;
         this.selectedManga = params.selectedManga;
         this.currentPage = params.currentPage;
+        this.previousPage = params.previousPage;
 
-        this.searchValue = ko.observable("");
-        this.searching = ko.observable(false).extend({
-            rateLimit: 300
-        });
+        this.searchValue = params.searchValue;
+        this.searching = params.searching;
 
         this.favoritesManga = ko.observableArray([]);
         this.filteredManga = ko.pureComputed(this.filteredManga, this);
@@ -91,7 +90,8 @@ export class FavoritesListViewmodel {
 
     viewManga(manga) {
         this.selectedManga(manga);
-        this.currentPage("view-manga-view");
+        this.previousPage(Pages.FavoritesList)
+        this.currentPage(Pages.ViewManga);
     }
 
     static registerComponent() {

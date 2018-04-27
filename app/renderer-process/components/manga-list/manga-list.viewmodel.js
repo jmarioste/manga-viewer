@@ -6,6 +6,7 @@ import api from "renderer-process/common/api.js";
 import MangaFactory from "renderer-process/common/manga.factory.js";
 import template from "./manga-list.template.html";
 import Command from "renderer-process/models/command.viewmodel";
+import Pages from "renderer-process/common/pages.enum";
 import logger from "electron-log";
 const ipc = window.require('electron').ipcRenderer;
 
@@ -20,6 +21,7 @@ export class MangaListViewmodel {
         this.bookmarks = params.bookmarks;
         this.favorites = params.favorites;
         this.currentPage = params.currentPage;
+        this.previousPage = params.previousPage;
         this.selectedManga = params.selectedManga;
         this.pagination = params.pagination;
         this.scrollEnd = params.scrollEnd;
@@ -27,8 +29,8 @@ export class MangaListViewmodel {
         this.appCommands = params.appCommands;
 
 
-        this.isRecursive = ko.observable(params.isRecursive());
-        this.searchValue = ko.observable("");
+        this.isRecursive = params.isRecursive;
+        this.searchValue = params.searchValue
         this.isSearchFocused = ko.observable(false);
         this.mangas = ko.observableArray([]);
 
@@ -62,7 +64,7 @@ export class MangaListViewmodel {
     // methods
     initialize() {
         var self = this;
-        logger.info("MangaListViewmodel::initialize - ");
+        logger.info("MangaListViewmodel::initialize - ", this.selectedDirectory());
         let computed = ko.computed(function function_name(argument) {
             let value = this.searchValue().toLowerCase();
             let selected = this.selectedDirectory();
@@ -183,7 +185,9 @@ export class MangaListViewmodel {
 
     viewManga(manga) {
         this.selectedManga(manga);
-        this.currentPage("view-manga-view");
+        this.previousPage(Pages.MangaList);
+        this.currentPage(Pages.ViewManga);
+
     }
 
     focusSearch() {

@@ -6,9 +6,14 @@
 			</span>
 		</a>
 		<ul class="left">
-			<li>
+			<li data-bind="ifnot: isShowBackToListButton">
 				<a href="javascript:void(0);" class="left" data-bind="toggleNav:'.wrapper'" id="menu-btn">
 					<i class="material-icons">menu</i>
+				</a>
+			</li>
+			<li data-bind="if: isShowBackToListButton">
+				<a href="javascript:void(0);" class="left" data-bind="click: backToList" id="back-to-list-btn">
+					<i class="material-icons">arrow_back</i>
 				</a>
 			</li>
 		</ul>
