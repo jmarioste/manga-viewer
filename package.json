@@ -1,20 +1,20 @@
 {
   "scripts": {
-    "start": "electron ./app",
+    "start": "yarn install && yarn compile && electron ./app",
     "build-renderer": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js  --progress --profile --colors --watch",
     "build-renderer-prod": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js",
-    "postinstall": "install-app-deps",
-    "pack": "build .",
-    "dist": "build",
-    "build-all": "build --win --x64 --ia32",
-    "build-win32": "build --win --ia32",
-    "build-win64": "build --win --x64",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder .",
+    "dist": "electron-builder",
+    "build-all": "electron-builder --win --x64 --ia32 --mac --linux",
+    "build-win32": "electron-builder --win --ia32",
+    "build-win64": "electron-builder --win --x64",
     "test": "mocha ./app/**/*.spec.js --recursive",
     "test-dev": "mocha ./app/**/*.spec.js --recursive --watch",
     "e2e": "npm run build-renderer-prod  && mocha e2e",
-    "publish": "build --win --x64 -p always"
+    "publish": "electron-builder --win --x64 -p always"
   },
-  "repository": "https://github.com/shizkun/manga-viewer",
+  "repository": "https://github.com/jmarioste/manga-viewer",
   "keywords": [
     "Manga Viewer",
     "quick",
@@ -108,7 +108,6 @@
     "electron-builder": "latest",
     "electron-connect": "0.6.1",
     "electron-rebuild": "1.5.7",
-    "electron-updater": "2.21.8",
     "extract-zip": "=1.6.0",
     "file-loader": "0.11.1",
     "gulp": "3.9.1",

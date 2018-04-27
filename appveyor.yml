@@ -10,6 +10,7 @@ cache:
   - node_modules -> **\package.json
   - .\app\node_modules -> .\app\package.json
   - '%APPDATA%\npm-cache'
+  - "%LOCALAPPDATA%\\ Yarn"
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
@@ -17,7 +18,7 @@ install:
   # install modules
   - npm install -g node-gyp
   - npm config set python C:\Python27
-  - npm install
+  - yarn install
   - .\node_modules\.bin\electron-rebuild.cmd
 
 
@@ -28,5 +29,5 @@ test_script:
   - npm --version
   # run tests
   - npm test
-  - npm run e2e
-  - npm run dist
+  - yarn e2e
+  - yarn dist
