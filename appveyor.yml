@@ -18,7 +18,7 @@ install:
   # install modules
   - npm install -g node-gyp
   - npm config set python C:\Python27
-  - yarn install
+  - npm install
   - .\node_modules\.bin\electron-rebuild.cmd
 
 
@@ -29,5 +29,5 @@ test_script:
   - npm --version
   # run tests
   - npm test
-  - yarn e2e
-  - yarn dist
+  - npm e2e
+  - npm dist
