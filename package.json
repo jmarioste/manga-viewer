@@ -61,6 +61,7 @@
       ]
     },
     "linux": {
+      "category": "Graphics",
       "target": [
         "AppImage",
         "deb"
@@ -103,7 +104,7 @@
     "chai-as-promised": "6.0.0",
     "cross-env": "5.0.0",
     "css-loader": "0.28.0",
-    "electron": "1.8.2-beta5",
+    "electron": "1.8.6",
     "electron-builder": "latest",
     "electron-connect": "0.6.1",
     "electron-rebuild": "1.5.7",
