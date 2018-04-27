@@ -10,7 +10,6 @@ cache:
   - node_modules -> **\package.json
   - .\app\node_modules -> .\app\package.json
   - '%APPDATA%\npm-cache'
-  - "%LOCALAPPDATA%\\ Yarn"
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
