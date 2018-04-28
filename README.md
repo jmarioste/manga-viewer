@@ -1,7 +1,7 @@
 ![Logo](/build/256x256.png)
 # Baiji Manga Viewer
-[![Build Status](https://travis-ci.org/shizkun/manga-viewer.svg?branch=master)](https://travis-ci.org/shizkun/manga-viewer)
-[![Build status](https://ci.appveyor.com/api/projects/status/hocka5ecscejfvg7?svg=true)](https://ci.appveyor.com/project/shizkun/manga-viewer)
+[![Build Status](https://travis-ci.org/jmarioste/manga-viewer.svg?branch=master)](https://travis-ci.org/jmarioste/manga-viewer)
+[![Build status](https://ci.appveyor.com/api/projects/status/hocka5ecscejfvg7?svg=true)](https://ci.appveyor.com/project/jmarioste/manga-viewer)
 
 # Downloads
 - TODO

@@ -27,6 +27,6 @@ test_script:
   - node --version
   - npm --version
   # run tests
-  - npm test
-  - npm e2e
-  - npm dist
+  - npm run test
+  - npm run e2e
+  - npm run dist
