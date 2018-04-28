@@ -6,7 +6,7 @@ export class AboutDialog {
         this.shown = ko.observable();
         this.appName = ko.observable(remote.app.getName());
         this.version = ko.observable(remote.app.getVersion());
-        this.githubRepo = ko.observable("https://github.com/shizkun/manga-viewer/issues");
+        this.githubRepo = ko.observable("https://github.com/jmarioste/manga-viewer/issues");
         this.description = ko.observable(`A simple manga viewer inspired by Quivi that uses Electron and javascript ES6.`);
         this.onComplete = this.onComplete.bind(this);
     }
