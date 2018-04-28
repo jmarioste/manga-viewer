@@ -37,7 +37,7 @@ class RarHandler {
     }
 
     getImages() {
-        return this.getFilenames().timeout(1000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then(files => {
+        return this.getFilenames().timeout(10000, new Error(Errors.TIMEOUT_OPEN_RARFILE_ERR)).then(files => {
             let images = files.filter(file => myRegex.SUPPORTED_IMAGES.test(file));
 
             if (images.length) {

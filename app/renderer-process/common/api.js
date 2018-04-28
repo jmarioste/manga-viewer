@@ -45,16 +45,16 @@ export default class api {
             pagination
         });
 
-        ipc.once('get-mangalist-done', function (event, pages) {
-            logger.debug(`get-pages-done ${pages.length}`);
-            deferred.resolve(pages);
-        });
+        // ipc.once('get-mangalist-done', function (event, pages) {
+        //     logger.debug(`get-pages-done ${pages.length}`);
+        //     deferred.resolve(pages);
+        // });
 
-        ipc.once('get-mangalist-error', function (event, errorMessage) {
-            logger.info("api::getMangaList", errorMessage);
-            errorDialogInstance.showMessage(errorMessage);
-            deferred.reject(errorMessage);
-        });
+        // ipc.once('get-mangalist-error', function (event, errorMessage) {
+        //     logger.info("api::getMangaList", errorMessage);
+        //     errorDialogInstance.showMessage(errorMessage);
+        //     deferred.reject(errorMessage);
+        // });
 
         return deferred.promise();
     }
