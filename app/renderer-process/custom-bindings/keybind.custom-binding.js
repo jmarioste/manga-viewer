@@ -24,7 +24,7 @@ ko.bindingHandlers.keybind = {
             if (!_.includes([16, 17, 18, 91], event.keyCode)) {
                 letter = String.fromCharCode(event.keyCode);
             }
-            if (_.includes([37, 38, 39, 40], event.keyCode)) {
+            if (_.includes([37, 38, 39, 40, 8], event.keyCode)) {
                 switch (event.keyCode) {
                     case 37:
                         letter = "LEFT ARROW";
@@ -37,6 +37,9 @@ ko.bindingHandlers.keybind = {
                         break;
                     case 40:
                         letter = "DOWN ARROW";
+                        break;
+                    case 8:
+                        letter = "BACKSPACE";
                         break;
                 }
             }

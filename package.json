@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "yarn install && yarn compile && electron ./app",
+    "start": "electron ./app",
     "build-renderer": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js  --progress --profile --colors --watch",
     "build-renderer-prod": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js",
     "postinstall": "electron-builder install-app-deps",

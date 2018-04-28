@@ -11,5 +11,6 @@ export const DefaultCommandHotkeys = {
     NEXT_PAGE: "RIGHT ARROW",
     PREVIOUS_PAGE: "LEFT ARROW",
     FOCUS_SEARCH: "CTRL + F",
-    OPEN_DIRECTORY: "CTRL + O"
+    OPEN_DIRECTORY: "CTRL + O",
+    BACK_TO_LIST: "BACKSPACE"
 }

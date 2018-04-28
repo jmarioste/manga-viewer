@@ -4,6 +4,7 @@ import path from "path";
 import api from "renderer-process/common/api.js";
 import Pages from "renderer-process/common/pages.enum";
 import Folder from "renderer-process/models/folder.viewmodel.js";
+import { ViewOptions } from "renderer-process/components";
 import { DefaultCommandHotkeys } from "renderer-process/models/command.viewmodel";
 import { autoUpdater } from "renderer-process/common/auto-updater";
 import logger from "electron-log";
@@ -23,6 +24,7 @@ export default class ViewModel {
         this.selectedMangaPath = ko.observable(params.selectedMangaPath).extend({ notify: 'always' });
         this.currentViewMangaPage = ko.observable(0);
         this.viewMangaCommand = ko.observable(null).extend({ notify: 'always' });
+        this.imageFit = ko.observable(params.imageFit || ViewOptions.Default);
         this.pagination = ko.observable(0);
         this.scrollEnd = ko.observable(false).extend({ rateLimit: 500 });
         this.appCommands = ko.observable(_.extend({}, DefaultCommandHotkeys, params.appCommands));
@@ -49,6 +51,7 @@ export default class ViewModel {
                 isRecursive: this.isRecursive(),
                 currentPage: this.currentPage(),
                 previousPage: this.previousPage(),
+                imageFit: this.imageFit(),
                 appCommands: appCommands,
                 selectedMangaPath: selectedMangaPath,
                 isDetectUpdatesOnStart: this.isDetectUpdatesOnStart()
@@ -57,11 +60,7 @@ export default class ViewModel {
             rateLimit: 500
         });
 
-        // let sub2 = this.selectedManga.subscribe(function (manga) {
-        //     if (manga) {
-        //         this.selectedDirectory(null);
-        //     }
-        // }, this);
+
         let sub3 = this.selectedMangaPath.subscribe(function (path) {
             logger.debug("selectedMangaPath changed", path);
             if (path) {
@@ -72,7 +71,6 @@ export default class ViewModel {
         }, this);
 
         this.subscriptions.push(sub);
-        // this.subscriptions.push(sub2);
 
         if (this.isDetectUpdatesOnStart()) {
             logger.info("checking for updates..");

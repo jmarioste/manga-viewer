@@ -17,7 +17,7 @@ export class SettingsPageViewmodel {
         this.isRecursive = params.isRecursive;
         this.commands = params.commands;
         this.isDetectUpdatesOnStart = params.isDetectUpdatesOnStart;
-        this.viewOption = ko.observable(ViewOptions.Default)
+        this.imageFit = params.imageFit;
         this.viewOptions = ko.observableArray([
             new SelectItem("Normal size", ViewOptions.Default),
             new SelectItem("Fit to width", ViewOptions.FitToWidth),
@@ -63,7 +63,7 @@ export class SettingsPageViewmodel {
             PREVIOUS_PAGE: "Previous page",
             FOCUS_SEARCH: "Focus search",
             OPEN_DIRECTORY: "Open directory",
-
+            BACK_TO_LIST: "Back to list"
         }
         return map[key] || key;
     }

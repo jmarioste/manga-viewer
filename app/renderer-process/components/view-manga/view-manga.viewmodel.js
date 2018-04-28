@@ -24,20 +24,21 @@ export class ViewMangaViewmodel {
         this.command = params.viewMangaCommand;
         this.currentPage = params.currentViewMangaPage;
         this.appCommands = params.appCommands;
+        this.imageFit = params.imageFit;
 
         //class defined
-        this.option = ko.observable(1);
+        this.option = ko.observable(ko.unwrap(params.imageFit));
         this.scrollTopOnClick = ko.observable(true);
         this.page = ko.observable(1);
         this.transformScale = ko.observable(1.0);
         this.viewOptions = ko.observableArray(viewOptions);
 
-
+        console.log("option", this.option());
         //functions
         this.switchClass = this.switchClass.bind(this);
         this.goNextPage = this.goNextPage.bind(this);
         this.goToPreviousPage = this.goToPreviousPage.bind(this);
-        this.viewOption = ko.pureComputed(this.viewOption, this);
+        this.viewOption = ko.computed(this.viewOption, this);
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({ rateLimit: 50 });
 
         this.commands = [
@@ -58,6 +59,8 @@ export class ViewMangaViewmodel {
                 request.then((manga) => {
                     manga = MangaFactory.getManga(manga);
                     this.selectedManga(manga);
+
+
                     manga.pageImages([]);
                     this.preloadNextPages(0, 2);
                 })
@@ -81,6 +84,9 @@ export class ViewMangaViewmodel {
             };
         }, this);
         this.subscriptions.push(sub);
+        let viewOption = _.find(this.viewOptions(), (x) => x.value == this.imageFit());
+        console.log("viewOption", viewOption);
+        this.switchClass(viewOption);
     }
 
     dispose() {
@@ -95,6 +101,8 @@ export class ViewMangaViewmodel {
     }
 
     switchClass(viewOption) {
+        console.log("inside switchClass", viewOption);
+
         let last = this.option();
         this.option(viewOption.value);
 
@@ -179,21 +187,31 @@ export class ViewMangaViewmodel {
     }
 
     viewOption() {
+        console.log("View Manga pge: viewOption computed", this.option());
+        var returnValue;
         switch (this.option()) {
             case ViewOptions.Normal:
 
-                return "normal";
+                returnValue = "normal";
+                break;
             case ViewOptions.FitToWidth:
-                return "fit-width";
+                returnValue = "fit-width";
+                break;
             case ViewOptions.FitToHeight:
-                return "fit-height";
+                returnValue = "fit-height";
+                break;
             case ViewOptions.ZoomIn:
-                return "zoom-in";
+                returnValue = "zoom-in";
+                break;
             case ViewOptions.ZoomOut:
-                return "zoom-out";
+                returnValue = "zoom-out";
+                break;
             default:
-                return "normal";
+                returnValue = "normal";
+                break;
         }
+        console.log("returnValue", returnValue);
+        return returnValue;
     }
     static registerComponent() {
         ko.components.register("view-manga", {
