@@ -12,10 +12,7 @@ const Errors = require('../common/errors');
 const Regex = require('../common/regex');
 const ipc = ipcMain;
 const logger = require('electron-log');
-// const x = require('./get-manga-pages.worker');
-// const thread = require('./set-thumbnail.worker');
 
-const getPageThread = requireTaskPool(require.resolve('./get-manga-pages.worker'));
 const thread = requireTaskPool(require.resolve('./set-thumbnail.worker'));
 
 if (process.env.SPECTRON) {
@@ -121,7 +118,8 @@ module.exports = (function () {
                         .then(manga => self.updateManga(manga))
                         .then(manga => event.sender.send('get-manga-list-progress', manga))
                         .catch(function (e) {
-                            return logger.error("Something happened", e)
+                            logger.error(e);
+                            event.sender.send('get-mangalist-error', e.message.replace('{0}', manga.folderPath));
                         }).then(function () {
                             return logger.debug("done ", manga.folderPath);
                         });
@@ -129,7 +127,10 @@ module.exports = (function () {
                     processing = false;
                     event.sender.send('get-manga-list-done');
                     logger.debug("get-manga-list::done");
-                }).catch((err) => logger.info(err));
+                }).catch((err) => {
+                    logger.error(err);
+                    event.sender.send('get-mangalist-error', err.message);
+                });
         });
     }
 

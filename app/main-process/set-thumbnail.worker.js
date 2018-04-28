@@ -23,9 +23,7 @@ class SetThumnailWorker {
             return new ZipHandler(folderPath, yauzl);
         } else {
             try {
-                let rf = new rarfile.RarFile(folderPath, {
-                    rarTool: path.join(appPath, "UnRAR.exe")
-                });
+                let rf = new rarfile.RarFile(folderPath);
 
                 return new RarHandler(folderPath, rf);
             } catch (error) {

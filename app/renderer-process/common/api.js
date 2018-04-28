@@ -33,6 +33,7 @@ export default class api {
     }
 
     static getMangaList(rootFolder, isRecursive, searchValue, pagination) {
+        let deferred = $.Deferred();
         logger.info("api::getMangaList - rootFolder", rootFolder,
             "isRecursive", isRecursive,
             "searchValue:", searchValue);
@@ -43,6 +44,19 @@ export default class api {
             searchValue,
             pagination
         });
+
+        ipc.once('get-mangalist-done', function (event, pages) {
+            logger.debug(`get-pages-done ${pages.length}`);
+            deferred.resolve(pages);
+        });
+
+        ipc.once('get-mangalist-error', function (event, errorMessage) {
+            logger.info("api::getMangaList", errorMessage);
+            errorDialogInstance.showMessage(errorMessage);
+            deferred.reject(errorMessage);
+        });
+
+        return deferred.promise();
     }
 
     static getPages(start, end, folderPath) {
@@ -76,7 +90,7 @@ export default class api {
             deferred.resolve(manga);
         });
         ipc.once('get-manga-error', function (event, errorMessage) {
-            logger.info("api::getSubFolders", errorMessage);
+            logger.info("api::getManga", errorMessage);
             errorDialogInstance.showMessage(errorMessage);
             deferred.reject(errorMessage);
         });
