@@ -32,10 +32,9 @@
 
 <body class="loaded">
 	<!-- Preloader -->
-	<div id="loader-wrapper">
-		<div id="loader"></div>
-		<div class="loader-section section-left"></div>
-		<div class="loader-section section-right"></div>
+	<div class="loading">
+		<div class="load-circle">
+		</div>
 	</div>
 
 	<header id="header">
@@ -43,9 +42,15 @@
 			<div id="sticky-wrapper" class="sticky-wrapper" style="height:60px">
 				<nav class="navbar fixed-top navbar-expand-lg navbar-light" id="mainNav">
 					<div class="container">
+						<a href="https://jmarioste.github.io/manga-viewer/">
+							<img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"
+							 alt="Fork me on GitHub">
+						</a>
 
+						<a class="navbar-brand" href="#">
+							Baiji Manga Viewer
+						</a>
 
-						<a class="navbar-brand" href="#">Baiji Manga Viewer</a>
 						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
 						 aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
@@ -76,9 +81,8 @@
 					<div class="text-area">
 						<div class="row">
 							<div class="col-md-12 col-sm-12 text-center">
+								<img src="/icons/256x256.png" alt="" srcset="">
 								<h2>Baiji Manga Viewer
-									<br>
-									<!-- <span class="bold">app showcase</span> -->
 								</h2>
 								<p class="header-p">Modern, minimalist, simplistic, electron-based application .</p>
 								<div data-bind="foreach: $root.downloadButtons">

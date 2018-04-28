@@ -18,6 +18,7 @@ let vm = {
     ]
 };
 $(document).ready(function () {
+    $('.loading').delay(500).fadeOut(500);
     $('.carousel').carousel()
 
     fetch('https://github.com/jmarioste/manga-viewer/releases')
