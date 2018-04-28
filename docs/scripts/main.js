@@ -3,7 +3,7 @@ let vm = {
         {
             label: "Download for mac",
             platform: "mac",
-            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer-1.1.0.dmg"
+            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer-1.1.0-x86_64.AppImage"
         },
         {
             label: "Download for windows",
@@ -13,7 +13,7 @@ let vm = {
         {
             label: "Download for linux",
             platform: "linux",
-            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer-1.1.0-x86_64.AppImage"
+            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer_1.1.0_amd64.deb"
         }
     ]
 };
