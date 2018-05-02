@@ -25,7 +25,7 @@
     "productName": "Baiji Manga Viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
     "asar": true,
-    "asarUnpack": ["node_modules/"],
+    
     "files": [
       "bundle/",
       "node_modules/",
@@ -62,6 +62,7 @@
       ]
     },
     "linux": {
+      "asarUnpack": ["node_modules/"],
       "category": "Graphics",
       "target": [
         "AppImage",
