@@ -62,10 +62,11 @@ export default class ViewModel {
 
 
         let sub3 = this.selectedMangaPath.subscribe(function (path) {
-            logger.debug("selectedMangaPath changed", path);
+            logger.info("selectedMangaPath changed", path);
             if (path) {
                 // this.selectedDirectory(null);
-                this.currentPage(Pages.MangaList);
+                this.previousPage(this.currentPage());
+                // this.currentPage(Pages.MangaList);
                 this.currentPage(Pages.ViewManga);
             }
         }, this);

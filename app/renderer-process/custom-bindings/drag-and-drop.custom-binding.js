@@ -6,39 +6,57 @@ ko.bindingHandlers.dragAndDrop = {
     init: function (element, valueAccessor) {
         let selectedFile = valueAccessor();
         let $element = $(element);
-        $(element).on('dragover', function () {
-            logger.silly("dragging inside element");
-            $element.addClass("file-dragging");
+        document.addEventListener("dragenter", function( event ) {
+            // prevent default to allow drop
+            event.preventDefault();
+        }, false);
+
+        document.addEventListener("dragover", function () {
+            event.preventDefault();
+        }, false);
+
+        element.addEventListener("dragover", function (event) {
+            event.preventDefault();
+
+            let $target = $(event.target);
             $("#file-drag-overlay").addClass("file-dragging");
-            $element.scrollTop(0);
-            return false;
-        });
-
-        $element.on('dragleave', function () {
-            logger.silly("dragging outside element");
             $element.addClass("file-dragging");
-            $("#file-drag-overlay").removeClass("file-dragging");
-            return false;
-        });
+            $(element).scrollTop(0);
+        }, false);
 
-        $element.on('drop', function (e) {
-            e.preventDefault();
-            let files = e.originalEvent.dataTransfer.files;
-            let file = files[0];
+        document.addEventListener('dragleave', function (event) {
+            event.preventDefault();
+            
 
-            if (file && e.originalEvent.isTrusted) {
-                logger.debug('File is', file.path);
-                selectedFile(file.path);
+            let $target = $(event.target);
+            console.log(event.target.className);
+            if ($target.hasClass("file-dragging")) {
+                $element.removeClass("file-dragging");
+                $("#file-drag-overlay").removeClass("file-dragging");    
             }
+        }, false);
 
-            $element.removeClass("file-dragging");
-            $("#file-drag-overlay").removeClass("file-dragging");
-            Ps.update(element);
+        document.addEventListener('drop', function (event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            const file = files[0];
+            const $target = $(event.target);
+            const isManga = /.zip$|.rar$/gm.test(file.path)
+
+            console.log("document. on drop");
+            if ($target.hasClass("file-dragging")) {
+                if (file &&  isManga) {
+                    logger.debug('File is', file.path);
+                    selectedFile(file.path);
+
+                    $element.removeClass("file-dragging");
+                    $("#file-drag-overlay").removeClass("file-dragging");
+                    Ps.update(element);
+                }
+            }
+            
             return false;
-        })
+        }, false)
 
-        onDispose(element, function () {
-            $element.off("dragover dragleave drop");
-        })
     }
 }
