@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="description" content="Appox - App Landing Page">
-	<meta name="keywords" content="app, landing, landing page">
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Baiji Manga Viewer - Home</title>
 	<!-- Favicon -->
@@ -30,7 +29,7 @@
 	<![endif]-->
 </head>
 
-<body class="loaded">
+<body class="loaded ">
 	<!-- Preloader -->
 	<div class="loading">
 		<div class="load-circle">
@@ -48,8 +47,7 @@
 						</a>
 
 						<a class="navbar-brand" href="#">
-							<img src="./icons/48x48.png" alt="" srcset="">
-							Baiji Manga Viewer
+							<img src="./icons/48x48.png" alt="" srcset=""> Baiji Manga Viewer
 						</a>
 
 						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -66,9 +64,9 @@
 								<li class="nav-item">
 									<a class="nav-link" href="#features">Features</a>
 								</li>
-								<li class="nav-item">
+								<!-- <li class="nav-item">
 									<a class="nav-link" href="#installation">Installation</a>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 					</div>
@@ -85,9 +83,42 @@
 								<h2>Baiji Manga Viewer
 								</h2>
 								<p class="header-p">A modern, minimalist, simplistic, cross-platform, electron-based manga viewer application.</p>
-								<div data-bind="foreach: $root.downloadButtons">
+								<!-- <div data-bind="foreach: $root.downloadButtons">
 									<a data-bind="highlightDownload: platform, text:label, attr:{href: href}" target="_blank" class="header-btn col-sm-12 col-md-6 col-lg-4"></a>
+								</div> -->
+								<div class="download-buttons row d-flex justify-content-center">
+									<div class="dropdown" data-bind="hideNotPlatform: 'mac'">
+										<button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
+										 aria-expanded="false">
+											Download
+											<b data-bind="text: 'v'+version"></b>
+										</button>
+										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<a class="dropdown-item" target="_blank" data-bind="href:downloads.dmg">dmg</a>
+											<a class="dropdown-item" target="_blank" data-bind="href:downloads.zip">zip</a>
+										</div>
+									</div>
+									<div class="" data-bind="hideNotPlatform: 'win'">
+										<button class="btn btn-primary btn-lg" type="button">
+											<a data-bind="href:downloads.exe" target="_blank">
+												Download
+												<b data-bind="text: 'v'+version"></b>
+											</a>
+										</button>
+									</div>
+									<div class="dropdown " data-bind="hideNotPlatform: 'linux'">
+										<button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true"
+										 aria-expanded="false">
+											Download
+											<b data-bind="text: 'v'+version"></b>
+										</button>
+										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<a class="dropdown-item" target="_blank" data-bind="href:downloads.deb">.deb</a>
+											<a class="dropdown-item" target="_blank" data-bind="href:downloads.AppImage">.AppImage</a>
+										</div>
+									</div>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -131,7 +162,7 @@
 						<div class="feature-icon">
 							<i class="fa fa-desktop" aria-hidden="true"></i>
 						</div>
-						<h4>clean &amp; responsive</h4>
+						<h4>clean</h4>
 						<p>Clean and responsive UI based on material design.</p>
 					</div>
 				</div>
@@ -140,7 +171,7 @@
 						<div class="feature-icon">
 							<i class="fa fa-arrows-alt" aria-hidden="true"></i>
 						</div>
-						<h4>Customizable Settings & Hotkeys</h4>
+						<h4>Customizable</h4>
 						<p>Easily change hotkeys and view settings through the settings page.</p>
 					</div>
 				</div>
@@ -149,7 +180,7 @@
 						<div class="feature-icon">
 							<i class="fa fa-rocket" aria-hidden="true"></i>
 						</div>
-						<h4>Fast and fluid</h4>
+						<h4>Fast </h4>
 						<p>View and search manga without delay. </p>
 					</div>
 				</div>
@@ -170,31 +201,40 @@
 	<section class="feature" id="features">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
-					 <div class="heading-title heading-title-1">
-						<h3>
-							<span class="bold">Functionalities</span>
-						</h3>
-					</div>
-					<div class="col-md-12">
-						<ul>
-							<li>Cross platform application for OSX / Linux / Windows</li>
-							<li>Read .zip and .rar file formats</li>
-							<li>Material Design UI</li>
-							<li>Bookmark a Folder for easy navigation</li>
-							<li>Add your favorite manga to favorites</li>
-							<li>Quickly search a folder and its subfolders for manga</li>
-							<li>Scans a directory and automatically lists the available manga from that directory.</li>
-							<li>Drag and Drop .zip and .rar files to UI</li>
+				<div class="heading-title heading-title-1 col-md-12">
+					<h3>
+						<span class="bold">Features</span>
+					</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-lg-6">
+
+					<div class="col-md-12 " style="margin-top:3.5rem">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item feature__list-group-item">Cross platform application for OSX / Linux / Windows</li>
+							<li class="list-group-item feature__list-group-item">Supports .zip,.rar, .cbr file formats</li>
+							<li class="list-group-item feature__list-group-item">Material Design UI</li>
+							<li class="list-group-item feature__list-group-item">Bookmark a Folder for easy navigation</li>
+							<li class="list-group-item feature__list-group-item">Add your favorite manga to favorites</li>
+							<li class="list-group-item feature__list-group-item">Quickly search a folder and its subfolders for manga</li>
+							<li class="list-group-item feature__list-group-item">Scans a directory and automatically lists the available manga from that directory.</li>
+							<li class="list-group-item feature__list-group-item">Drag and Drop files to UI</li>
 						</ul>
-					</div>					
+					</div>
+
+
+				</div>
+
+				<div class="col-md-12 col-lg-6" style="margin-top:3.5rem; overflow: hidden">
+					<img src="screenshots/test.png" />
 				</div>
 			</div>
 		</div>
 	</section>
 	<!-- === End Feature Section -->
 	<!-- Start Installation Section -->
-	<section>
+	<!-- <section>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -206,7 +246,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 	<!-- End Installation section -->
 
 	<!--============Footer section==========-->
@@ -231,7 +271,7 @@
 	=======================================-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 	<script src="./scripts/jquery-3.2.1.min.js"></script>
-	<script src="./scripts/bootstrap.min.js"></script>
+	<script src="./scripts/bootstrap.bundle.min.js"></script>
 	<script src="./scripts/smooth-scroll.js"></script>
 	<!-- <script src="./scripts/owl.carousel.min.js."></script> -->
 	<script src="./scripts/jquery.magnific-popup.min.js"></script>

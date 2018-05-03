@@ -160,6 +160,7 @@
  section{
      padding: 100px 0px 120px 0px;
 }
+
 /*==================================== ===[Batton Style ]=== ======================================*/
  .header-btn{
      background:#009688;
@@ -283,6 +284,10 @@
  .navbar-toggle .icon-bar {
      background: #777;
 }
+
+.navbar-light .navbar-toggler {
+    border-color: rgba(0,0,0,.1) !important;
+}
  #appox-navbar .nav-download {
      padding: 12px 30px;
      font-weight: bold;
@@ -400,6 +405,7 @@
      border:none;
 }
  #intro{
+     /* background: linear-gradient(to bottom, #009688 , white); */
      background:#009688;
      color:#fff;
      padding-top: 50px;
@@ -408,6 +414,22 @@
      position:relative;
      z-index:1;
      padding: 100px 0px;
+}
+
+#intro .download-buttons >div {
+    margin: 0 1rem;    
+}
+
+#intro .download-buttons >div >button {
+    
+    background-color: #FF9800;
+    border:1px solid white;
+}
+.download-buttons span {
+    margin: 0;
+}
+.download-buttons button > a {
+    color: white;
 }
 .screenshort-wrapper{float:none; margin: 0px auto;}
 .screenshots-right{width: 100%;}
@@ -502,6 +524,13 @@
      margin-bottom: 0px;
 }
 
+
+#feature .list-group .list-group-flush{
+    color: #777;
+}
+.feature__list-group-item {
+    background-color: rgba(0,0,0,0);
+}
 /*==================================== ===[Contant Style ]=== ======================================*/
  .contact {
      background:url(../images/contact-bg.png);
@@ -710,7 +739,7 @@
 /*================= gradient=============== STYLE */
 
 .gradient #intro{
-background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);
+background: linear-gradient(to right, #009688 0%, #7579ff 100%);
 }
 .gradient  #intro .active-btn{
 	background:#fff;
@@ -734,30 +763,30 @@ background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);
 	width:100%;
 	top:0;
 	left:0;
-	background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);
+	background: linear-gradient(to right, #009688 0%, #7579ff 100%);
 	opacity:.75;
 }
-.gradient-image .header-btn{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);}
-.gradient-image #appox-navbar .nav-download{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);transition:.5s;}
+.gradient-image .header-btn{background: linear-gradient(to right, #009688 0%, #7579ff 100%);}
+.gradient-image #appox-navbar .nav-download{background: linear-gradient(to right, #009688 0%, #7579ff 100%);transition:.5s;}
 .gradient-image #appox-navbar .nav-download:hover{background:#fff;transition:.5s;}
 .gradient-image  .owl-dots{margin-top:20px;}
 
 /*===================All-Gradient Style=================*/
 
-.all-gradient #intro{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);}
-.all-gradient .header-btn{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);}
-.all-gradient #appox-navbar .nav-download{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);transition:.5s;}
+.all-gradient #intro{background: linear-gradient(to right, #009688 0%, #7579ff 100%);}
+.all-gradient .header-btn{background: linear-gradient(to right, #009688 0%, #7579ff 100%);}
+.all-gradient #appox-navbar .nav-download{background: linear-gradient(to right, #009688 0%, #7579ff 100%);transition:.5s;}
 .all-gradient #appox-navbar .nav-download:hover{background:#fff;transition:.5s;}
 .all-gradient .requirement .requirement-single i{background: #313131;transition: .5s;}
-.all-gradient .requirement-single:hover  .feature-icon i{background: linear-gradient(to right, #b224ef 0%, #7579ff 100%);transition: .5s;}
-.all-gradient .feature-i i{background:linear-gradient(to top, #b224ef 0%, #7579ff 100%);}
+.all-gradient .requirement-single:hover  .feature-icon i{background: linear-gradient(to right, #009688 0%, #7579ff 100%);transition: .5s;}
+.all-gradient .feature-i i{background:linear-gradient(to top, #009688 0%, #7579ff 100%);}
 .all-gradient  .owl-dots{margin-top:20px;}
-.all-gradient  .appox-down{background:linear-gradient(to top, #b224ef 0%, #7579ff 100%);}
-.all-gradient .fa-play:hover{background:linear-gradient(to top, #b224ef 0%, #7579ff 100%);}
-.all-gradient .singel-praice:hover .praice-btn{background:linear-gradient(to top, #b224ef 0%, #7579ff 100%);transition:.5s;}
-.all-gradient .team figure:hover figcaption{background:linear-gradient(to right, #b224ef 0%, #7579ff 100%);transition:.5s;}
-.all-gradient  .contact .btn{background:linear-gradient(to right, #b224ef 0%, #7579ff 100%);transition:.5s;}
-.all-gradient .appox-img::before, .all-gradient .appox-img-2::before{background:linear-gradient(to top, #b224ef 0%, #7579ff 100%);}
+.all-gradient  .appox-down{background:linear-gradient(to top, #009688 0%, #7579ff 100%);}
+.all-gradient .fa-play:hover{background:linear-gradient(to top, #009688 0%, #7579ff 100%);}
+.all-gradient .singel-praice:hover .praice-btn{background:linear-gradient(to top, #009688 0%, #7579ff 100%);transition:.5s;}
+.all-gradient .team figure:hover figcaption{background:linear-gradient(to right, #009688 0%, #7579ff 100%);transition:.5s;}
+.all-gradient  .contact .btn{background:linear-gradient(to right, #009688 0%, #7579ff 100%);transition:.5s;}
+.all-gradient .appox-img::before, .all-gradient .appox-img-2::before{background:linear-gradient(to top, #009688 0%, #7579ff 100%);}
 
 
 
