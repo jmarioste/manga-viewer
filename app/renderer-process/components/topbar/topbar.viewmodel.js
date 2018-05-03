@@ -34,18 +34,19 @@ export class TopBarViewmodel {
 
         this.goNextPage = this.goNextPage.bind(this);
         this.goPrevPage = this.goPrevPage.bind(this);
-        this.toggleFavorite = this.toggleFavorite.bind(this);
 
-        this.commands = [
-            new Command(this.appCommands().BOOKMARK_MANGA, this.toggleFavorite),
-        ];
 
         logger.info("TopBarViewmodel::constructor - end", this.currentPage());
     }
 
     // methods
     initialize() {
-
+        this.appCommands.subscribe(function (appCommands) {
+            logger.info("New keybindings set in settings");
+            this.commands([
+                new Command(this.appCommands().BOOKMARK_MANGA, this.toggleFavorite),
+            ]);
+        });
     }
 
     dispose() {
@@ -62,7 +63,7 @@ export class TopBarViewmodel {
         }
     }
 
-    toggleFavorite() {
+    toggleFavorite =()=> {
         logger.info("toggleFavorite");
         let manga = this.selectedManga();
         manga.isFavorite(!manga.isFavorite());
@@ -111,9 +112,9 @@ export class TopBarViewmodel {
         };
         return false;
     }
-    backToList() {
+    backToList = () => {
         logger.info("TopBarViewmodel::backToList")
-        this.currentPage(this.previousPage())
+        this.currentPage(this.previousPage() || Pages.MangaList)
         this.previousPage('');
         $('.wrapper').toggleClass('show-nav');
     }
