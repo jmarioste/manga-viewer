@@ -16,8 +16,9 @@ install:
   - ps: Install-Product node $env:nodejs_version x64
   - ps: Invoke-WebRequest http://www.rarlab.com/rar/unrarw32.exe -OutFile .\app\unrarw32.exe
   #extract unrar
-  - ps: .\app\unrarw32.exe -s -d
-  - ps: dir
+  - ps: cd app
+  - ps: .\unrarw32.exe -s -d
+  - ps: cd..
   # install modules
   - npm install -g node-gyp
   - npm config set python C:\Python27

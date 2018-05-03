@@ -5,7 +5,7 @@ const DataStore = require('nedb');
 const Promise = require('bluebird');
 const recursive = require('recursive-readdir');
 const { requireTaskPool } = require('electron-remote');
-
+const isDev = require('electron-is-dev');
 const { ipcMain, app } = require('electron');
 const ZipHandler = require('./archive-handlers/zip.handler');
 const Errors = require('../common/errors');
@@ -20,11 +20,14 @@ if (process.env.SPECTRON) {
 }
 
 const dataPath = app.getPath('userData');
-const appPath = app.getAppPath();
+const rarPath = isDev ? app.getAppPath() : app.getAppPath() + '.unpacked';
 logger.error(dataPath);
-logger.error(appPath);
+logger.error(app.getAppPath());
 logger.transports.file.level = 'debug';
 logger.transports.console.level = 'debug';
+
+const rarTool = path.join(rarPath, "UnRAR.exe");
+logger.info('rarTool path', rarTool);
 module.exports = (function () {
     function GetMangaList() {
         logger.debug("--dirname", path.join(__dirname, "/main-process/"));
@@ -114,7 +117,7 @@ module.exports = (function () {
                 .then(mangas => _.sortBy(mangas, 'titleShort'))
                 .then(mangas => mangas.slice(start, end))
                 .each(manga => {
-                    return thread.setThumbnail(manga, dataPath, appPath)
+                    return thread.setThumbnail(manga, dataPath, rarPath)
                         .then(manga => self.updateManga(manga))
                         .then(manga => event.sender.send('get-manga-list-progress', manga))
                         .catch(function (e) {
@@ -146,7 +149,7 @@ module.exports = (function () {
 
             self.getMangas(folderPaths)
                 .each(manga => {
-                    return thread.setThumbnail(manga, dataPath, appPath)
+                    return thread.setThumbnail(manga, dataPath, rarPath)
                         .then(manga => self.updateManga(manga))
                         .then(manga => event.sender.send('get-favorites-list-progress', manga))
                         .catch(err => { throw err });
@@ -172,7 +175,7 @@ module.exports = (function () {
                     }
                     else {
                         if (!manga.pages) {
-                            return thread.getImages(manga, appPath)
+                            return thread.getImages(manga, rarPath)
                                 .then(self.updateManga(manga))
                                 .then(manga => event.sender.send('get-manga-done', manga))
                         } else {
@@ -191,7 +194,7 @@ module.exports = (function () {
         var self = this;
         ipc.on('get-pages', function (event, input) {
             logger.debug('get-pages::starting..');
-            thread.getPages(input.folderPath, input.start, input.end, appPath)
+            thread.getPages(input.folderPath, input.start, input.end, rarPath)
                 .then(pages => {
                     logger.debug(`initializeGetPages`)
                     event.sender.send('get-pages-done', pages);

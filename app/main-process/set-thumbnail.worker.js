@@ -22,8 +22,12 @@ class SetThumnailWorker {
         if (isZip) {
             return new ZipHandler(folderPath, yauzl);
         } else {
+            const rarTool = path.join(appPath, "UnRAR.exe");
+            logger.info('rarTool path', rarTool);
             try {
-                let rf = new rarfile.RarFile(folderPath);
+                let rf = new rarfile.RarFile(folderPath, {
+                    rarTool: rarTool
+                });
 
                 return new RarHandler(folderPath, rf);
             } catch (error) {
