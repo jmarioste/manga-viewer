@@ -40,6 +40,37 @@
 	// transition:.25s;
 }
 
+.navigation-overlay {
+	position: fixed;
+	top: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height:100%;
+	width:20%;
+	background-color:rgba(black, .1);
+	opacity: 0;
+	transition: .2s;
+	cursor: pointer;
+	z-index: 5;
+	user-select: none;
+	&:hover{
+		opacity: 1;
+	}
+}
+
+.navigation-overlay__btn {
+	color: white;
+}
+.navigation-overlay__prev {
+
+	left:0;
+}
+
+.navigation-overlay__next {
+	right:0;
+
+}
 .view-controls{
 	// background-color: rgba(black, .5);
 	position: fixed;
