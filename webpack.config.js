@@ -1,7 +1,8 @@
-import path from "path";
-import webpack from "webpack";
+const path = require('path');
+const webpack = require('webpack');
 
-export default {
+
+module.exports = {
     entry: './app/renderer-process/app.js',
     output: {
         filename: 'app-bundle.js',
@@ -10,16 +11,15 @@ export default {
     },
     devtool: '#inline-source-map',
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
-                presets: ['es2015'],
+                // presets: ['es2015'],
                 sourceMaps: ['inline']
             }
-        }],
-        rules: [{
+        },{
             test: /\.scss$/,
             use: [{
                 loader: "style-loader" // creates style nodes from JS strings
@@ -33,7 +33,8 @@ export default {
                     ]
                 }
             }]
-        }, {
+        },
+            {
             test: /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.jpg$/,
             use: [{
                 loader: "file-loader"
@@ -49,11 +50,12 @@ export default {
         }, {
             test: /\.png$|http/,
             use: ["url-loader?mimetype=image/png"]
-        }, {
+        },{
             test: /\.js$/,
             use: ["source-map-loader"],
             enforce: "pre"
         }]
+
     },
     resolve: {
         modules: [

@@ -1,8 +1,8 @@
 {
   "scripts": {
     "start": "electron ./app",
-    "build-renderer": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js  --progress --profile --colors --watch",
-    "build-renderer-prod": "node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.renderer.dev.js",
+    "build-renderer": "webpack --watch",
+    "build-renderer-prod": "webpack",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder .",
     "dist": "electron-builder",
@@ -25,7 +25,6 @@
     "productName": "Baiji Manga Viewer",
     "copyright": "Copyright © 2017 Jasser Mark Arioste",
     "asar": true,
-    
     "files": [
       "bundle/",
       "node_modules/",
@@ -62,7 +61,6 @@
       ]
     },
     "linux": {
-      "asarUnpack": ["node_modules/"],
       "category": "Graphics",
       "asar": false,
       "target": [
@@ -93,16 +91,14 @@
       "deleteAppDataOnUninstall": true
     }
   },
-  "author": "Jasser Mark Arioste <knightjaz83@gmail.com>",
+  "author": "Jasser Mark Arioste <jassermark.arioste@gmail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "babel-core": "6.24.0",
-    "babel-loader": "6.4.1",
-    "babel-plugin-add-module-exports": "0.2.1",
-    "babel-plugin-dynamic-import-webpack": "1.0.1",
-    "babel-preset-env": "1.3.2",
-    "babel-preset-stage-0": "6.24.1",
-    "babel-register": "6.24.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.3.2",
+    "babel-register": "^6.26.0",
     "chai": "^3.5.0",
     "chai-as-promised": "6.0.0",
     "cross-env": "5.0.0",
