@@ -13,6 +13,7 @@ import { viewOptions, ViewOptions } from "./view-options.js";
 import Command from "renderer-process/models/command.viewmodel";
 const ipc = window.require('electron').ipcRenderer;
 import logger from "electron-log";
+
 export class ViewMangaViewmodel {
     constructor(params) {
         logger.info("ViewMangaViewModel::constructor - end");
@@ -22,10 +23,12 @@ export class ViewMangaViewmodel {
         this.selectedManga = params.selectedManga;
         this.selectedMangaPath = params.selectedMangaPath;
         this.command = params.viewMangaCommand;
-        this.currentPage = params.currentViewMangaPage;
+        this.currentViewMangaPage = params.currentViewMangaPage;
         this.appCommands = params.appCommands;
         this.imageFit = params.imageFit;
-
+        this.currentPage = params.currentPage;
+        this.previousPage = params.previousPage;
+        this.favorites = params.favorites;
         //class defined
         this.option = ko.observable(ko.unwrap(params.imageFit));
         this.scrollTopOnClick = ko.observable(true);
@@ -34,16 +37,16 @@ export class ViewMangaViewmodel {
         this.viewOptions = ko.observableArray(viewOptions);
 
         console.log("option", this.option());
-        //functions
-        this.switchClass = this.switchClass.bind(this);
-        this.goNextPage = this.goNextPage.bind(this);
-        this.goToPreviousPage = this.goToPreviousPage.bind(this);
+
         this.viewOption = ko.computed(this.viewOption, this);
         this.currentImage = ko.pureComputed(this.currentImage, this).extend({ rateLimit: 50 });
-
+        this.showNextOverlay = ko.pureComputed(this.showNextOverlay);
+        this.showPrevOverlay = ko.pureComputed(this.showPrevOverlay);
         this.commands = [
-            new Command(this.appCommands().NEXT_PAGE, this.goNextPage),
-            new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage)
+            new Command(this.appCommands().NEXT_PAGE, this.goNextPage.bind(this)),
+            new Command(this.appCommands().PREVIOUS_PAGE, this.goToPreviousPage.bind(this)),
+            new Command(this.appCommands().BACK_TO_LIST, this.backToList),
+            new Command(this.appCommands().BOOKMARK_MANGA, this.toggleFavorite),
         ];
 
         logger.info("ViewMangaViewModel::constructor - end", this.selectedManga());
@@ -65,7 +68,7 @@ export class ViewMangaViewmodel {
                     this.preloadNextPages(0, 2);
                 })
             } else {
-                // this.currentPage(0);
+                // this.currentViewMangaPage(0);
             }
         } else {
             this.preloadNextPages(0, 2);
@@ -97,10 +100,27 @@ export class ViewMangaViewmodel {
             this.selectedManga(null);
         }
 
-        this.currentPage(0);
+        this.currentViewMangaPage(0);
     }
 
-    switchClass(viewOption) {
+    backToList = () => {
+        this.currentPage(this.previousPage() || Pages.MangaList);
+        this.previousPage(null);
+        $('.wrapper').toggleClass('show-nav');
+    }
+
+    toggleFavorite = () => {
+        logger.info("toggleFavorite");
+        let manga = this.selectedManga();
+        manga.isFavorite(!manga.isFavorite());
+        if (manga.isFavorite()) {
+            this.favorites.push(manga.folderPath);
+        } else {
+            this.favorites.remove(manga.folderPath);
+        }
+    }
+
+    switchClass = (viewOption) => {
         console.log("inside switchClass", viewOption);
 
         let last = this.option();
@@ -129,34 +149,48 @@ export class ViewMangaViewmodel {
                 this.transformScale(1.0);
                 break;
         }
-    }
+    };
 
-    goNextPage() {
+    goNextPage =() => {
         logger.info("ViewMangaViewmodel::goNextPage");
         //TODO: Return Logic for execeeding last page.
-        let index = this.currentPage();
+        let index = this.currentViewMangaPage();
         let selected = this.selectedManga();
         if (selected && index < selected.pages - 1) {
 
             let lastIndex = selected.pageImages().length - 1;
-            if (lastIndex - this.currentPage() <= 3) {
+            if (lastIndex - this.currentViewMangaPage() <= 3) {
                 this.preloadNextPages().then(() => {
-                    this.currentPage(index + 1);
+                    this.currentViewMangaPage(index + 1);
                     return;
                 });
             } else {
-                this.currentPage(index + 1);
+                this.currentViewMangaPage(index + 1);
             }
 
         }
-    }
+    };
 
-    goToPreviousPage() {
-        let index = this.currentPage();
+    goToPreviousPage =()=> {
+        let index = this.currentViewMangaPage();
         let selected = this.selectedManga();
         if (selected && index > 0) {
-            this.currentPage(index - 1);
+            this.currentViewMangaPage(index - 1);
         }
+    };
+
+    showNextOverlay = () => {
+        const selected = this.selectedManga();
+        if (selected) {
+            console.log("showNextOverlay",this.currentViewMangaPage(), selected.pages)
+            return selected.pages - 1 > this.currentViewMangaPage();
+        }
+
+        return false;
+    }
+
+    showPrevOverlay = () => {
+        return this.currentViewMangaPage() > 0;
     }
 
     currentImage() {
@@ -165,7 +199,7 @@ export class ViewMangaViewmodel {
 
         if (selected) {
             logger.info("changing currentImage");
-            return selected.pageImages()[this.currentPage()];
+            return selected.pageImages()[this.currentViewMangaPage()];
         }
     }
 
@@ -173,9 +207,9 @@ export class ViewMangaViewmodel {
 
         let selected = this.selectedManga();
         if (selected) {
-            start = start || selected.pageImages().length;
-            end = end || Math.min(this.currentPage() + 3, selected.pages);
-            logger.info("pages", this.currentPage(), start, end);
+        start = start || selected.pageImages().length;
+            end = end || Math.min(this.currentViewMangaPage() + 3, selected.pages);
+            logger.info("pages", this.currentViewMangaPage(), start, end);
             return api.getPages(start, end, selected.folderPath)
                 .then(function (pages) {
 
@@ -213,6 +247,8 @@ export class ViewMangaViewmodel {
         console.log("returnValue", returnValue);
         return returnValue;
     }
+
+
     static registerComponent() {
         ko.components.register("view-manga", {
             viewModel: ViewMangaViewmodel,
@@ -226,6 +262,5 @@ export const ViewMangaCommand = {
     NextPage: 1,
     PrevPage: 2
 };
-
 
 ViewMangaViewmodel.registerComponent();

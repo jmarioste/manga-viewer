@@ -3,12 +3,20 @@ css:viewOption,
 listenTo:commands, 
 preventPropagation: true,
 context:'view-manga'">
-
+	<div class="navigation-overlay navigation-overlay__prev" data-bind="visible:showPrevOverlay, click: goToPreviousPage ">
+		<a class="navigation-overlay__btn">
+			<i class="large material-icons">chevron_left</i>
+		</a>
+	</div>
 	<img class="manga-page" data-bind="src: $component.currentImage, 
 	click:$component.goNextPage, 
 	scrollTopOnClick:scrollTopOnClick,
 	scale:transformScale" align="top">
-
+	<div class="navigation-overlay navigation-overlay__next" data-bind="visible:showNextOverlay, click: goNextPage">
+		<a class="navigation-overlay__btn">
+			<i class="large material-icons">chevron_right</i>
+		</a>
+	</div>
 	<div class="view-controls">
 		<div class="stuff" data-bind="foreach:viewOptions">
 			<a class="btn btn-floating  waves-effect waves-light" data-bind="click:$component.switchClass, clickBubble:false">
