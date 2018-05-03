@@ -3,30 +3,42 @@ let vm = {
         {
             label: "Download for mac",
             platform: "mac",
-            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer-1.1.0.dmg"
         },
         {
             label: "Download for windows",
             platform: "win",
-            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer-setup-1.1.0.exe"
         },
         {
             label: "Download for linux",
             platform: "linux",
-            href: "https://github.com/jmarioste/manga-viewer/releases/download/v1.1.0/baiji-manga-viewer_1.1.0_amd64.deb"
         }
-    ]
+    ],
+    getUrl(assets, regex) {
+        var url = assets.map(asset => asset.browser_download_url)
+            .filter((url) => regex.test(url));
+        console.log(url);
+        return url[0];
+    }
 };
 $(document).ready(function () {
     $('.loading').delay(500).fadeOut(500);
     $('.carousel').carousel()
     $('.do-magnifiy').magnificPopup({ type: 'image' });
 
-    fetch('https://github.com/jmarioste/manga-viewer/releases')
-        .then(function (data) {
+    fetch('https://api.github.com/repos/jmarioste/manga-viewer/releases/latest')
+        .then(function (response) {
+            return response.json();
+        }).then(function(data){
             console.log(data);
-        }).catch(function () {
-            console.log("nothing happend");
+            vm.downloadButtons[0].href = vm.getUrl(data.assets, /.dmg$/g);
+            vm.downloadButtons[1].href = vm.getUrl(data.assets, /.exe$/g);
+            vm.downloadButtons[2].href = vm.getUrl(data.assets, /.deb$/g);
+            
+            ko.applyBindings(vm, $("body")[0]);
         })
-    ko.applyBindings(vm, $("body")[0]);
+           
+        // .catch(function () {
+        //     console.log("nothing happend");
+        // })
+    
 })
