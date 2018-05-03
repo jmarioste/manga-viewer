@@ -6,7 +6,7 @@ ko.bindingHandlers.dragAndDrop = {
     init: function (element, valueAccessor) {
         let selectedFile = valueAccessor();
         let $element = $(element);
-        document.addEventListener("dragenter", function( event ) {
+        document.addEventListener("dragenter", function (event) {
             // prevent default to allow drop
             event.preventDefault();
         }, false);
@@ -26,13 +26,13 @@ ko.bindingHandlers.dragAndDrop = {
 
         document.addEventListener('dragleave', function (event) {
             event.preventDefault();
-            
+
 
             let $target = $(event.target);
             console.log(event.target.className);
             if ($target.hasClass("file-dragging")) {
                 $element.removeClass("file-dragging");
-                $("#file-drag-overlay").removeClass("file-dragging");    
+                $("#file-drag-overlay").removeClass("file-dragging");
             }
         }, false);
 
@@ -45,16 +45,16 @@ ko.bindingHandlers.dragAndDrop = {
 
             console.log("document. on drop");
             if ($target.hasClass("file-dragging")) {
-                if (file &&  isManga) {
+                if (file && isManga) {
                     logger.debug('File is', file.path);
                     selectedFile(file.path);
 
-                    $element.removeClass("file-dragging");
-                    $("#file-drag-overlay").removeClass("file-dragging");
                     Ps.update(element);
                 }
             }
-            
+
+            $element.removeClass("file-dragging");
+            $("#file-drag-overlay").removeClass("file-dragging");
             return false;
         }, false)
 
