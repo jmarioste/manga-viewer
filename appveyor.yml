@@ -38,4 +38,4 @@ test_script:
   - npm run dist
 
 on_success:
-  - ps: appveyor.ps1
+  - ps: .\appveyor.ps1
