@@ -1,5 +1,9 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-RestMethod -Method GET -Uri https://api.github.com/repos/jmarioste/manga-viewer/releases/latest?auth_token=$env:GH_TOKEN -ContentType "json" -OutFile ./docs/scripts/metadata.json >$null 2>&1
+Invoke-RestMethod 
+  -Headers @{"Authorization"= "token $env:GH_TOKEN"} 
+  -Method GET -Uri https://api.github.com/repos/jmarioste/manga-viewer/releases/latest 
+  -ContentType "json" 
+  -OutFile ./docs/scripts/metadata.json
 
 git config --global user.email "jassermark.arioste@gmail.com"
 git config --global user.name "Jasser Mark Arioste"
