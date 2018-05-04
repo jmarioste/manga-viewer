@@ -38,4 +38,4 @@ test_script:
   - npm run dist
 
 on_success:
-  - ps: Invoke-RestMethod -Method GET -Uri https://api.github.com/repos/jmarioste/manga-viewer/releases/latest?auth_token={$env:GH_TOKEN} -ContentType "json" -OutFile ./docs/scripts/metadata.json
+  - ps: appveyor.ps1
