@@ -1,3 +1,19 @@
+import "../css/bootstrap.min.css";
+import "../css/fontawesome-all.min.css";
+import "../css/magnific-popup.css";
+import "../css/responsive.css";
+import "../css/style.css";
+
+// vendor
+import jquery from "jQuery";
+import ko from "knockout";
+import "popper.js";
+import "magnific-popup";
+import "bootstrap";
+
+import "./ko.custom-bindings";
+import metadata from "./metadata.json";
+
 let vm = {
     version: "1.2.2",
     downloads: {
@@ -23,27 +39,16 @@ let vm = {
 };
 $(document).ready(function () {
     $('.loading').delay(500).fadeOut(500);
-    $('.carousel').carousel()
     $('.do-magnifiy').magnificPopup({ type: 'image' });
 
-    // fetch('https://api.github.com/repos/jmarioste/manga-viewer/releases/latest')
-    //     .then(function (response) {
-    //         return response.json();
-    //     }).then(function (data) {
-    //         console.log(data);
-    //         vm.downloadButtons[0].href = vm.getUrl(data.assets, /.dmg$/g);
-    //         vm.downloadButtons[1].href = vm.getUrl(data.assets, /.exe$/g);
-    //         vm.downloadButtons[2].href = vm.getUrl(data.assets, /.deb$/g);
-    //         console.log(vm.getDownloadCount(data.assets));
-    //         ko.applyBindings(vm, $("body")[0]);
+    console.log(metadata);
+    vm.downloads.dmg = vm.getUrl(metadata.assets, /.dmg$/g);
+    vm.downloads.exe = vm.getUrl(metadata.assets, /.exe$/g);
+    vm.downloads.deb = vm.getUrl(metadata.assets, /.deb$/g);
+    vm.downloads.AppImage = vm.getUrl(metadata.assets, /.AppImage$/g);
+    vm.downloads.zip = vm.getUrl(metadata.assets, /.zip$/g);
+    console.log(vm.getDownloadCount(metadata.assets));
 
-    //     })
 
-    // vm.downloadButtons[0].href = vm.getUrl(data.assets, /.dmg$/g);
-    // vm.downloadButtons[1].href = vm.getUrl(data.assets, /.exe$/g);
-    // vm.downloadButtons[2].href = vm.getUrl(data.assets, /.deb$/g);
-    // .catch(function () {
-    //     console.log("nothing happend");
-    // })
     ko.applyBindings(vm, $("body")[0]);
 })
