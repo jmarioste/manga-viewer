@@ -56,6 +56,9 @@
 								<li class="nav-item">
 									<a class="nav-link" href="#features" data-bind="hashScroll">Features</a>
 								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#contact" data-bind="hashScroll">Contact</a>
+								</li>
 								<!-- <li class="nav-item">
 									<a class="nav-link" href="#installation">Installation</a>
 								</li> -->
@@ -132,6 +135,9 @@
 										</a>
 										<a class="carousel-item do-magnifiy" href="./screenshots/settings-3.jpg">
 											<img class="d-block w-100" alt="Third slide" src="./screenshots/settings-3.jpg">
+										</a>
+										<a class="carousel-item do-magnifiy" href="./screenshots/settings-3.jpg">
+											<img class="d-block w-100" alt="Third slide" src="./screenshots/drag-and-drop.jpg">
 										</a>
 									</div>
 								</div>
@@ -213,6 +219,36 @@
 							<li class="list-group-item feature__list-group-item">Scans a directory and automatically lists the available manga from that directory.</li>
 							<li class="list-group-item feature__list-group-item">Drag and Drop files to UI</li>
 						</ul>
+
+						<div class="download-buttons row d-flex justify-content-center">
+							<div class="dropdown" data-bind="hideNotPlatform: 'mac'">
+								<button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
+								 aria-expanded="false">
+									Download
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" target="_blank" data-bind="href:downloads.dmg">dmg</a>
+									<a class="dropdown-item" target="_blank" data-bind="href:downloads.zip">zip</a>
+								</div>
+							</div>
+							<div class="" data-bind="hideNotPlatform: 'win'">
+								<button class="btn btn-primary btn-lg" type="button">
+									<a data-bind="href:downloads.exe" target="_blank">
+										Download
+									</a>
+								</button>
+							</div>
+							<div class="dropdown " data-bind="hideNotPlatform: 'linux'">
+								<button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true"
+								 aria-expanded="false">
+									Download
+								</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" target="_blank" data-bind="href:downloads.deb">.deb</a>
+									<a class="dropdown-item" target="_blank" data-bind="href:downloads.AppImage">.AppImage</a>
+								</div>
+							</div>
+						</div>
 					</div>
 
 
@@ -224,31 +260,35 @@
 			</div>
 		</div>
 	</section>
-	<!-- === End Feature Section -->
-	<!-- Start Installation Section -->
-	<!-- <section>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div>
-						<h3>
-							<span class="bold">Installation</span>
-						</h3>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section> -->
-	<!-- End Installation section -->
 
 	<!--============Footer section==========-->
 	<section class="footer">
 		<div class="container">
 			<div class="row text-center">
 
-				<div class="copyright">
-					<div class="col-sm-12 text-center">
-						<p class="centerls">© 2018
+				<div class="contact  col-sm-12">
+					<div class="" id="contact">
+						<h2>Contact Me</h2>
+						<ul>
+							<li title="Please submit issues here">
+								<a href="https://github.com/jmarioste/manga-viewer/issues">
+									<i class="fab fa-github"></i>
+									Github
+								</a>
+							</li>
+							<li title="Email me">
+								<a href="mailto:jassermark.arioste@gmail.com">
+									<i class="fab fa-google"></i>
+									jassermark.arioste@gmail.com
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="copyright col-sm-12">
+					<div class=" text-center">
+						<p class="center">© 2018
 							<a class="appro-link">Jasser Mark Arioste</a>. All rights reserved.</p>
 					</div>
 				</div>

@@ -276,7 +276,7 @@
      z-index: 5;
      background: #fff;
      padding:0px;
-    
+    box-shadow: 0 4px 2px -2px rgba(0,0,0,0.2);
 }
  .navbar-brand {
      margin-left:5px;
@@ -433,31 +433,18 @@
 .download-buttons button > a {
     color: white;
 }
-.screenshort-wrapper{float:none; margin: 0px auto;}
-.screenshots-right{width: 100%;}
- .head-image-mock {
-     z-index: 5;
-     position: absolute;
-    top: -10%;
-    left: -2.6%;
+.screenshort-wrapper{
+    float:none; 
+    margin: 0px auto;
+    
 }
- .head-image-mock .img-responsive.center-block{
-     height:670px;
+
+#screenshot-carousel{
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.4);
 }
- .screenshot-carousel-01 .owl-nav .owl-prev, .screenshot-carousel-01 .owl-nav .owl-next{
-     width: 20px;
-     position: absolute;
-     top: 40%;
-}
- .screenshot-carousel-01 .owl-nav .owl-prev{
-    left: -20%;
-}
- .screenshot-carousel-01 .owl-nav .owl-next{
-     right: -20%;
-}
- .screenshot-carousel-01 .owl-nav i{
-    font-size: 35px;
-}
+
 /*==================================== ===[requirement Style ]=== ======================================*/
  #requirement{
      padding: 140px 0px 100px 0px;
@@ -530,6 +517,23 @@
      margin-bottom: 0px;
 }
 
+.feature .download-buttons {
+    margin-top: 4rem;
+}
+
+.feature .download-buttons .btn {
+    
+    font-size: 2.5rem;
+    background-color: #FF9800;
+    border: none;
+}
+
+.download-buttons .btn:hover {
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 20px 2px rgba(0,0,0,0.2);
+}
+
 
 #feature .list-group .list-group-flush{
     color: #777;
@@ -542,6 +546,7 @@
  .footer{
      background:#313131;
      color:#fff;
+     padding: 50px 0px 0px 0px;
 }
  .footer-form{
      width:90%;
@@ -563,7 +568,7 @@
      color:#FF9800;
      font-weight:700;
 }
- .centerls{
+ .center{
      color:#fff;
 }
  .appro-link:hover{
@@ -572,4 +577,25 @@
 }
  .footer span,.footer h3 {
      color:#fff;
+}
+
+.contact {
+    color: #fff;   
+    display:flex;
+    flex-direction: row-reverse; 
+}
+.contact ul {
+    list-style: none;
+    
+}
+.contact ul a {
+    color: #fff;
+    display:flex;
+    align-items: center;
+}
+.contact ul a i {
+    margin-right: .5rem;
+}
+.contact .fab{
+    font-size: 1rem;
 }
