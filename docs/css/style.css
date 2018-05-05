@@ -286,7 +286,9 @@
 }
 
 .navbar-light .navbar-toggler {
-    border-color: rgba(0,0,0,.1) !important;
+    /* border-color: rgba(0,0,0,.1) !important; */
+    border:none;
+    outline:none;
 }
  #appox-navbar .nav-download {
      padding: 12px 30px;
@@ -482,13 +484,17 @@
      transform:scale(1);
 }
  .requirement-single{
+    margin-top: 5px;
     position:relative;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
     z-index:1;
 }
  .requirement .requirement-single .feature-icon {
-     position:absolute;
+     /* position:absolute;
      top: -20%;
-     left: 35%;
+     left: 35%; */
      z-index:2;
 }
  .requirement .requirement-single i{

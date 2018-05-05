@@ -1,8 +1,8 @@
-import "../css/bootstrap.min.css";
-import "../css/fontawesome-all.min.css";
-import "../css/magnific-popup.css";
-import "../css/responsive.css";
-import "../css/style.css";
+// import "../css/bootstrap.min.css";
+// import "../css/fontawesome-all.min.css";
+// import "../css/magnific-popup.css";
+// import "../css/responsive.css";
+// import "../css/style.css";
 
 // vendor
 import jquery from "jQuery";

@@ -88,10 +88,14 @@ module.exports = {
             from: './docs/screenshots',
             to: './screenshots'
         },
-            // {
-            //     from: './docs/webfonts/**/*',
-            //     to: './'
-            // }
+        {
+            from: './docs/css',
+            to: './css'
+        },
+        {
+            from: './docs/webfonts',
+            to: './webfonts'
+        }
         ])
     ],
     devServer: {

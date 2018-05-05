@@ -11,8 +11,7 @@
     "e2e": "npm run build-renderer-prod  && mocha e2e",
     "publish": "electron-builder --win --x64 -p always",
     "dev-docs": "webpack-dev-server --config webpack.config.docs.js",
-    "docs": "webpack --config webpack.config.docs.js",
-    "deploy-docs": "gulp deploy"
+    "docs": "webpack --config webpack.config.docs.js"
   },
   "repository": "https://github.com/jmarioste/manga-viewer",
   "keywords": [
@@ -125,6 +124,7 @@
     "expose-loader": "0.7.5",
     "extract-zip": "=1.6.0",
     "file-loader": "1.1.11",
+    "git-directory-deploy": "1.5.1",
     "gulp": "3.9.1",
     "gulp-gh-pages": "0.5.4",
     "html-loader": "0.4.5",
