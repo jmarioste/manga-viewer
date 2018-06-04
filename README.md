@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/hocka5ecscejfvg7?svg=true)](https://ci.appveyor.com/project/jmarioste/manga-viewer)
 
 ## Website
-[https://jmarioste.github.io/manga-viewer](https://jmarioste.github.io/manga-viewer)
+[https://baiji-manga-viewer.com](https://baiji-manga-viewer.com)
 
 ## Releases
 - Please download here [https://github.com/jmarioste/manga-viewer/releases](https://github.com/jmarioste/manga-viewer/releases)
