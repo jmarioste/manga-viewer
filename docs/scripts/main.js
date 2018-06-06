@@ -40,14 +40,14 @@ let vm = {
 $(document).ready(function () {
     $('.loading').delay(500).fadeOut(500);
     $('.do-magnifiy').magnificPopup({ type: 'image' });
-    metadata = metadata[0];
-    vm.version = metadata.name;
-    vm.downloads.dmg = vm.getUrl(metadata.assets, /.dmg$/g);
-    vm.downloads.exe = vm.getUrl(metadata.assets, /.exe$/g);
-    vm.downloads.deb = vm.getUrl(metadata.assets, /.deb$/g);
-    vm.downloads.AppImage = vm.getUrl(metadata.assets, /.AppImage$/g);
-    vm.downloads.zip = vm.getUrl(metadata.assets, /.zip$/g);
-    console.log(vm.getDownloadCount(metadata.assets));
+    const data = metadata[0];
+    vm.version = data.name;
+    vm.downloads.dmg = vm.getUrl(data.assets, /.dmg$/g);
+    vm.downloads.exe = vm.getUrl(data.assets, /.exe$/g);
+    vm.downloads.deb = vm.getUrl(data.assets, /.deb$/g);
+    vm.downloads.AppImage = vm.getUrl(data.assets, /.AppImage$/g);
+    vm.downloads.zip = vm.getUrl(data.assets, /.zip$/g);
+    console.log(vm.getDownloadCount(data.assets));
 
 
     ko.applyBindings(vm, $("body")[0]);
