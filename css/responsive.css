@@ -1,0 +1,252 @@
+/*  
+/*====================== Mobile Layout: 320px. ======================= */
+ @media only screen and (max-width:  767px) {
+     
+	 body {
+     overflow-x: hidden;
+	} 
+	 section{
+         padding: 30px 0px;
+    }
+	h2{
+		font-size:34px;
+	}
+	 h3{
+        font-size:26px;line-height:30px;
+    }
+	h5{
+		font-weight:20px;
+	}
+	span.bold {font-size: 22px;}
+	/*============== */
+	.navbar-nav {
+		width: 100%;
+	text-align: left}
+	 .navbar-nav li{
+		 width:100%;
+	 }
+	.menu{padding:0px;margin:0px;}
+	 .btn.btn-default.nav-download {
+         visibility:hidden;
+    }
+	.header-btn {
+         padding: 10px 15px;
+         font-size:10px;
+         border-radius:15px;
+    }
+	.is-sticky .navbar{padding:0px;}
+	  
+	  #intro{
+        min-height:620px;
+    }
+	 .header-text h2{
+         font-size: 26px;
+         line-height:40px;
+    }
+     .header-text p{
+         font-size: 14px;
+         line-height:25px;
+    }
+     #intro .head-image-mock{
+         visibility:hidden;
+    }
+     #intro .screenshort{
+        padding:50px 0px;
+    }
+	.screenshots-right{
+		margin-left:10px;
+	}
+	.text-area p{
+		width:100%;
+		padding-top:0px;
+	}
+	 .screenshot-carousel-01 .owl-nav .owl-next{
+        right: -52%;
+    }
+     .screenshot-carousel-01 .owl-nav .owl-prev {
+        left: -52%;
+    }
+     .screenshot-carousel-01 .owl-nav .owl-prev, .screenshot-carousel-01 .owl-nav .owl-next {
+         width: 20px;
+         position: absolute;
+         top: 34%;
+    }
+	.screenshort-2{padding-top:0px;}
+    .owl-carousel{width:93%;}
+	.owl-theme .owl-dots .owl-dot span{margin:0px 5px;}
+	 #repuerment{
+        padding:70px 0px 0px 0px ;
+    }
+	.repuerment-single {
+        margin-bottom:60px;}
+    
+	.title-border-dot::before{top: 10px;left: -7px;}
+	.title-border-dot-2::before{top: 10px;right: -7px;}
+	.feature-title-border::before{left:160px;}
+	.feature-title-border::after{right:160px;}
+	.feature-single{margin-bottom:20px;}
+    .feature-image, .appox-app-img {width: 100%; height:100%;}
+    .feature-image img{ border-radius: 26px 30px 26px 26px;}
+	.item-box{padding:10px;}
+
+	.appox-img::before, .appox-img-2::before{
+     position: absolute;
+     content: "";
+     height: 320px;
+     width: 3000px;
+     top: 120px;
+     background: #a246fe;
+     z-index: -1;
+     border-radius:0px 10px 10px 0px; }
+
+    .video-section {
+         min-height: 350px;
+         padding: 20px 0px;
+    }
+	.video-text{padding: 10px 0px 10px 0px;}
+     .fa-play {
+         height: 60px;
+         width: 60px;
+         font-size: 25px;
+         padding: 17px 10px 0px 15px;
+    }
+     .video-text{
+        width:100%;
+    }
+     .singel-praice{
+        margin-bottom:20px;
+    }
+     
+     .appox-img img,.appox-img-2 img {
+        width: 100%;
+        padding-top:50px;
+    }
+     .appox-text p,.appox-text-2 p{
+        width:100%;
+		padding-bottom:1px;
+    }
+     .appox-text ,.appox-text-2 {
+        text-align:center;
+    }
+     .appox-text h5, .appox-text-2 h5 , .appo-span{
+        text-align: center;
+		font-size:20px;
+    }
+     .appox-text, .appox-text-2 {
+        padding-top: 40px;
+    }
+	.appro-ap-text{padding: 40px 0px 0px 20px;}
+    .appox-down{ padding:10px 20px;}
+	.appro-ap-text h3{font-size:26px;line-height:30px;text-align:center;}
+    .appro-ap-text .appox-color{ font-size:26px }
+    .team{margin-bottom:20px;}
+    .screenshort2{display:none; }
+     .app-image-mock{visibility:hidden;}
+    .owl-theme .owl-dots .owl-dot span,.owl-theme .owl-dots .owl-dot.active span {
+         width: 10px;
+         height: 10px;}
+         .team img{
+            width: 100%;
+         }
+	.owl-carousel.owl-theme.screenshot-carousel-02.owl-loaded.owl-drag{margin-left:10px;}
+	.contact .btn{
+         height: 46px;
+         padding: 8px 0px 7px 40px;}
+    .fotter span, .fotter h3{line-height:30px;} 
+	.typed .text-area span {font-size: 30px;}
+	
+	/*----- BLog  -----*/
+    .blog_1 .blog-area .bolg_side-left .single-item-box .single-item .single-text-box .blog-btn-box { margin: 30px auto 0;}
+    .blog_1 .blog-area .bolg_side-left .single-item-box .single-item .single-text-box { padding: 35px 15px;}
+    .blog_1 .blog-area .blog_side-right .categories-item {
+        text-align: left;
+        padding-left: 15px;
+        margin-top: 40px;
+    }
+    .blog_1 .blog-area .blog_side-right .social-icon h3 { padding-left: 15px; text-align: left;}
+    .blog_1 .blog-area .blog_side-right .social-icon ul li a i {
+        margin-right: 15px;
+        width: 0px;
+        text-align: center;
+    }
+.blog-area .blog_side-right .recent-post-01 .recent-single .recent-content-item a img{height: 76px; margin-top:7px;}
+    .blog_1 .blog-area .blog_side-right .social-icon ul li a {  padding-left: 10px;}
+    .blog_1 .blog-area .blog_side-right .recent-work h3 { padding-left: 15px;}
+    .blog_1 .blog-area .blog_side-right .recent-post .recent-single .recent-text {   text-align: left;}
+    .blog_1 .blog-area .blog_side-right .recent-post .recent-single { margin-bottom: 100px !important;}
+    .blog_1 .blog-area .blog_side-right .recent-post .recent-single:last-child { margin-bottom: 0px !important;}
+    .blog_1 .blog-area .blog_side-right .quick_contact { margin-top: 40px;}
+	.blog-01 .footer h4{font-size:22px;}
+    /*----- post  -----*/
+    .post-1 .post_1_area .post_left-side .description-content .description-text .description-side-left ul li { display: inline-block;}
+    .post-1 .post_1_area .post_left-side .description-content .tag-links-box p {float: none;}
+    .post-1 .post_1_area .post_left-side .description-content .tag-links-box ul li:last-child {  float: none;}
+    .post-1 .post_1_area .post_left-side .prev_next .prev { border: 1px solid #d7d7d7; text-align: left;}
+    .post-1 .post_1_area .post_left-side .prev_next .prev::before {display: none;}
+    .post-1 .post_1_area .post_left-side .prev_next .prev::after {display: none;}
+    .post-1 .post_1_area .post_left-side .prev_next .next {   border: 1px solid #d7d7d7;  text-align: left;}
+    .post-1 .post_1_area .post_left-side .prev_next .next::before {display: none;}
+    .post-1 .post_1_area .post_left-side .prev_next .next::after {display: none;}
+    .post-1 .post_1_area .post_left-side .comments .comment-single-item .comment-left-bar .comment-text {   padding-left: 0px;}
+    .post-1 .post_1_area .post_left-side .comments .reply_text { width: 100%;  float: none;}
+    .post-1 .post_1_area .post_left-side .comments .comment-single-item .comment-left-bar .comment-text .comment-author-box .reply { float: right; margin-top: -60px;}
+	.post-1 .sidebar-text-post .recent-post .recent-single .recent-content-item a img {height: 76px; margin-top:7px; margin-right: 10px;}
+    .post-1 .post_1_area .post_left-side .leave-comment-box .comment-respond {  text-align: left;}
+    .post-1 .sidebar-text-post {width:100%; float: right;}
+    .post-1 .sidebar-text-post .recent-post .recent-single .recent-content-item .recent-text {   text-align: left;}
+    .post-1 .sidebar-text-post .recent-post .recent-single { margin-bottom: 100px;}
+    .post-1 .sidebar-text-post .recent-post .recent-single:last-child { margin-bottom: 0;}
+    .post-1 .sidebar-text-post .categories-item-post {   text-align: left;   padding-left: 40px;}
+    .post-1 .post_2_area .sidebar-text-post-02 { width: 100% !important; float: left !important;}
+    .blog-single-item { margin-bottom: 30px;}
+    .blog-single-item:last-child{margin-bottom: 0px;}
+	.footer h4{font-size:22px;}
+	
+	/*==========Slider Bg=============*/
+
+	.slider-bg .single-slider{min-height:500px;}
+	.owl-carousel.owl-theme.slider-carousel-01.owl-loaded.owl-drag{overflow:hidden;}
+ 	.slider-bg h2{font-size:24px;}
+	.slider-p{width:100%;font-size: 14px;line-height:25px;}
+	
+
+.owl-prev {
+    position: absolute;
+    top: 87%;
+    left: 10%;
+	height:25px;
+    font-size: 14px !important;
+    color: #fff !important;}
+.owl-next {
+    position: absolute;
+	top: 87%;
+	height:25px;
+    right: 10%;
+    font-size: 14px !important;
+    color: #fff !important;
+	outline:none;}
+	
+}
+
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	
+	#appox-navbar .nav-download{display:none;}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
