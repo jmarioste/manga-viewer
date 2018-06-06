@@ -15,7 +15,7 @@ import "./ko.custom-bindings";
 import metadata from "./metadata.json";
 
 let vm = {
-    version: "1.2.2",
+    version: "v1.2.2",
     downloads: {
         AppImage: "https://github.com/jmarioste/manga-viewer/releases/download/v1.2.2/baiji-manga-viewer-1.2.2-x86_64.AppImage",
         dmg: "https://github.com/jmarioste/manga-viewer/releases/download/v1.2.2/baiji-manga-viewer-1.2.2.dmg",
@@ -40,8 +40,8 @@ let vm = {
 $(document).ready(function () {
     $('.loading').delay(500).fadeOut(500);
     $('.do-magnifiy').magnificPopup({ type: 'image' });
-
-    console.log(metadata);
+    metadata = metadata[0];
+    vm.version = metadata.name;
     vm.downloads.dmg = vm.getUrl(metadata.assets, /.dmg$/g);
     vm.downloads.exe = vm.getUrl(metadata.assets, /.exe$/g);
     vm.downloads.deb = vm.getUrl(metadata.assets, /.deb$/g);
