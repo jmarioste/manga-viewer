@@ -130,7 +130,7 @@
     "html-loader": "0.4.5",
     "http-server": "0.10.0",
     "imports-loader": "0.7.1",
-    "jquery": "3.3.1",
+    "jquery": "3.5.0",
     "knockout": "3.4.2",
     "less": "2.7.2",
     "magnific-popup": "1.1.0",
